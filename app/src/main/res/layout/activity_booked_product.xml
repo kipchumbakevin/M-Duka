@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BookedProduct">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorTrans"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <CheckBox
+            android:id="@+id/bookedCloth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clothes"/>
+        <CheckBox
+            android:id="@+id/bookedShoe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shoes"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <com.google.android.material.tabs.TabLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:tabSelectedTextColor="@color/colorWhite"
+        android:id="@+id/cart_tab"
+        app:tabIndicatorColor="@color/colorWhite"
+        app:tabTextColor="@color/colorTab"
+        app:tabMode="scrollable"
+        app:tabIndicatorHeight="2dp"/>
+    <include layout="@layout/content_booked_product"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

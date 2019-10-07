@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+
+    android:layout_height="match_parent"
+
+    android:layout_marginBottom="16dp">
+
+
+    <EditText
+        android:id="@+id/expensetype"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:textSize="12sp"
+        android:hint="expense type"
+        android:inputType="textCapSentences"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/linear" />
+
+    <EditText
+
+        android:id="@+id/expenseamount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="180dp"
+        android:inputType="numberDecimal"
+        android:textSize="12sp"
+        android:hint="amount(ksh.)"
+        android:imeOptions="actionDone"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/linear" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/dialog_close"/>
+
+    <ImageView
+
+        android:id="@+id/dialog_close"
+
+        android:layout_width="30dp"
+
+        android:layout_height="30dp"
+
+        android:layout_marginStart="30dp"
+
+        android:tint="@color/colorRed"
+
+
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+
+        app:layout_constraintTop_toBottomOf="@+id/guideline3"
+        app:srcCompat="@drawable/ic_close" />
+
+
+
+    <androidx.constraintlayout.widget.Guideline
+
+        android:id="@+id/guideline"
+
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+
+        android:orientation="vertical" />
+
+
+
+    <androidx.constraintlayout.widget.Guideline
+
+        android:id="@+id/guideline2"
+
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+
+        android:orientation="vertical"
+
+        app:layout_constraintGuide_end="16dp" />
+
+
+    <ImageView
+
+        android:id="@+id/dialog_done"
+
+        android:layout_width="30dp"
+
+        android:layout_height="30dp"
+
+        android:layout_marginEnd="12dp"
+
+        android:tint="@color/colorPrimary"
+
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+
+        app:layout_constraintTop_toBottomOf="@+id/guideline3"
+        app:srcCompat="@drawable/ic_done" />
+
+
+
+    <androidx.constraintlayout.widget.Guideline
+
+        android:id="@+id/guideline3"
+
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+
+        android:orientation="horizontal"
+
+        app:layout_constraintGuide_begin="198dp" />
+
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+
+        android:id="@+id/linear"
+
+        android:background="@color/colorPrimary"
+
+        android:layout_width="match_parent"
+
+        android:layout_height="80dp"
+
+        android:orientation="vertical"
+
+        android:gravity="center"
+
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+
+            android:layout_width="50dp"
+
+            android:src="@mipmap/ic_launcher_round"
+
+            android:layout_gravity="center"
+
+            android:layout_height="50dp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
