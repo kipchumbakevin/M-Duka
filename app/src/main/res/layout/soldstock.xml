@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="26dp"
         android:textSize="15sp"
-        android:hint="expense type"
+        android:hint="quantity sold"
         android:padding="5dp"
         android:inputType="textCapSentences"
         android:textColor="@color/colorBlack"

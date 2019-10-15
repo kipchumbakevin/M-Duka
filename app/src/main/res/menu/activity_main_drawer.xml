@@ -33,6 +33,10 @@
                 android:id="@+id/nav_updates"
                 android:icon="@drawable/ic_ac_unit"
                 android:title="Updates" />
+            <item
+                android:id="@+id/nav_football"
+                android:icon="@drawable/ic_ac_unit"
+                android:title="Football" />
         </menu>
     </item>
 

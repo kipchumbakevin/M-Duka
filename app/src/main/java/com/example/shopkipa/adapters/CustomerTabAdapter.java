@@ -1,10 +1,12 @@
-package com.example.shopkipa;
+package com.example.shopkipa.adapters;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+
+import com.example.shopkipa.ClothesStockFragment;
 
 public class CustomerTabAdapter extends FragmentStatePagerAdapter {
     public CustomerTabAdapter(@NonNull FragmentManager fm) {
@@ -14,7 +16,7 @@ public class CustomerTabAdapter extends FragmentStatePagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        return ViewCustomerStockFragment.newInstance(position);
+        return ClothesStockFragment.newInstance(position);
 
     }
 

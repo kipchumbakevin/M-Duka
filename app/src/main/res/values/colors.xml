@@ -9,5 +9,6 @@
     <color name="colorGray">#FF9E9E9E</color>
     <color name="colorGreen">#084D01</color>
     <color name="colorTab">#54A591</color>
-    <color name="colorRed">#FF0220</color>
+    <color name="colorRed">#FF001E</color>
+    <color name="colorOrange">#FF9100</color>
 </resources>

@@ -5,10 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
+import com.example.shopkipa.adapters.CustomerTabAdapter;
 import com.google.android.material.tabs.TabLayout;
 
 public class BookedProduct extends AppCompatActivity {
@@ -74,13 +74,23 @@ public class BookedProduct extends AppCompatActivity {
         bookedCloth.setChecked(true);
 
     }
-    public void getTabContent(int tabIndex){
-        ViewCustomerStockFragment tabContentFragment = ViewCustomerStockFragment.newInstance(tabIndex);
+    public void getTabContent(int tabIndex) {
+        if (bookedShoe.isChecked()) {
+            ShoesStockFragment tabContentFragment = ShoesStockFragment.newInstance(tabIndex);
 
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
-        ft.replace(R.id.fragment, tabContentFragment);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        ft.commit();
+            ft.replace(R.id.fragment, tabContentFragment);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.commit();
+        } else if (bookedCloth.isChecked()) {
+            ClothesStockFragment tabContentFragment = ClothesStockFragment.newInstance(tabIndex);
+
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+            ft.replace(R.id.fragment, tabContentFragment);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.commit();
+        }
     }
 }

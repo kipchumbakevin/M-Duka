@@ -3,6 +3,10 @@ package com.example.shopkipa;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.shopkipa.adapters.CustomerTabAdapter;
+import com.example.shopkipa.models.AddExpenseModel;
+import com.example.shopkipa.models.AddStockModel;
+import com.example.shopkipa.networking.RetrofitClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -29,6 +33,10 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -121,7 +129,7 @@ public class MainActivity extends AppCompatActivity
     }
     public void getTabContent(int tabIndex){
         if (stockShoes.isChecked()) {
-            MyStockFragment tabContentFragment = MyStockFragment.newInstance(tabIndex);
+            ShoesStockFragment tabContentFragment = ShoesStockFragment.newInstance(tabIndex);
 
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
@@ -129,7 +137,7 @@ public class MainActivity extends AppCompatActivity
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.commit();
         }else if (stockClothes.isChecked()){
-            ViewCustomerStockFragment tabContentFragment = ViewCustomerStockFragment.newInstance(tabIndex);
+            ClothesStockFragment tabContentFragment = ClothesStockFragment.newInstance(tabIndex);
 
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
@@ -178,12 +186,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_summary) {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
-            View view = getLayoutInflater().inflate(R.layout.income_statement,null);
-
-            alertDialogBuilder.setView(view);
-            final AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
+            Intent intent = new Intent(MainActivity.this,SummaryActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_addexpense) {
             addexpense();
 
@@ -201,12 +205,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void addexpense() {
-        final EditText expensetype,expenseamount;
+        final EditText expenseType,expenseamount;
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
         View view = getLayoutInflater().inflate(R.layout.add_expense,null);
         ImageView closedialog = view.findViewById(R.id.dialog_close);
         ImageView dialogDone = view.findViewById(R.id.dialog_done);
-        expensetype = view.findViewById(R.id.expensetype);
+        expenseType = view.findViewById(R.id.expensetype);
         expenseamount = view.findViewById(R.id.expenseamount);
 
         alertDialogBuilder.setView(view);
@@ -221,16 +225,36 @@ public class MainActivity extends AppCompatActivity
         dialogDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String exptype = expensetype.getText().toString();
+                String exptype = expenseType.getText().toString();
                 if (exptype.isEmpty()) {
-                    expensetype.setError("Required");
+                    expenseType.setError("Required");
                 }if (expenseamount.getText().toString().isEmpty()){
                     expenseamount.setError("Required");
                 }else {
-                    Toast.makeText(MainActivity.this,exptype + " expense added",Toast.LENGTH_SHORT).show();
+                    final String expensetype = expenseType.getText().toString();
+                    String amount = expenseamount.getText().toString();
+                            Call<AddExpenseModel> call = RetrofitClient.getInstance(MainActivity.this)
+                                    .getApiConnector()
+                                    .addnewexpense(expensetype,amount);
+                    call.enqueue(new Callback<AddExpenseModel>() {
+                        @Override
+                        public void onResponse(Call<AddExpenseModel> call, Response<AddExpenseModel> response) {
+                            if(response.code()==201){
+                                Toast.makeText(MainActivity.this,expensetype + " expense added",Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<AddExpenseModel> call, Throwable t) {
+                        }
+                    });
+                }
                     alertDialog.dismiss();
                 }
-            }
         });
     }
+
 }

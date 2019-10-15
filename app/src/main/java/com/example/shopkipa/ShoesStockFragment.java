@@ -15,7 +15,7 @@ import android.widget.Toast;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MyStockFragment extends Fragment {
+public class ShoesStockFragment extends Fragment {
 
 
     private static final String REQUEST_TYPE = "com.example.shopkipa.REQUEST_TYPE";
@@ -24,7 +24,7 @@ public class MyStockFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_my_stock, container, false);
+        View view = inflater.inflate(R.layout.fragment_shoes_stock, container, false);
         stockClothes = view.findViewById(R.id.stockCloth);
         stockShoes = view.findViewById(R.id.stockShoe);
         int requestType=(int)getArguments().get(REQUEST_TYPE);
@@ -43,8 +43,8 @@ public class MyStockFragment extends Fragment {
             }
         return view;
     }
-    public static MyStockFragment newInstance(int position){
-        MyStockFragment myStockFragment =new MyStockFragment();
+    public static ShoesStockFragment newInstance(int position){
+        ShoesStockFragment myStockFragment =new ShoesStockFragment();
         Bundle bundle=new Bundle();
         bundle.putInt(REQUEST_TYPE,position);
         myStockFragment.setArguments(bundle);
