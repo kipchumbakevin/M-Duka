@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -25,11 +26,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.shopkipa.models.AddExpenseModel;
 import com.example.shopkipa.models.AddStockModel;
+import com.example.shopkipa.models.GetCategoriesModel;
 import com.example.shopkipa.networking.RetrofitClient;
 
 import java.io.File;
@@ -52,8 +56,11 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
     private File mPhotoFile;
     private Uri photoUri;
     Button buttonAddStock;
+    RelativeLayout progressLyt;
     EditText itemName,itemColor,itemDesign,itemCompany,itemBP,itemSP;
     private Context mContext;
+    private ArrayAdapter<String> categoryadapter;
+    private List<String> categorySpinnerArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +71,7 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
         spinnerSize = findViewById(R.id.spinnerSize);
         itemBP = findViewById(R.id.item_bp);
         itemColor = findViewById(R.id.item_color);
+        progressLyt = findViewById(R.id.progressLoad);
         itemName = findViewById(R.id.item_name);
         itemSP = findViewById(R.id.item_sp);
         itemCompany = findViewById(R.id.item_company);
@@ -76,22 +84,25 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
         addImage = findViewById(R.id.addImage);
         numberPickerQuantity = findViewById(R.id.numberPickerQuantity);
         numberPickerSize = findViewById(R.id.numberPickerSize);
-        List<String> spinnerArray =  new ArrayList<String>();
-        spinnerArray.add("Male");
-        spinnerArray.add("Female");
-        spinnerArray.add("Boy");
-        spinnerArray.add("Girl");
-        spinnerArray.add("Unisex");
-        spinnerArray.add("Other");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this, android.R.layout.simple_spinner_item, spinnerArray);
+        categorySpinnerArray = new ArrayList<>();
 
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categoryadapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, categorySpinnerArray);
 
-        spinnerCategory.setAdapter(adapter);
-        spinnerType.setAdapter(adapter);
-        spinnerSize.setAdapter(adapter);
+        categoryadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinnerCategory.setAdapter(categoryadapter);
+        fetchCategory();
+        spinnerType.setAdapter(categoryadapter);
+        spinnerSize.setAdapter(categoryadapter);
         setTitle("Add new product");
+        itemSP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               sellingPriceInfo();
+            }
+        });
+
         numberPickers();
         rCloth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -145,7 +156,22 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
         });
     }
 
+    private void sellingPriceInfo() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AddStock.this);
+        alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        alertDialogBuilder.setMessage("This price will be visible to buyers on our website");
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
     private void newStock() {
+        showProgress();
         int sizeI = numberPickerSize.getValue();
         int quantityI = numberPickerQuantity.getValue();
         String category = spinnerCategory.getSelectedItem().toString();
@@ -167,21 +193,31 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
         call.enqueue(new Callback<AddStockModel>() {
             @Override
             public void onResponse(Call<AddStockModel> call, Response<AddStockModel> response) {
+                hideProgress();
                 if(response.code()==201){
                     Toast.makeText(AddStock.this,"product added",Toast.LENGTH_SHORT).show();
 
                 }
                 else{
-                    Toast.makeText(AddStock.this,response.message(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddStock.this,"response:"+response.message(),Toast.LENGTH_SHORT).show();
                 }
 
             }
 
             @Override
             public void onFailure(Call<AddStockModel> call, Throwable t) {
-                Toast.makeText(AddStock.this,"Network Connection Failed",Toast.LENGTH_SHORT).show();
+                hideProgress();
+                Toast.makeText(AddStock.this,"errot:"+t.getMessage(),Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void hideProgress() {
+        progressLyt.setVisibility(View.INVISIBLE);
+    }
+
+    private void showProgress() {
+        progressLyt.setVisibility(View.VISIBLE);
     }
 
 
@@ -294,5 +330,35 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
 
     @Override
     public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+    }
+    public void fetchCategory(){
+        Call<List<GetCategoriesModel>> call = RetrofitClient.getInstance(AddStock.this)
+                .getApiConnector()
+                .getAllCategories();
+        call.enqueue(new Callback<List<GetCategoriesModel>>() {
+            @Override
+            public void onResponse(Call<List<GetCategoriesModel>> call, Response<List<GetCategoriesModel>> response) {
+                hideProgress();
+                if(response.code()==200){
+
+                   for(int index= 0;index<response.body().size();index++){
+                      categorySpinnerArray.add(response.body().get(index).getName());
+                       Toast.makeText(AddStock.this,response.body().get(index).getName(),Toast.LENGTH_SHORT).show();
+                    }
+                   categoryadapter.notifyDataSetChanged();
+                }
+                else{
+                    Toast.makeText(AddStock.this,response.message(),Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<GetCategoriesModel>> call, Throwable t) {
+                Toast.makeText(AddStock.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+                hideProgress();
+            }
+        });
+
     }
 }

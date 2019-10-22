@@ -1,15 +1,21 @@
 package com.example.shopkipa;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.shopkipa.adapters.CustomerTabAdapter;
+import com.example.shopkipa.adapters.GetStockAdapter;
+import com.example.shopkipa.adapters.ViewExpensesAdapter;
 import com.example.shopkipa.models.AddExpenseModel;
 import com.example.shopkipa.models.AddStockModel;
+import com.example.shopkipa.models.GetCategoriesModel;
+import com.example.shopkipa.models.GetExpenseModel;
 import com.example.shopkipa.networking.RetrofitClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.appcompat.app.AlertDialog;
@@ -21,18 +27,29 @@ import android.view.MenuItem;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 
+
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import android.view.Menu;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,8 +57,15 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private static final String DIALOG_EXPENSES = "My Expenses";
     TabLayout tabLayout;
+    RelativeLayout progressLyt;
     CheckBox stockClothes,stockShoes;
+    private ArrayList<GetExpenseModel> mExpensesArrayList;
+    private List<GetCategoriesModel> categories = new ArrayList<>();
+    String categoryname;
+    private Context mContext;
+    private CustomerTabAdapter customerTabAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,14 +90,20 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+        progressLyt = findViewById(R.id.progressLoad);
         navigationView.setNavigationItemSelectedListener(this);
         setTitle("My stock");
-        tabLayout.setTabsFromPagerAdapter(new CustomerTabAdapter(getSupportFragmentManager()));
-        tabLayout.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
+        getCategoryList();
+
+        if (!categories.isEmpty()){
+            String tabIndex = categories.get(0).getName();
+            getTabContent(tabIndex);
+        }
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                getTabContent(tab.getPosition());
-
+                String tabId = (String) tab.getText();
+                getTabContent(tabId);
             }
 
             @Override
@@ -86,6 +116,7 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+
         if (stockClothes.isChecked()){
             Toast.makeText(MainActivity.this,"Clothes",Toast.LENGTH_SHORT).show();
         }
@@ -127,16 +158,7 @@ public class MainActivity extends AppCompatActivity
         checkboxes();
 
     }
-    public void getTabContent(int tabIndex){
-        if (stockShoes.isChecked()) {
-            ShoesStockFragment tabContentFragment = ShoesStockFragment.newInstance(tabIndex);
-
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-
-            ft.replace(R.id.fragment, tabContentFragment);
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            ft.commit();
-        }else if (stockClothes.isChecked()){
+    public void getTabContent(String tabIndex){
             ClothesStockFragment tabContentFragment = ClothesStockFragment.newInstance(tabIndex);
 
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -144,8 +166,14 @@ public class MainActivity extends AppCompatActivity
             ft.replace(R.id.fragment, tabContentFragment);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.commit();
-        }
     }
+//    public static ClothesStockFragment newInstance(int val) {
+//        ClothesStockFragment fragment = new ClothesStockFragment();
+//        Bundle args = new Bundle();
+//        args.putInt("someInt", val);
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
 
     @Override
     public void onBackPressed() {
@@ -172,11 +200,18 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_expenses) {
+            startDialog();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void startDialog(){
+        ViewExpensesDialogFragment dialog = new
+                ViewExpensesDialogFragment(mContext);
+        dialog.getFragmentManager();
+        dialog.show(getSupportFragmentManager(), DIALOG_EXPENSES);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -231,6 +266,7 @@ public class MainActivity extends AppCompatActivity
                 }if (expenseamount.getText().toString().isEmpty()){
                     expenseamount.setError("Required");
                 }else {
+                    showProgress();
                     final String expensetype = expenseType.getText().toString();
                     String amount = expenseamount.getText().toString();
                             Call<AddExpenseModel> call = RetrofitClient.getInstance(MainActivity.this)
@@ -239,6 +275,7 @@ public class MainActivity extends AppCompatActivity
                     call.enqueue(new Callback<AddExpenseModel>() {
                         @Override
                         public void onResponse(Call<AddExpenseModel> call, Response<AddExpenseModel> response) {
+                            hideProgress();
                             if(response.code()==201){
                                 Toast.makeText(MainActivity.this,expensetype + " expense added",Toast.LENGTH_SHORT).show();
                             }
@@ -249,6 +286,7 @@ public class MainActivity extends AppCompatActivity
 
                         @Override
                         public void onFailure(Call<AddExpenseModel> call, Throwable t) {
+                            hideProgress();
                         }
                     });
                 }
@@ -257,4 +295,46 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    private void showProgress() {
+        progressLyt.setVisibility(View.VISIBLE);
+    }
+
+    private void hideProgress() {
+        progressLyt.setVisibility(View.INVISIBLE);
+    }
+
+    private void getCategoryList() {
+        ArrayList<GetCategoriesModel> mCategoriesArray;
+        categories.clear();
+        Call<List<GetCategoriesModel>> call = RetrofitClient.getInstance(mContext)
+                .getApiConnector()
+                .getAllCategories();
+        call.enqueue(new Callback<List<GetCategoriesModel>>() {
+            @Override
+            public void onResponse(Call<List<GetCategoriesModel>> call, Response<List<GetCategoriesModel>> response) {
+                if(response.code()==200){
+                    categories.addAll(response.body());
+                    filltabs(tabLayout);
+
+                }
+                else{
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<GetCategoriesModel>> call, Throwable t) {
+            }
+
+        });
+    }
+
+    private void filltabs(TabLayout tabLayout) {
+        if (!categories.isEmpty()){
+            for(int index = 0; index<categories.size();index++){
+                String fragmentname = categories.get(index).getName();
+                tabLayout.addTab(tabLayout.newTab().setText(fragmentname));
+            }
+        }
+    }
 }

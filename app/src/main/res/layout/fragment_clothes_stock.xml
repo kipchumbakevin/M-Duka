@@ -5,129 +5,13 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ClothesStockFragment">
-    <androidx.cardview.widget.CardView
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="10dp"
+
+        android:id="@+id/stock_recyclerView"
+
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
 
-        app:cardUseCompatPadding="true"
-
-        app:contentPadding="@dimen/activity_half_margin"
-
-        app:cardBackgroundColor="@android:color/white"
-
-        app:cardCornerRadius="@dimen/card_radius"
-
-        app:cardElevation="@dimen/card_elevation"
-
-        android:layout_marginStart="@dimen/activity_half_margin"
-
-        android:padding="10dp">
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <RelativeLayout
-                android:id="@+id/dropDown"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorBlack"
-                    android:text="Producttype"/>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_arrow_drop_down"
-                    android:layout_alignParentEnd="true"/>
-            </RelativeLayout>
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="vertical">
-                <androidx.cardview.widget.CardView
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
-
-                    app:cardUseCompatPadding="true"
-                    android:layout_gravity="center"
-
-                    app:contentPadding="@dimen/activity_half_margin"
-
-                    app:cardBackgroundColor="@android:color/white"
-
-                    app:cardCornerRadius="@dimen/card_radius"
-
-                    app:cardElevation="@dimen/card_elevation">
-                <ImageView
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
-                    android:src="@drawable/nike"/>
-                </androidx.cardview.widget.CardView>
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_marginTop="5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Name"/>
-                        <TextView
-                            android:layout_marginTop="5dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Size"/>
-
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:layout_width="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_marginStart="5dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Quantity"/>
-                        <CheckBox
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Booked"/>
-
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:gravity="center"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:textColor="@color/colorWhite"
-                        android:backgroundTint="@color/colorGreen"
-                        android:text="Sold" />
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:text="Edit" />
-                    <ImageView
-                        android:id="@+id/sold_stock"
-                        android:layout_marginStart="5dp"
-                        android:tint="@color/colorRed"
-                        android:layout_width="wrap_content"
-                        android:layout_height="35dp"
-                        android:src="@drawable/ic_delete"/>
-                </androidx.appcompat.widget.LinearLayoutCompat>
-            </androidx.appcompat.widget.LinearLayoutCompat>
-        </androidx.appcompat.widget.LinearLayoutCompat>
-    </androidx.cardview.widget.CardView>
-
+        android:layout_height="match_parent"/>
+    <include layout="@layout/content_progress_bar"/>
 </FrameLayout>

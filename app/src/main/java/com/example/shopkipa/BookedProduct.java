@@ -23,74 +23,74 @@ public class BookedProduct extends AppCompatActivity {
         bookedCloth = findViewById(R.id.bookedCloth);
         bookedShoe = findViewById(R.id.bookedShoe);
         setTitle("Booked products");
-        tabLayout.setTabsFromPagerAdapter(new CustomerTabAdapter(getSupportFragmentManager()));
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                getTabContent(tab.getPosition());
-
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar!=null){
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-        bookedCloth.setChecked(true);
-        checkboxes();
-    }
-
-    private void checkboxes() {
-        bookedCloth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (bookedCloth.isChecked()) {
-                    bookedShoe.setChecked(false);
-                }
-            }
-        });
-        bookedShoe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (bookedShoe.isChecked()) {
-                    bookedCloth.setChecked(false);
-                }
-            }
-        });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        bookedCloth.setChecked(true);
-
-    }
-    public void getTabContent(int tabIndex) {
-        if (bookedShoe.isChecked()) {
-            ShoesStockFragment tabContentFragment = ShoesStockFragment.newInstance(tabIndex);
-
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-
-            ft.replace(R.id.fragment, tabContentFragment);
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            ft.commit();
-        } else if (bookedCloth.isChecked()) {
-            ClothesStockFragment tabContentFragment = ClothesStockFragment.newInstance(tabIndex);
-
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-
-            ft.replace(R.id.fragment, tabContentFragment);
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            ft.commit();
-        }
-    }
+//        tabLayout.setTabsFromPagerAdapter(new CustomerTabAdapter(getSupportFragmentManager()));
+//        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//            @Override
+//            public void onTabSelected(TabLayout.Tab tab) {
+//                getTabContent(tab.getPosition());
+//
+//            }
+//
+//            @Override
+//            public void onTabUnselected(TabLayout.Tab tab) {
+//
+//            }
+//
+//            @Override
+//            public void onTabReselected(TabLayout.Tab tab) {
+//
+//            }
+//        });
+//        ActionBar actionBar = getSupportActionBar();
+//        if (actionBar!=null){
+//            actionBar.setDisplayHomeAsUpEnabled(true);
+//        }
+//        bookedCloth.setChecked(true);
+//        checkboxes();
+//    }
+//
+//    private void checkboxes() {
+//        bookedCloth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                if (bookedCloth.isChecked()) {
+//                    bookedShoe.setChecked(false);
+//                }
+//            }
+//        });
+//        bookedShoe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                if (bookedShoe.isChecked()) {
+//                    bookedCloth.setChecked(false);
+//                }
+//            }
+//        });
+//    }
+//
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        bookedCloth.setChecked(true);
+//
+//    }
+//    public void getTabContent(int tabIndex) {
+//        if (bookedShoe.isChecked()) {
+//            ShoesStockFragment tabContentFragment = ShoesStockFragment.newInstance(tabIndex);
+//
+//            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//
+//            ft.replace(R.id.fragment, tabContentFragment);
+//            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+//            ft.commit();
+//        } else if (bookedCloth.isChecked()) {
+//            ClothesStockFragment tabContentFragment = ClothesStockFragment.newInstance(tabIndex);
+//
+//            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//
+//            ft.replace(R.id.fragment, tabContentFragment);
+//            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+//            ft.commit();
+//        }
+   }
 }

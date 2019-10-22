@@ -9,10 +9,19 @@
     android:layout_height="match_parent"
 
     android:layout_marginBottom="16dp">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorGray"
+        android:gravity="center"
+        android:text="Record your sale"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/linear"/>
 
 
     <EditText
-        android:id="@+id/expensetype"
+        android:id="@+id/quantity_sold"
         android:layout_marginTop="40dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,32 +29,34 @@
         android:textSize="15sp"
         android:hint="quantity sold"
         android:padding="5dp"
-        android:inputType="textCapSentences"
+        android:inputType="numberDecimal"
         android:textColor="@color/colorBlack"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@id/linear" />
 
     <EditText
 
-        android:id="@+id/expenseamount"
+        android:id="@+id/cost_unit_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:layout_marginStart="170dp"
         android:inputType="numberDecimal"
         android:textSize="15sp"
-        android:hint="amount(ksh.)"
+        android:hint="ksh./item"
         android:imeOptions="actionDone"
         android:padding="5dp"
         android:textColor="@color/colorBlack"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@id/linear" />
+
     <View
+        android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/colorPrimary"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/dialog_close"/>
+        app:layout_constraintBottom_toTopOf="@+id/dialog_close"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
 
@@ -94,7 +105,7 @@
 
     <ImageView
 
-        android:id="@+id/dialog_done"
+        android:id="@+id/dialog_sold_done"
 
         android:layout_width="30dp"
 
@@ -156,6 +167,21 @@
             android:layout_height="50dp" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <include
+        layout="@layout/content_progress_bar"
+        android:layout_width="12dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/linear">
+
+    </include>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

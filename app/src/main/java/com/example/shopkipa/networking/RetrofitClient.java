@@ -2,6 +2,8 @@ package com.example.shopkipa.networking;
 
 import android.content.Context;
 
+import com.example.shopkipa.utils.Constants;
+
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -13,18 +15,23 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
     private static RetrofitClient mInstance;
-    private static final String BaseUrl = "http://192.168.42.230:8000/";
+    private static final String BaseUrl = Constants.BASE_URL;
     private Retrofit retrofit;
-    private RetrofitClient(Context context){
+    private RetrofitClient(Context context) {
         final String accessToken;
 
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+        OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder()
                 .retryOnConnectionFailure(true)
-                .build();
-        OkHttpClient.Builder okHttpBuilder=new OkHttpClient.Builder();
-        retrofit=new Retrofit.Builder()
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Request request = chain.request();
+                        return chain.proceed(request);
+                    }
+                });
+        retrofit = new Retrofit.Builder()
                 .baseUrl(BaseUrl)
-                .client(okHttpClient)
+                .client(okHttpClient.build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }

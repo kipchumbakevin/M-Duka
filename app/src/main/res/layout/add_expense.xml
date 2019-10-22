@@ -9,6 +9,16 @@
     android:layout_height="match_parent"
 
     android:layout_marginBottom="16dp">
+    <TextView
+    android:id="@+id/title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorGray"
+    android:gravity="center"
+    android:text="Edit item details"
+    android:textColor="@color/colorBlack"
+    app:layout_constraintStart_toStartOf="@id/guideline"
+    app:layout_constraintTop_toBottomOf="@id/linear"/>
 
 
     <EditText

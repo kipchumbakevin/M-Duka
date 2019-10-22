@@ -11,5 +11,6 @@
         android:textColor="@color/colorWhite"
         android:backgroundTint="@color/colorGreen"
         android:layout_gravity="bottom"/>
+    <include layout="@layout/content_progress_bar"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>
