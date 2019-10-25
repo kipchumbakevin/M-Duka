@@ -5,7 +5,11 @@ import com.example.shopkipa.models.AddSaleModel;
 import com.example.shopkipa.models.AddStockModel;
 import com.example.shopkipa.models.GetCategoriesModel;
 import com.example.shopkipa.models.GetExpenseModel;
-import com.example.shopkipa.models.GetStockModel;
+import com.example.shopkipa.models.GetSalesModel;
+import com.example.shopkipa.models.GetSizeModel;
+import com.example.shopkipa.models.GetStockInTypeModel;
+import com.example.shopkipa.models.GetTypesInCategoryModel;
+import com.example.shopkipa.models.GetTypesModel;
 
 import java.util.List;
 
@@ -45,12 +49,23 @@ public interface JsonPlaceHolderInterface {
             @Field("purchase_id")String purchaseId
     );
     @FormUrlEncoded
-    @POST("api/getstock")
-    Call<List<GetStockModel>> getAllStock(
+    @POST("api/gettypeitem")
+    Call<List<GetStockInTypeModel>> getAllStock(
+            @Field("type_id")String id_item
+    );
+    @FormUrlEncoded
+    @POST("api/getcategoryitem")
+    Call<List<GetTypesInCategoryModel>> getTypes(
             @Field("category_name")String categoryname
     );
     @GET("api/getcategories")
     Call<List<GetCategoriesModel>> getAllCategories();
+    @GET("api/getalltypes")
+    Call<List<GetTypesModel>> getAllTypes();
+    @GET("api/getsizes")
+    Call<List<GetSizeModel>> getAllSizes();
+    @GET("api/getsales")
+    Call<GetSalesModel> getsale();
     @GET("api/getexpense")
     Call<List<GetExpenseModel>> getAllExpenses();
 

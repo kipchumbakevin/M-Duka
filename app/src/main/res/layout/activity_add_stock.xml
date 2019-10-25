@@ -167,28 +167,39 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/titleSize"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorBlack"
                 android:text="Size"/>
             <View
+                android:id="@+id/sizeView"
                 android:layout_gravity="center"
                 android:layout_width="30dp"
                 android:layout_height="1dp"
                 android:background="@color/colorBlack"/>
             <Spinner
                 android:visibility="gone"
+                android:layout_marginTop="20dp"
                 android:outlineSpotShadowColor="@color/colorRed"
                 android:id="@+id/spinnerSize"
                 android:backgroundTint="@color/colorRed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <NumberPicker
+                android:visibility="gone"
                 android:id="@+id/numberPickerSize"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"/>
+            <TextView
+                android:id="@+id/pickFormat"
+                android:layout_marginTop="15dp"
+                android:textColor="@color/colorOrange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pick format"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
         <androidx.appcompat.widget.LinearLayoutCompat

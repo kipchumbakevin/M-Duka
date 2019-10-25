@@ -2,9 +2,6 @@ package com.example.shopkipa.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.net.Uri;
-import android.transition.Fade;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +18,9 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.shopkipa.MainActivity;
 import com.example.shopkipa.R;
 import com.example.shopkipa.models.AddSaleModel;
-import com.example.shopkipa.models.GetStockModel;
+import com.example.shopkipa.models.GetStockInTypeModel;
 import com.example.shopkipa.networking.RetrofitClient;
 import com.example.shopkipa.utils.Constants;
 
@@ -37,11 +33,11 @@ import retrofit2.Response;
 public class GetStockAdapter extends RecyclerView.Adapter<GetStockAdapter.StockViewHolders> {
 
     private final Context mContext;
-    private final ArrayList<GetStockModel> mStockArrayList;
+    private final ArrayList<GetStockInTypeModel> mStockArrayList;
     private final LayoutInflater mLayoutInflator;
     private int mCurrentPosition;
 
-    public GetStockAdapter(Context context, ArrayList<GetStockModel>stockArraylist){
+    public GetStockAdapter(Context context, ArrayList<GetStockInTypeModel>stockArraylist){
         mContext = context;
         mStockArrayList = stockArraylist;
         mLayoutInflator = LayoutInflater.from(mContext);
@@ -56,14 +52,13 @@ public class GetStockAdapter extends RecyclerView.Adapter<GetStockAdapter.StockV
 
     @Override
     public void onBindViewHolder(@NonNull StockViewHolders holder, int position) {
-        GetStockModel getStockModel = mStockArrayList.get(position);
+        GetStockInTypeModel getStockModel = mStockArrayList.get(position);
         holder.itemname.setText(getStockModel.getName());
         holder.itemquantity.setText(getStockModel.getQuantity());
         holder.itemsize.setText(getStockModel.getSize());
         Glide.with(mContext)
                 .load(Constants.BASE_URL+"images/"+getStockModel.getImage())
                 .into(holder.itemImage);
-        holder.itemtype.setText(getStockModel.getType());
         mCurrentPosition = position;
 
     }
@@ -163,7 +158,7 @@ public class GetStockAdapter extends RecyclerView.Adapter<GetStockAdapter.StockV
                     });
                     final AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
-                    GetStockModel  getStockModel = mStockArrayList.get(mCurrentPosition);
+                    GetStockInTypeModel getStockModel = mStockArrayList.get(mCurrentPosition);
                     editName.setHint(getStockModel.getName());
                     editColor.setHint(getStockModel.getColor());
                     editDesign.setHint(getStockModel.getDesign());
@@ -192,7 +187,7 @@ public class GetStockAdapter extends RecyclerView.Adapter<GetStockAdapter.StockV
                     });
                     final AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
-                    GetStockModel getStockModel = mStockArrayList.get(mCurrentPosition);
+                    GetStockInTypeModel getStockModel = mStockArrayList.get(mCurrentPosition);
                     itemcolor.setText(getStockModel.getColor());
                     itemdesign.setText(getStockModel.getDesign());
                     itemcompany.setText(getStockModel.getCompany());
@@ -204,7 +199,7 @@ public class GetStockAdapter extends RecyclerView.Adapter<GetStockAdapter.StockV
             sold.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    final GetStockModel getStockModel = mStockArrayList.get(mCurrentPosition);
+                    final GetStockInTypeModel getStockModel = mStockArrayList.get(mCurrentPosition);
                     ImageView dialogsolddone,dialogCancel;
                     final EditText costPrice,quantitySold;
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
@@ -251,7 +246,7 @@ public class GetStockAdapter extends RecyclerView.Adapter<GetStockAdapter.StockV
 //                                progressLyt.setVisibility(View.VISIBLE);
                                 final String quantitysold = quantitySold.getText().toString();
                                 String costprice = costPrice.getText().toString();
-                                int id = 4;
+                                int id = mStockArrayList.get(mCurrentPosition).getId();
                                 String purchaseId = Integer.toString(id);
                                 Call<AddSaleModel> call = RetrofitClient.getInstance(mContext)
                                         .getApiConnector()

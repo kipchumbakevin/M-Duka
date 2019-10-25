@@ -3,7 +3,7 @@ package com.example.shopkipa.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class GetStockModel {
+public class GetStockInTypeModel {
 
     @SerializedName("id")
     @Expose
@@ -16,7 +16,7 @@ public class GetStockModel {
     private String categoryId;
     @SerializedName("type_id")
     @Expose
-    private String typeId;
+    private Integer typeId;
     @SerializedName("name")
     @Expose
     private String name;
@@ -26,12 +26,6 @@ public class GetStockModel {
     @SerializedName("updated_at")
     @Expose
     private String updatedAt;
-    @SerializedName("category")
-    @Expose
-    private String category;
-    @SerializedName("type")
-    @Expose
-    private String type;
     @SerializedName("color")
     @Expose
     private String color;
@@ -75,11 +69,11 @@ public class GetStockModel {
         this.categoryId = categoryId;
     }
 
-    public String getTypeId() {
+    public Integer getTypeId() {
         return typeId;
     }
 
-    public void setTypeId(String typeId) {
+    public void setTypeId(Integer typeId) {
         this.typeId = typeId;
     }
 
@@ -105,22 +99,6 @@ public class GetStockModel {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getColor() {

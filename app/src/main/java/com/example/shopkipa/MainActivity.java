@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity
     private List<GetCategoriesModel> categories = new ArrayList<>();
     String categoryname;
     private Context mContext;
-    private CustomerTabAdapter customerTabAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -232,6 +231,13 @@ public class MainActivity extends AppCompatActivity
         }else if (id == R.id.nav_bookedProducts){
             Intent intent = new Intent(MainActivity.this,BookedProduct.class);
             startActivity(intent);
+        }else if (id == R.id.nav_share){
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            String shareBody = "Manage your shop by a touch of a button.\ndownload now at https://play.google.com/store/apps/details?id=aarhealthcare.com.androidapp";
+            intent.putExtra(Intent.EXTRA_SUBJECT,getString(R.string.app_name));
+            intent.putExtra(Intent.EXTRA_TEXT,shareBody);
+            startActivity(Intent.createChooser(intent,"Share via"));
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
@@ -28,12 +29,15 @@ import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.shopkipa.models.AddExpenseModel;
 import com.example.shopkipa.models.AddStockModel;
 import com.example.shopkipa.models.GetCategoriesModel;
+import com.example.shopkipa.models.GetSizeModel;
+import com.example.shopkipa.models.GetTypesModel;
 import com.example.shopkipa.networking.RetrofitClient;
 
 import java.io.File;
@@ -54,13 +58,19 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
     CheckBox rCloth,rShoe;
     ImageView addImage,productImage;
     private File mPhotoFile;
+    TextView pickFormat,titleSize;
+    View sizeView;
     private Uri photoUri;
     Button buttonAddStock;
     RelativeLayout progressLyt;
     EditText itemName,itemColor,itemDesign,itemCompany,itemBP,itemSP;
     private Context mContext;
     private ArrayAdapter<String> categoryadapter;
+    private ArrayAdapter<String> typeadapter;
+    private ArrayAdapter<String>sizeadapter;
     private List<String> categorySpinnerArray;
+    private List<String> typeSpinnerArray;
+    private List<String> sizeSpinnerArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +78,7 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
         setContentView(R.layout.activity_add_stock);
         spinnerCategory = findViewById(R.id.spinnerCategory);
         spinnerType = findViewById(R.id.spnnerType);
+        sizeView = findViewById(R.id.sizeView);
         spinnerSize = findViewById(R.id.spinnerSize);
         itemBP = findViewById(R.id.item_bp);
         itemColor = findViewById(R.id.item_color);
@@ -78,12 +89,15 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
         itemDesign = findViewById(R.id.item_design);
         rCloth = findViewById(R.id.rCloth);
         mContext = getApplicationContext();
+        pickFormat = findViewById(R.id.pickFormat);
         buttonAddStock = findViewById(R.id.buttonAddStock);
         productImage = findViewById(R.id.productImage);
+        titleSize = findViewById(R.id.titleSize);
         rShoe = findViewById(R.id.rShoe);
         addImage = findViewById(R.id.addImage);
         numberPickerQuantity = findViewById(R.id.numberPickerQuantity);
         numberPickerSize = findViewById(R.id.numberPickerSize);
+
         categorySpinnerArray = new ArrayList<>();
 
         categoryadapter = new ArrayAdapter<>(
@@ -92,9 +106,28 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
         categoryadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinnerCategory.setAdapter(categoryadapter);
+        typeSpinnerArray = new ArrayList<>();
+
+        typeadapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, typeSpinnerArray);
+
+        typeadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinnerType.setAdapter(typeadapter);
+
+        sizeSpinnerArray = new ArrayList<>();
+
+        sizeadapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, sizeSpinnerArray);
+
+        sizeadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinnerSize.setAdapter(sizeadapter);
         fetchCategory();
-        spinnerType.setAdapter(categoryadapter);
-        spinnerSize.setAdapter(categoryadapter);
+        fetchType();
+        fetchSize();
+
+
         setTitle("Add new product");
         itemSP.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,21 +140,13 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
         rCloth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (rCloth.isChecked()) {
-                    spinnerSize.setVisibility(View.VISIBLE);
                     rShoe.setChecked(false);
-                }else {
-                    spinnerSize.setVisibility(View.GONE);
-                }
             }
         });
         rShoe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (rShoe.isChecked()) {
-                    spinnerSize.setVisibility(View.GONE);
                     rCloth.setChecked(false);
-                }
             }
         });
         ActionBar actionBar = getSupportActionBar();
@@ -140,7 +165,7 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
                 if (photoUri!=null){
                     newStock();
                 }else {
-                    Toast.makeText(AddStock.this,"add photo",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddStock.this,"Add photo",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -152,6 +177,18 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
         numberPickerQuantity.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+            }
+        });
+        pickFormat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pickSizeFormat();
+            }
+        });
+        titleSize.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pickSizeFormat();
             }
         });
     }
@@ -172,14 +209,13 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
 
     private void newStock() {
         showProgress();
-        int sizeI = numberPickerSize.getValue();
         int quantityI = numberPickerQuantity.getValue();
         String category = spinnerCategory.getSelectedItem().toString();
         String type = spinnerType.getSelectedItem().toString();
         String name = itemName.getText().toString();
         String color = itemColor.getText().toString();
         String design = itemDesign.getText().toString();
-        String size = Integer.toString(sizeI);
+        String size = ss();
         String quantity = Integer.toString(quantityI);
         String company = itemCompany.getText().toString();
         String buyingprice = itemBP.getText().toString();
@@ -210,6 +246,16 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
                 Toast.makeText(AddStock.this,"errot:"+t.getMessage(),Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private String ss() {
+        String size = "";
+        if (spinnerSize.isShown()) {
+            size = spinnerSize.getSelectedItem().toString();
+        }else if (numberPickerSize.isShown()) {
+            size = Integer.toString(numberPickerSize.getValue());
+        }
+        return size;
     }
 
     private void hideProgress() {
@@ -343,7 +389,6 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
 
                    for(int index= 0;index<response.body().size();index++){
                       categorySpinnerArray.add(response.body().get(index).getName());
-                       Toast.makeText(AddStock.this,response.body().get(index).getName(),Toast.LENGTH_SHORT).show();
                     }
                    categoryadapter.notifyDataSetChanged();
                 }
@@ -360,5 +405,96 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
             }
         });
 
+    }
+    public void fetchType(){
+        Call<List<GetTypesModel>> call = RetrofitClient.getInstance(AddStock.this)
+                .getApiConnector()
+                .getAllTypes();
+        call.enqueue(new Callback<List<GetTypesModel>>() {
+            @Override
+            public void onResponse(Call<List<GetTypesModel>> call, Response<List<GetTypesModel>> response) {
+                hideProgress();
+                if(response.code()==200){
+
+                    for(int index= 0;index<response.body().size();index++){
+                        typeSpinnerArray.add(response.body().get(index).getName());
+                    }
+                    typeadapter.notifyDataSetChanged();
+                }
+                else{
+                    Toast.makeText(AddStock.this,response.message(),Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<GetTypesModel>> call, Throwable t) {
+                Toast.makeText(AddStock.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+                hideProgress();
+            }
+        });
+    }
+    public void fetchSize(){
+        Call<List<GetSizeModel>> call = RetrofitClient.getInstance(AddStock.this)
+                .getApiConnector()
+                .getAllSizes();
+        call.enqueue(new Callback<List<GetSizeModel>>() {
+            @Override
+            public void onResponse(Call<List<GetSizeModel>> call, Response<List<GetSizeModel>> response) {
+                hideProgress();
+                if(response.code()==200){
+
+                    for(int index= 0;index<response.body().size();index++){
+                        sizeSpinnerArray.add(response.body().get(index).getName());
+                    }
+                    sizeadapter.notifyDataSetChanged();
+                }
+                else{
+                    Toast.makeText(AddStock.this,response.message(),Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<GetSizeModel>> call, Throwable t) {
+                Toast.makeText(AddStock.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+                hideProgress();
+            }
+        });
+    }
+    public void pickSizeFormat(){
+        TextView pickWord,pickNumber;
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AddStock.this);
+        View view = getLayoutInflater().inflate(R.layout.pick_size_format,null);
+        pickWord = view.findViewById(R.id.pickWord);
+        pickNumber = view.findViewById(R.id.pickNumber);
+
+        alertDialogBuilder.setView(view);
+        final AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
+        pickWord.setOnClickListener(new View.OnClickListener() {
+            int wi = 60;
+            @Override
+            public void onClick(View view) {
+                pickFormat.setVisibility(View.GONE);
+                numberPickerSize.setVisibility(View.GONE);
+                spinnerSize.setVisibility(View.VISIBLE);
+                titleSize.setText(pickFormat.getText().toString());
+                sizeView.setVisibility(View.GONE);
+                alertDialog.dismiss();
+            }
+        });
+        pickNumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pickFormat.setVisibility(View.GONE);
+                spinnerSize.setVisibility(View.GONE);
+                numberPickerSize.setVisibility(View.VISIBLE);
+                titleSize.setText(pickFormat.getText().toString());
+                sizeView.setVisibility(View.GONE);
+                alertDialog.dismiss();
+            }
+        });
     }
 }
