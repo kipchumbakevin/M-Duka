@@ -17,6 +17,9 @@ public class GetStockInTypeModel {
     @SerializedName("type_id")
     @Expose
     private Integer typeId;
+    @SerializedName("item_group_id")
+    @Expose
+    private Integer itemGroupId;
     @SerializedName("name")
     @Expose
     private String name;
@@ -44,6 +47,15 @@ public class GetStockInTypeModel {
     @SerializedName("image")
     @Expose
     private String image;
+    @SerializedName("purchaseId")
+    @Expose
+    private Integer purchaseId;
+    @SerializedName("typeName")
+    @Expose
+    private String typeName;
+    @SerializedName("group")
+    @Expose
+    private String group;
 
     public Integer getId() {
         return id;
@@ -75,6 +87,14 @@ public class GetStockInTypeModel {
 
     public void setTypeId(Integer typeId) {
         this.typeId = typeId;
+    }
+
+    public Integer getItemGroupId() {
+        return itemGroupId;
+    }
+
+    public void setItemGroupId(Integer itemGroupId) {
+        this.itemGroupId = itemGroupId;
     }
 
     public String getName() {
@@ -147,5 +167,29 @@ public class GetStockInTypeModel {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Integer getPurchaseId() {
+        return purchaseId;
+    }
+
+    public void setPurchaseId(Integer purchaseId) {
+        this.purchaseId = purchaseId;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
     }
 }

@@ -60,10 +60,8 @@ public class MainActivity extends AppCompatActivity
     private static final String DIALOG_EXPENSES = "My Expenses";
     TabLayout tabLayout;
     RelativeLayout progressLyt;
-    CheckBox stockClothes,stockShoes;
     private ArrayList<GetExpenseModel> mExpensesArrayList;
     private List<GetCategoriesModel> categories = new ArrayList<>();
-    String categoryname;
     private Context mContext;
 
     @Override
@@ -74,8 +72,6 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
         tabLayout = findViewById(R.id.cart_tab);
-        stockClothes = findViewById(R.id.stockCloth);
-        stockShoes = findViewById(R.id.stockShoe);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,45 +112,12 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        if (stockClothes.isChecked()){
-            Toast.makeText(MainActivity.this,"Clothes",Toast.LENGTH_SHORT).show();
-        }
-
-        checkboxes();
-    }
-
-    private void checkboxes() {
-        stockClothes.setChecked(true);
-        stockClothes.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (stockClothes.isChecked()) {
-                    stockShoes.setChecked(false);
-                    Toast.makeText(MainActivity.this,"Clothes",Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        stockShoes.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (stockShoes.isChecked()) {
-                    stockClothes.setChecked(false);
-                    Toast.makeText(MainActivity.this,"Shoes",Toast.LENGTH_SHORT).show();
-
-                }
-            }
-        });
-
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (stockClothes.isChecked()){
-            Toast.makeText(MainActivity.this,"Clothes",Toast.LENGTH_SHORT).show();
-        }
-        checkboxes();
 
     }
     public void getTabContent(String tabIndex){

@@ -86,7 +86,7 @@ public class GetStockAdapter extends RecyclerView.Adapter<GetStockAdapter.StockV
             dropDown = itemView.findViewById(R.id.dropDown);
             arrowUp = itemView.findViewById(R.id.arrowUp);
             arrowDown = itemView.findViewById(R.id.arrowDown);
-            fullDetails = itemView.findViewById(R.id.fullDetails);
+            fullDetails = itemView.findViewById(R.id.fulldetails);
             sold = itemView.findViewById(R.id.soldproduct);
             edit = itemView.findViewById(R.id.editProduct);
             moreDetails = itemView.findViewById(R.id.more_details);

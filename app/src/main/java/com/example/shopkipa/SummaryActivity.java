@@ -49,20 +49,18 @@ public class SummaryActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<GetSalesModel> call, Response<GetSalesModel> response) {
                 if(response.code()==200){
-                    Toast.makeText(SummaryActivity.this,response.message() + "done",Toast.LENGTH_SHORT).show();
                     mSalesArrayList.add(response.body());
                     getSalesAdapter.notifyDataSetChanged();
 
                 }
                 else{
-                    Toast.makeText(SummaryActivity.this,response.message() + "found",Toast.LENGTH_SHORT).show();
 
                 }
             }
 
             @Override
             public void onFailure(Call<GetSalesModel> call, Throwable t) {
-                Toast.makeText(SummaryActivity.this,t.getMessage() + "failed",Toast.LENGTH_SHORT).show();
+                Toast.makeText(SummaryActivity.this,t.getMessage(),Toast.LENGTH_SHORT).show();
             }
 
         });

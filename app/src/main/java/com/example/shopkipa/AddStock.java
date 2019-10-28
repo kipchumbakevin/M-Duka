@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -35,8 +36,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.shopkipa.models.AddExpenseModel;
 import com.example.shopkipa.models.AddStockModel;
+import com.example.shopkipa.models.GetAllGroupsModel;
 import com.example.shopkipa.models.GetCategoriesModel;
 import com.example.shopkipa.models.GetSizeModel;
+import com.example.shopkipa.models.GetTypesInGroupModel;
 import com.example.shopkipa.models.GetTypesModel;
 import com.example.shopkipa.networking.RetrofitClient;
 
@@ -53,13 +56,13 @@ import retrofit2.Response;
 public class AddStock extends AppCompatActivity implements NumberPicker.OnValueChangeListener {
     private static final int GALLERY_REQUEST_CODE = 766;
     private static final int REQUEST_CODE = 422;
-    Spinner spinnerCategory,spinnerType,spinnerSize;
+    Spinner spinnerCategory,spinnerType,spinnerSize,selectItemGroupSpinner;
     NumberPicker numberPickerSize,numberPickerQuantity;
-    CheckBox rCloth,rShoe;
     ImageView addImage,productImage;
     private File mPhotoFile;
     TextView pickFormat,titleSize;
     View sizeView;
+    String gg;
     private Uri photoUri;
     Button buttonAddStock;
     RelativeLayout progressLyt;
@@ -68,9 +71,11 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
     private ArrayAdapter<String> categoryadapter;
     private ArrayAdapter<String> typeadapter;
     private ArrayAdapter<String>sizeadapter;
+    private ArrayAdapter<String>groupadapter;
     private List<String> categorySpinnerArray;
     private List<String> typeSpinnerArray;
     private List<String> sizeSpinnerArray;
+    private List<String> groupSpinnerArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +85,7 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
         spinnerType = findViewById(R.id.spnnerType);
         sizeView = findViewById(R.id.sizeView);
         spinnerSize = findViewById(R.id.spinnerSize);
+        selectItemGroupSpinner = findViewById(R.id.select_item);
         itemBP = findViewById(R.id.item_bp);
         itemColor = findViewById(R.id.item_color);
         progressLyt = findViewById(R.id.progressLoad);
@@ -87,13 +93,11 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
         itemSP = findViewById(R.id.item_sp);
         itemCompany = findViewById(R.id.item_company);
         itemDesign = findViewById(R.id.item_design);
-        rCloth = findViewById(R.id.rCloth);
         mContext = getApplicationContext();
         pickFormat = findViewById(R.id.pickFormat);
         buttonAddStock = findViewById(R.id.buttonAddStock);
         productImage = findViewById(R.id.productImage);
         titleSize = findViewById(R.id.titleSize);
-        rShoe = findViewById(R.id.rShoe);
         addImage = findViewById(R.id.addImage);
         numberPickerQuantity = findViewById(R.id.numberPickerQuantity);
         numberPickerSize = findViewById(R.id.numberPickerSize);
@@ -106,14 +110,7 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
         categoryadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinnerCategory.setAdapter(categoryadapter);
-        typeSpinnerArray = new ArrayList<>();
 
-        typeadapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_item, typeSpinnerArray);
-
-        typeadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinnerType.setAdapter(typeadapter);
 
         sizeSpinnerArray = new ArrayList<>();
 
@@ -123,12 +120,31 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
         sizeadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinnerSize.setAdapter(sizeadapter);
+        selectItemGroupSpinner.setAdapter(groupadapter);
+
+        groupSpinnerArray = new ArrayList<>();
+
+        groupadapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, groupSpinnerArray);
+
+        groupadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        selectItemGroupSpinner.setAdapter(groupadapter);
+        typeSpinnerArray = new ArrayList<>();
+
+        typeadapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, typeSpinnerArray);
+
+        typeadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinnerType.setAdapter(typeadapter);
+
+        fetchAllGroups();
         fetchCategory();
-        fetchType();
         fetchSize();
 
 
-        setTitle("Add new product");
+        setTitle("Add products");
         itemSP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -137,18 +153,6 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
         });
 
         numberPickers();
-        rCloth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    rShoe.setChecked(false);
-            }
-        });
-        rShoe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    rCloth.setChecked(false);
-            }
-        });
         ActionBar actionBar = getSupportActionBar();
         if (actionBar!=null){
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -189,6 +193,54 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
             @Override
             public void onClick(View view) {
                 pickSizeFormat();
+            }
+        });
+        selectItemGroupSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(getApplicationContext(), "This is " +
+                        adapterView.getItemAtPosition(i).toString(), Toast.LENGTH_LONG).show();
+                gg = adapterView.getItemAtPosition(i).toString();
+                String groupname = gg;
+                typeSpinnerArray.clear();
+                Call<List<GetTypesInGroupModel>> call = RetrofitClient.getInstance(AddStock.this)
+                        .getApiConnector()
+                        .gettypeGroup(groupname);
+                call.enqueue(new Callback<List<GetTypesInGroupModel>>() {
+                    @Override
+                    public void onResponse(Call<List<GetTypesInGroupModel>> call, Response<List<GetTypesInGroupModel>> response) {
+                        hideProgress();
+                        if(response.code()==200){
+
+                            for(int index= 0;index<response.body().size();index++){
+                                typeSpinnerArray.add(response.body().get(index).getName());
+                            }
+                            typeadapter.notifyDataSetChanged();
+                        }
+                        else{
+                            Toast.makeText(AddStock.this,response.message(),Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<GetTypesInGroupModel>> call, Throwable t) {
+                        Toast.makeText(AddStock.this,t.getMessage() + "hhhhhd",Toast.LENGTH_SHORT).show();
+                        hideProgress();
+                    }
+                });
+
+                try {
+                    //Your task here
+                }catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
     }
@@ -406,20 +458,52 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
         });
 
     }
-    public void fetchType(){
-        Call<List<GetTypesModel>> call = RetrofitClient.getInstance(AddStock.this)
+//
+//    public void fetchType(){
+//        Toast.makeText(AddStock.this,gg,Toast.LENGTH_LONG).show();
+//        String groupname = gg;
+//        Call<List<GetTypesInGroupModel>> call = RetrofitClient.getInstance(AddStock.this)
+//                .getApiConnector()
+//                .gettypeGroup(groupname);
+//        call.enqueue(new Callback<List<GetTypesInGroupModel>>() {
+//            @Override
+//            public void onResponse(Call<List<GetTypesInGroupModel>> call, Response<List<GetTypesInGroupModel>> response) {
+//                hideProgress();
+//                if(response.code()==200){
+//
+//                    for(int index= 0;index<response.body().size();index++){
+//                        typeSpinnerArray.add(response.body().get(index).getName());
+//                    }
+//                    typeadapter.notifyDataSetChanged();
+//                }
+//                else{
+//                    Toast.makeText(AddStock.this,response.message(),Toast.LENGTH_SHORT).show();
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<GetTypesInGroupModel>> call, Throwable t) {
+//                Toast.makeText(AddStock.this,t.getMessage() + "hhhhhd",Toast.LENGTH_SHORT).show();
+//                hideProgress();
+//            }
+//        });
+//    }
+
+    public void fetchAllGroups(){
+        Call<List<GetAllGroupsModel>> call = RetrofitClient.getInstance(AddStock.this)
                 .getApiConnector()
-                .getAllTypes();
-        call.enqueue(new Callback<List<GetTypesModel>>() {
+                .getAllGroups();
+        call.enqueue(new Callback<List<GetAllGroupsModel>>() {
             @Override
-            public void onResponse(Call<List<GetTypesModel>> call, Response<List<GetTypesModel>> response) {
+            public void onResponse(Call<List<GetAllGroupsModel>> call, Response<List<GetAllGroupsModel>> response) {
                 hideProgress();
                 if(response.code()==200){
 
                     for(int index= 0;index<response.body().size();index++){
-                        typeSpinnerArray.add(response.body().get(index).getName());
+                        groupSpinnerArray.add(response.body().get(index).getName());
                     }
-                    typeadapter.notifyDataSetChanged();
+                    groupadapter.notifyDataSetChanged();
                 }
                 else{
                     Toast.makeText(AddStock.this,response.message(),Toast.LENGTH_SHORT).show();
@@ -428,7 +512,7 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
             }
 
             @Override
-            public void onFailure(Call<List<GetTypesModel>> call, Throwable t) {
+            public void onFailure(Call<List<GetAllGroupsModel>> call, Throwable t) {
                 Toast.makeText(AddStock.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                 hideProgress();
             }

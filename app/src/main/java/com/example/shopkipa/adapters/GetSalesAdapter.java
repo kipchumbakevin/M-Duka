@@ -36,8 +36,15 @@ public class GetSalesAdapter extends RecyclerView.Adapter<GetSalesAdapter.GetSal
     public void onBindViewHolder(@NonNull GetSaleViewHolder holder, int position) {
         GetSalesModel getSalesModel = mSalesArrayList.get(position);
         holder.rawProfit.setText("Kshs." + getSalesModel.getTotalProfit());
-        holder.expenses.setText("Ksh." + getSalesModel.getTotalExpense());
-        holder.totalprofit.setText("Ksh." + (getSalesModel.getTotalProfit() - getSalesModel.getTotalExpense()));
+        holder.expenses.setText("Kshs." + getSalesModel.getTotalExpense());
+        int total = (getSalesModel.getTotalProfit() - getSalesModel.getTotalExpense());
+        if (total>0){
+            holder.profit_loss.setText("Profit");
+            holder.totalprofit.setText("Ksh." + (getSalesModel.getTotalProfit() - getSalesModel.getTotalExpense()));
+        }else if (total<0){
+            holder.profit_loss.setText("Loss");
+            holder.totalprofit.setText("Ksh." + (getSalesModel.getTotalExpense()-getSalesModel.getTotalProfit()));
+        }
 
     }
 
@@ -47,13 +54,14 @@ public class GetSalesAdapter extends RecyclerView.Adapter<GetSalesAdapter.GetSal
     }
 
     public class GetSaleViewHolder extends RecyclerView.ViewHolder {
-        TextView rawProfit,expenses,totalprofit;
+        TextView rawProfit,expenses,totalprofit,profit_loss;
 
         public GetSaleViewHolder(@NonNull View itemView) {
             super(itemView);
             rawProfit = itemView.findViewById(R.id.rawProfit);
             expenses = itemView.findViewById(R.id.expenses);
             totalprofit = itemView.findViewById(R.id.totalProfit);
+            profit_loss = itemView.findViewById(R.id.profit_loss);
 
         }
     }

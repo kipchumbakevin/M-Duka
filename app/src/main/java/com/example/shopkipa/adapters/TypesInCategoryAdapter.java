@@ -52,13 +52,10 @@ public class TypesInCategoryAdapter extends RecyclerView.Adapter<TypesInCategory
     public void onBindViewHolder(@NonNull TypesViewHolder holder, int position) {
 
 
-        int id = mTypesArrayList.get(position).getId();
         GetTypesInCategoryModel getTypesInCategoryModel = mTypesArrayList.get(position);
-        holder.itemType.setText(getTypesInCategoryModel.getName());
+        holder.itemType.setText(getTypesInCategoryModel.getTypeName());
 
        holder.currentPosition=position;
-//        holder.itemsrecycler.setLayoutManager(new GridLayoutManager(mContext,1));
-//        holder.itemsrecycler.setAdapter(itemsInTypeAdapter);
 
 
     }
@@ -89,7 +86,6 @@ public class TypesInCategoryAdapter extends RecyclerView.Adapter<TypesInCategory
                         full.setVisibility(View.VISIBLE);
                         itemsrecycler.setLayoutManager(new GridLayoutManager(mContext,1));
                         itemsrecycler.setAdapter(itemsInTypeAdapter);
-                        viewStock(mTypesArrayList.get(currentPosition).getId().toString());
                     }else{
                         full.setVisibility(View.GONE);
                     }
@@ -106,36 +102,7 @@ public class TypesInCategoryAdapter extends RecyclerView.Adapter<TypesInCategory
 
         }
     }
-    private void viewStock(String id) {
 
-        ArrayList<GetStockInTypeModel> mRequestsArray;
-        mStockArrayList.clear();
-        Log.d("Fetch", "Reached here");
-        int item_id = 1;
-        String id_item = Integer.toString(item_id);
-        Call<List<GetStockInTypeModel>> call = RetrofitClient.getInstance(mContext)
-                .getApiConnector()
-                .getAllStock(id);
-        call.enqueue(new Callback<List<GetStockInTypeModel>>() {
-            @Override
-            public void onResponse(Call<List<GetStockInTypeModel>> call, Response<List<GetStockInTypeModel>> response) {
-                if(response.code()==200){
-                    mStockArrayList.addAll(response.body());
-                    itemsInTypeAdapter.notifyDataSetChanged();
-
-                }
-                else{
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<GetStockInTypeModel>> call, Throwable t) {
-                Toast.makeText(mContext,t.getMessage(),Toast.LENGTH_LONG).show();
-            }
-
-        });
-    }
 
 
 

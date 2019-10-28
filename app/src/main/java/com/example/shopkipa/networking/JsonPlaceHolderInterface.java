@@ -3,12 +3,15 @@ package com.example.shopkipa.networking;
 import com.example.shopkipa.models.AddExpenseModel;
 import com.example.shopkipa.models.AddSaleModel;
 import com.example.shopkipa.models.AddStockModel;
+import com.example.shopkipa.models.GetAllGroupsModel;
 import com.example.shopkipa.models.GetCategoriesModel;
 import com.example.shopkipa.models.GetExpenseModel;
+import com.example.shopkipa.models.GetGroupModel;
 import com.example.shopkipa.models.GetSalesModel;
 import com.example.shopkipa.models.GetSizeModel;
 import com.example.shopkipa.models.GetStockInTypeModel;
 import com.example.shopkipa.models.GetTypesInCategoryModel;
+import com.example.shopkipa.models.GetTypesInGroupModel;
 import com.example.shopkipa.models.GetTypesModel;
 
 import java.util.List;
@@ -51,12 +54,24 @@ public interface JsonPlaceHolderInterface {
     @FormUrlEncoded
     @POST("api/gettypeitem")
     Call<List<GetStockInTypeModel>> getAllStock(
-            @Field("type_id")String id_item
+            @Field("name")String typename,
+            @Field("namecategory")String category
     );
     @FormUrlEncoded
-    @POST("api/getcategoryitem")
+    @POST("api/getcategorytype")
     Call<List<GetTypesInCategoryModel>> getTypes(
+            @Field("namecategory")String categoryname,
+            @Field("namegroup")String groupname
+    );
+    @FormUrlEncoded
+    @POST("api/getgroup")
+    Call<List<GetGroupModel>> getGroup(
             @Field("category_name")String categoryname
+    );
+    @FormUrlEncoded
+    @POST("api/gettypegroup")
+    Call<List<GetTypesInGroupModel>> gettypeGroup(
+            @Field("group_name")String groupname
     );
     @GET("api/getcategories")
     Call<List<GetCategoriesModel>> getAllCategories();
@@ -64,6 +79,8 @@ public interface JsonPlaceHolderInterface {
     Call<List<GetTypesModel>> getAllTypes();
     @GET("api/getsizes")
     Call<List<GetSizeModel>> getAllSizes();
+    @GET("api/getgroups")
+    Call<List<GetAllGroupsModel>> getAllGroups();
     @GET("api/getsales")
     Call<GetSalesModel> getsale();
     @GET("api/getexpense")

@@ -25,22 +25,6 @@ public class ShoesStockFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_shoes_stock, container, false);
-        stockClothes = view.findViewById(R.id.stockCloth);
-        stockShoes = view.findViewById(R.id.stockShoe);
-        int requestType=(int)getArguments().get(REQUEST_TYPE);
-            if (requestType == 0) {
-                Toast.makeText(getActivity(), "men shoes", Toast.LENGTH_SHORT).show();
-            } else if (requestType == 1) {
-                Toast.makeText(getActivity(), "Ladies shoes", Toast.LENGTH_SHORT).show();
-            } else if (requestType == 2) {
-                Toast.makeText(getActivity(), "Boys shoes", Toast.LENGTH_SHORT).show();
-            } else if (requestType == 3) {
-                Toast.makeText(getActivity(), "Girls shoes", Toast.LENGTH_SHORT).show();
-            } else if (requestType == 4) {
-                Toast.makeText(getActivity(), "Unisex shoes", Toast.LENGTH_SHORT).show();
-            } else if (requestType == 5) {
-                Toast.makeText(getActivity(), "Other shoes", Toast.LENGTH_SHORT).show();
-            }
         return view;
     }
     public static ShoesStockFragment newInstance(int position){

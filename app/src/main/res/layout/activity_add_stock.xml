@@ -6,25 +6,21 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".AddStock">
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorTrans"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="horizontal">
-        <CheckBox
-            android:id="@+id/rCloth"
+        android:background="@color/colorTrans">
+        <Spinner
+            android:id="@+id/select_item"
+            android:layout_centerInParent="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cloth"/>
-        <CheckBox
-            android:id="@+id/rShoe"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Shoe"/>
+            android:layout_height="wrap_content"/>
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary"/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -100,7 +96,7 @@
             android:inputType="textCapSentences"
             android:drawablePadding="5dp"
             android:textSize="15sp"
-            android:hint="Color(optional)"/>
+            android:hint="Color"/>
         <EditText
             android:id="@+id/item_design"
             android:layout_width="match_parent"
@@ -185,7 +181,7 @@
                 android:outlineSpotShadowColor="@color/colorRed"
                 android:id="@+id/spinnerSize"
                 android:backgroundTint="@color/colorRed"
-                android:layout_width="wrap_content"
+                android:layout_width="90dp"
                 android:layout_height="wrap_content"/>
             <NumberPicker
                 android:visibility="gone"
