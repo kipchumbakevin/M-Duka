@@ -273,11 +273,12 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
         String buyingprice = itemBP.getText().toString();
         String sellingprice = itemSP.getText().toString();
         String image = photoUri.toString();
+        String item_group = selectItemGroupSpinner.getSelectedItem().toString();
 
 
         Call<AddStockModel> call = RetrofitClient.getInstance(mContext)
                 .getApiConnector()
-                .addnewstock(category,type,name,color,design,company,buyingprice,sellingprice,size,quantity,image);
+                .addnewstock(category,type,name,color,design,company,buyingprice,sellingprice,size,quantity,image,item_group);
         call.enqueue(new Callback<AddStockModel>() {
             @Override
             public void onResponse(Call<AddStockModel> call, Response<AddStockModel> response) {
@@ -458,38 +459,6 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
         });
 
     }
-//
-//    public void fetchType(){
-//        Toast.makeText(AddStock.this,gg,Toast.LENGTH_LONG).show();
-//        String groupname = gg;
-//        Call<List<GetTypesInGroupModel>> call = RetrofitClient.getInstance(AddStock.this)
-//                .getApiConnector()
-//                .gettypeGroup(groupname);
-//        call.enqueue(new Callback<List<GetTypesInGroupModel>>() {
-//            @Override
-//            public void onResponse(Call<List<GetTypesInGroupModel>> call, Response<List<GetTypesInGroupModel>> response) {
-//                hideProgress();
-//                if(response.code()==200){
-//
-//                    for(int index= 0;index<response.body().size();index++){
-//                        typeSpinnerArray.add(response.body().get(index).getName());
-//                    }
-//                    typeadapter.notifyDataSetChanged();
-//                }
-//                else{
-//                    Toast.makeText(AddStock.this,response.message(),Toast.LENGTH_SHORT).show();
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<GetTypesInGroupModel>> call, Throwable t) {
-//                Toast.makeText(AddStock.this,t.getMessage() + "hhhhhd",Toast.LENGTH_SHORT).show();
-//                hideProgress();
-//            }
-//        });
-//    }
-
     public void fetchAllGroups(){
         Call<List<GetAllGroupsModel>> call = RetrofitClient.getInstance(AddStock.this)
                 .getApiConnector()

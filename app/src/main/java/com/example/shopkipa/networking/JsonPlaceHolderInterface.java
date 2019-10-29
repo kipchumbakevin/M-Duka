@@ -3,6 +3,8 @@ package com.example.shopkipa.networking;
 import com.example.shopkipa.models.AddExpenseModel;
 import com.example.shopkipa.models.AddSaleModel;
 import com.example.shopkipa.models.AddStockModel;
+import com.example.shopkipa.models.DeleteItemModel;
+import com.example.shopkipa.models.EditStockModel;
 import com.example.shopkipa.models.GetAllGroupsModel;
 import com.example.shopkipa.models.GetCategoriesModel;
 import com.example.shopkipa.models.GetExpenseModel;
@@ -26,6 +28,7 @@ public interface JsonPlaceHolderInterface {
     @FormUrlEncoded
     @POST("api/addstock")
     Call<AddStockModel> addnewstock(
+            @Field("item_group")String item_group,
             @Field("category")String category,
             @Field("type")String type,
             @Field("name")String name,
@@ -37,6 +40,23 @@ public interface JsonPlaceHolderInterface {
             @Field("buyingprice")String buyingprice,
             @Field("sellingprice")String sellingprice,
             @Field("image")String image
+    );
+    @FormUrlEncoded
+    @POST("api/editstock")
+    Call<EditStockModel> editStock(
+            @Field("item_id")String item_id,
+            @Field("name")String name,
+            @Field("color")String color,
+            @Field("design")String design,
+            @Field("company")String company,
+            @Field("size")String size,
+            @Field("quantity")String quantity,
+            @Field("sellingprice")String sellingprice
+    );
+    @FormUrlEncoded
+    @POST("api/deletestock")
+    Call<DeleteItemModel> deleteStock(
+            @Field("item_id")String item_id
     );
     @FormUrlEncoded
     @POST("api/addexpense")

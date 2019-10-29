@@ -2,6 +2,7 @@ package com.example.shopkipa.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +20,12 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.shopkipa.AddStock;
+import com.example.shopkipa.MainActivity;
 import com.example.shopkipa.R;
 import com.example.shopkipa.models.AddSaleModel;
+import com.example.shopkipa.models.DeleteItemModel;
+import com.example.shopkipa.models.EditStockModel;
 import com.example.shopkipa.models.GetStockInTypeModel;
 import com.example.shopkipa.networking.RetrofitClient;
 import com.example.shopkipa.utils.Constants;
@@ -97,7 +102,30 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Toast.makeText(mContext,"Successfully deleted",Toast.LENGTH_SHORT).show();
+                                    String item_id = Integer.toString(itemId);
+
+                                    Call<DeleteItemModel> call = RetrofitClient.getInstance(mContext)
+                                            .getApiConnector()
+                                            .deleteStock(item_id);
+                                    call.enqueue(new Callback<DeleteItemModel>() {
+                                        @Override
+                                        public void onResponse(Call<DeleteItemModel> call, Response<DeleteItemModel> response) {
+                                            if(response.code()==201){
+
+                                                Intent intent = new Intent(mContext, MainActivity.class);
+                                                mContext.startActivity(intent);
+                                            }
+                                            else{
+                                               Toast.makeText(mContext,"response:"+response.message(),Toast.LENGTH_SHORT).show();
+                                            }
+
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<DeleteItemModel> call, Throwable t) {
+                                            Toast.makeText(mContext,"errot:"+t.getMessage(),Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                                 }
                             })
                             .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -114,7 +142,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
             edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    EditText editName,editColor,editDesign,editCompany,editSize,editQuantity;
+                    final EditText editName,editColor,editDesign,editCompany,editSize,editQuantity,editsp;
                     final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
                     View mView = mLayoutInflator.inflate(R.layout.edit_details,null);
                     editName = mView.findViewById(R.id.edit_name);
@@ -123,13 +151,44 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                     editCompany = mView.findViewById(R.id.edit_company);
                     editSize = mView.findViewById(R.id.edit_size);
                     editQuantity = mView.findViewById(R.id.edit_quantity);
+                    editsp = mView.findViewById(R.id.edit_sp);
 
 
                     alertDialogBuilder.setView(mView);
                     alertDialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            Toast.makeText(mContext,"Change succesfull "+ itemId,Toast.LENGTH_SHORT).show();
+                            String name = editName.getText().toString();
+                            String color = editColor.getText().toString();
+                            String design = editDesign.getText().toString();
+                            String size = editSize.getText().toString();
+                            String quantity = editQuantity.getText().toString();
+                            String company = editCompany.getText().toString();
+                            String sellingprice = editsp.getText().toString();
+                            String item_id = Integer.toString(itemId);
+
+
+                            Call<EditStockModel> call = RetrofitClient.getInstance(mContext)
+                                    .getApiConnector()
+                                    .editStock(name,color,design,company,sellingprice,size,quantity,item_id);
+                            call.enqueue(new Callback<EditStockModel>() {
+                                @Override
+                                public void onResponse(Call<EditStockModel> call, Response<EditStockModel> response) {
+                                    if(response.code()==201){
+                                        Toast.makeText(mContext,"change",Toast.LENGTH_SHORT).show();
+
+                                    }
+                                    else{
+                                        Toast.makeText(mContext,"response:"+response.message(),Toast.LENGTH_SHORT).show();
+                                    }
+
+                                }
+
+                                @Override
+                                public void onFailure(Call<EditStockModel> call, Throwable t) {
+                                    Toast.makeText(mContext,"errot:"+t.getMessage(),Toast.LENGTH_SHORT).show();
+                                }
+                            });
 
                         }
                     });
@@ -148,6 +207,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                     editCompany.setHint(getStockModel.getCompany());
                     editSize.setHint(getStockModel.getSize());
                     editQuantity.setHint(getStockModel.getQuantity());
+                    editsp.setHint(getStockModel.getQuantity());
                 }
             });
 

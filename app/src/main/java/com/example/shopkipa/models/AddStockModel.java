@@ -1,9 +1,17 @@
 package com.example.shopkipa.models;
 
 public class AddStockModel {
-    String category,type,name,buyingprice,sellingprice,size,quantity,color,design,company,image;
+    String category,type,name,buyingprice,sellingprice,size,quantity,color,design,company,image,item_group;
 
     public AddStockModel() {
+    }
+
+    public String getItem_group() {
+        return item_group;
+    }
+
+    public void setItem_group(String item_group) {
+        this.item_group = item_group;
     }
 
     public String getCategory() {

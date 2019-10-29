@@ -35,9 +35,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ClothesStockFragment extends Fragment {
     private  static final String REQUEST_TYPE = "com.example.shopkipa.REQUEST_TYPE" ;
     private static ArrayList<GetTypesInCategoryModel>mTypesArrayList=new ArrayList<>();
@@ -62,9 +59,9 @@ public class ClothesStockFragment extends Fragment {
         typeSpinner = view.findViewById(R.id.typeSpinner);
         groupSpinner = view.findViewById(R.id.groupSpinner);
         recyclerView.hasFixedSize();
-        itemsInTypeAdapter = new ItemsInTypeAdapter(getActivity(),mStockArrayList);
+        itemsInTypeAdapter = new ItemsInTypeAdapter(getActivity(), mStockArrayList);
         recyclerView.setAdapter(itemsInTypeAdapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),1));
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
 
         typeSpinnerArray = new ArrayList<>();
 
@@ -83,92 +80,45 @@ public class ClothesStockFragment extends Fragment {
         groupadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         groupSpinner.setAdapter(groupadapter);
-        groupSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String groupname = adapterView.getItemAtPosition(i).toString();
-                showProgress();
-                fragment_name = getArguments().getString("fragment_name",fragment_name);
-                ArrayList<GetTypesInCategoryModel> mRequestsArray;
-                String categoryname = fragment_name;
-                typeSpinnerArray.clear();
-                Call<List<GetTypesInCategoryModel>> call = RetrofitClient.getInstance(getActivity())
-                        .getApiConnector()
-                        .getTypes(categoryname,groupname);
-                call.enqueue(new Callback<List<GetTypesInCategoryModel>>() {
-                    @Override
-                    public void onResponse(Call<List<GetTypesInCategoryModel>> call, Response<List<GetTypesInCategoryModel>> response) {
-                        hideProgress();
-                        if(response.code()==200){
-                            for(int index= 0;index<response.body().size();index++){
-                                typeSpinnerArray.add(response.body().get(index).getTypeName());
-                            }
-                            Toast.makeText(getActivity(),"Noooo" + response.body().size(),Toast.LENGTH_LONG).show();
-                            typeadapter.notifyDataSetChanged();
+        viewGroup();
 
-                        }
-                        else{
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<GetTypesInCategoryModel>> call, Throwable t) {
-                        hideProgress();
-                        Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_LONG).show();
-                    }
-
-                });
-
-                try {
-                    //Your task here
-                }catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
         typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String typename = adapterView.getItemAtPosition(i).toString();
+                Toast.makeText(getActivity(),typename + " shit",Toast.LENGTH_LONG).show();
                 showProgress();
                 mStockArrayList.clear();
-                fragment_name = getArguments().getString("fragment_name",fragment_name);
+                fragment_name = getArguments().getString("fragment_name", fragment_name);
                 String category = fragment_name;
                 Call<List<GetStockInTypeModel>> call = RetrofitClient.getInstance(getActivity())
                         .getApiConnector()
-                        .getAllStock(typename,category);
+                        .getAllStock(typename, category);
                 call.enqueue(new Callback<List<GetStockInTypeModel>>() {
                     @Override
                     public void onResponse(Call<List<GetStockInTypeModel>> call, Response<List<GetStockInTypeModel>> response) {
                         hideProgress();
-                        if(response.code()==200){
-                            mStockArrayList.clear();
+                        if (response.code() == 200) {
                             mStockArrayList.addAll(response.body());
                             itemsInTypeAdapter.notifyDataSetChanged();
 
-                        }
-                        else{
+                        } else {
 
                         }
                     }
 
                     @Override
                     public void onFailure(Call<List<GetStockInTypeModel>> call, Throwable t) {
-                        Toast.makeText(getContext(),t.getMessage(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), t.getMessage() + "kkk", Toast.LENGTH_LONG).show();
                     }
 
                 });
 
+
                 try {
                     //Your task here
-                }catch (Exception e)
-                {
+
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -179,9 +129,56 @@ public class ClothesStockFragment extends Fragment {
             }
         });
 
-        viewGroup();
-            return view;
-        }
+
+        groupSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String groupname = adapterView.getItemAtPosition(i).toString();
+                showProgress();
+                fragment_name = getArguments().getString("fragment_name", fragment_name);
+                ArrayList<GetTypesInCategoryModel> mRequestsArray;
+                String categoryname = fragment_name;
+                typeSpinnerArray.clear();
+                Call<List<GetTypesInCategoryModel>> call = RetrofitClient.getInstance(getActivity())
+                        .getApiConnector()
+                        .getTypes(categoryname, groupname);
+                call.enqueue(new Callback<List<GetTypesInCategoryModel>>() {
+                    @Override
+                    public void onResponse(Call<List<GetTypesInCategoryModel>> call, Response<List<GetTypesInCategoryModel>> response) {
+                        hideProgress();
+                        if (response.code() == 200) {
+                            for (int index = 0; index < response.body().size(); index++) {
+                                typeSpinnerArray.add(response.body().get(index).getTypeName());
+                            }
+                            Toast.makeText(getActivity(), "Noooo" + response.body().size(), Toast.LENGTH_LONG).show();
+                            typeadapter.notifyDataSetChanged();
+
+                        } else {
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<GetTypesInCategoryModel>> call, Throwable t) {
+                        hideProgress();
+                        Toast.makeText(getActivity(), t.getMessage() + "damn", Toast.LENGTH_LONG).show();
+                    }
+
+                });
+
+                try {
+                    //Your task here
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        return view;
+    }
 
 
     private void viewGroup() {
@@ -212,7 +209,7 @@ public class ClothesStockFragment extends Fragment {
             @Override
             public void onFailure(Call<List<GetGroupModel>> call, Throwable t) {
                 hideProgress();
-                Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),t.getMessage()+"yyy",Toast.LENGTH_LONG).show();
             }
 
         });
