@@ -67,7 +67,8 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
         holder.itemquantity.setText(getStockInTypeModel.getQuantity());
         holder.itemsize.setText(getStockInTypeModel.getSize());
         holder.mCurrentPosition = position;
-        holder.itemId = mStockArrayList.get(position).getPurchaseId();
+        holder.itemId = mStockArrayList.get(position).getId();
+        holder.purchaseid = mStockArrayList.get(position).getPurchaseId();
 
     }
 
@@ -82,6 +83,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
         Button sold,edit;
         int mCurrentPosition;
         int itemId;
+        int purchaseid;
         public ItemsViewHolder(@NonNull View itemView) {
             super(itemView);
             itemname = itemView.findViewById(R.id.itemname);
@@ -111,9 +113,9 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                                         @Override
                                         public void onResponse(Call<DeleteItemModel> call, Response<DeleteItemModel> response) {
                                             if(response.code()==201){
-
                                                 Intent intent = new Intent(mContext, MainActivity.class);
                                                 mContext.startActivity(intent);
+                                                Toast.makeText(mContext,"Deleted successfully",Toast.LENGTH_SHORT).show();
                                             }
                                             else{
                                                Toast.makeText(mContext,"response:"+response.message(),Toast.LENGTH_SHORT).show();
@@ -165,7 +167,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                             String quantity = editQuantity.getText().toString();
                             String company = editCompany.getText().toString();
                             String sellingprice = editsp.getText().toString();
-                            String item_id = Integer.toString(itemId);
+                            final String item_id = Integer.toString(itemId);
 
 
                             Call<EditStockModel> call = RetrofitClient.getInstance(mContext)
@@ -175,11 +177,11 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                                 @Override
                                 public void onResponse(Call<EditStockModel> call, Response<EditStockModel> response) {
                                     if(response.code()==201){
-                                        Toast.makeText(mContext,"change",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(mContext,item_id,Toast.LENGTH_SHORT).show();
 
                                     }
                                     else{
-                                        Toast.makeText(mContext,"response:"+response.message(),Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(mContext,"response:"+response.message()+" kkk " + item_id,Toast.LENGTH_SHORT).show();
                                     }
 
                                 }
@@ -201,13 +203,13 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                     final AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
                     GetStockInTypeModel getStockModel = mStockArrayList.get(mCurrentPosition);
-                    editName.setHint(getStockModel.getName());
-                    editColor.setHint(getStockModel.getColor());
-                    editDesign.setHint(getStockModel.getDesign());
-                    editCompany.setHint(getStockModel.getCompany());
-                    editSize.setHint(getStockModel.getSize());
-                    editQuantity.setHint(getStockModel.getQuantity());
-                    editsp.setHint(getStockModel.getQuantity());
+                    editName.setText(getStockModel.getName());
+                    editColor.setText(getStockModel.getColor());
+                    editDesign.setText(getStockModel.getDesign());
+                    editCompany.setText(getStockModel.getCompany());
+                    editSize.setText(getStockModel.getSize());
+                    editQuantity.setText(getStockModel.getQuantity());
+                    editsp.setText(getStockModel.getQuantity());
                 }
             });
 
@@ -286,11 +288,10 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                             }if (quantitySold.getText().toString().isEmpty()){
                                 quantitySold.setError("Required");
                             }else{
-//                                progressLyt.setVisibility(View.VISIBLE);
                                 final String quantitysold = quantitySold.getText().toString();
                                 String costprice = costPrice.getText().toString();
 //                                int id = mStockArrayList.get(mCurrentPosition).getId();
-                                String purchaseId = Integer.toString(itemId);
+                                final String purchaseId = Integer.toString(purchaseid);
                                 Call<AddSaleModel> call = RetrofitClient.getInstance(mContext)
                                         .getApiConnector()
                                         .addnewsale(purchaseId,quantitysold,costprice);
@@ -302,7 +303,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                                             Toast.makeText(mContext,response.message()+"done",Toast.LENGTH_SHORT).show();
                                         }
                                         else{
-                                            Toast.makeText(mContext,response.message()+" "+ response.code() +" found",Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(mContext,response.message()+" "+ response.code() +" found"+purchaseId,Toast.LENGTH_SHORT).show();
                                         }
 
                                     }

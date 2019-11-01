@@ -17,52 +17,13 @@
         app:cardCornerRadius="@dimen/card_radius"
 
         app:cardElevation="@dimen/card_elevation">
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:textColor="@color/colorBlack"
-                    android:text="January"/>
-
-                <ImageView
-                    android:id="@+id/dropDown"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:tint="@color/colorGray"
-                    android:src="@drawable/ic_keyboard_arrow_down"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="10dp"
-                    android:layout_centerInParent="true"/>
-                <ImageView
-                    android:id="@+id/dropUp"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:visibility="gone"
-                    android:tint="@color/colorGray"
-                    android:src="@drawable/ic_keyboard_arrow_up"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="10dp"
-                    android:layout_centerInParent="true"/>
-            </RelativeLayout>
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/layoutDropped"
-                android:layout_marginTop="10dp"
                 android:orientation="vertical">
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/colorPrimary"/>
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -95,7 +56,7 @@
                             android:textColor="@color/colorRed"
                             android:text="Expenses"/>
                         <TextView
-                            android:id="@+id/expenses"
+                            android:id="@+id/expensesTotal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
@@ -130,6 +91,4 @@
 
 
             </androidx.appcompat.widget.LinearLayoutCompat>
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-    </androidx.cardview.widget.CardView>
+ </androidx.cardview.widget.CardView>

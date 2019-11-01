@@ -6,10 +6,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SummaryActivity">
+    <RelativeLayout
+        android:background="@color/colorGray"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <Spinner
+        android:id="@+id/yearSpinner"
+        android:layout_width="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content"/>
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/sales_recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"/>
+        android:layout_height="wrap_content"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

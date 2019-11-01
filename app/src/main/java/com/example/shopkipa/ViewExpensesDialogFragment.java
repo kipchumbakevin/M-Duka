@@ -73,11 +73,13 @@ public class ViewExpensesDialogFragment extends DialogFragment {
 
     private void viewExpenses() {
         showProgress();
+        String year = "";
+        String month = "";
             ArrayList<GetExpenseModel> mExpensesArray;
             mExpensesArrayList.clear();
             Call<List<GetExpenseModel>> call = RetrofitClient.getInstance(mContext)
                     .getApiConnector()
-                    .getAllExpenses();
+                    .getAllExpenses(year,month);
             call.enqueue(new Callback<List<GetExpenseModel>>() {
                 @Override
                 public void onResponse(Call<List<GetExpenseModel>> call, Response<List<GetExpenseModel>> response) {

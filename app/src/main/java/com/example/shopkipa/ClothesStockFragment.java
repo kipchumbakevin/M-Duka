@@ -1,6 +1,7 @@
 package com.example.shopkipa;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -88,8 +89,8 @@ public class ClothesStockFragment extends Fragment {
                 String typename = adapterView.getItemAtPosition(i).toString();
                 Toast.makeText(getActivity(),typename + " shit",Toast.LENGTH_LONG).show();
                 showProgress();
-                mStockArrayList.clear();
                 fragment_name = getArguments().getString("fragment_name", fragment_name);
+                mStockArrayList.clear();
                 String category = fragment_name;
                 Call<List<GetStockInTypeModel>> call = RetrofitClient.getInstance(getActivity())
                         .getApiConnector()
@@ -129,10 +130,10 @@ public class ClothesStockFragment extends Fragment {
             }
         });
 
-
         groupSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+             //   getFragmentManager().beginTransaction().detach(this).attach(this).commit();
                 String groupname = adapterView.getItemAtPosition(i).toString();
                 showProgress();
                 fragment_name = getArguments().getString("fragment_name", fragment_name);
@@ -150,7 +151,7 @@ public class ClothesStockFragment extends Fragment {
                             for (int index = 0; index < response.body().size(); index++) {
                                 typeSpinnerArray.add(response.body().get(index).getTypeName());
                             }
-                            Toast.makeText(getActivity(), "Noooo" + response.body().size(), Toast.LENGTH_LONG).show();
+
                             typeadapter.notifyDataSetChanged();
 
                         } else {

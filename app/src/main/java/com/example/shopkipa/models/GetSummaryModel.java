@@ -3,8 +3,7 @@ package com.example.shopkipa.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class GetSalesModel {
-
+public class GetSummaryModel {
 
     @SerializedName("totalProfit")
     @Expose

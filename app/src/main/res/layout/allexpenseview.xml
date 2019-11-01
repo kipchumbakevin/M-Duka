@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="10dp"
+    android:id="@+id/selectItemsToDelete"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -9,26 +10,29 @@
             android:id="@+id/expenseType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
             android:text="Expense type"
+            android:layout_marginStart="5dp"
             android:textColor="@color/colorBlack"
-            app:layout_constraintStart_toEndOf="@id/selectExpense"
+            app:layout_constraintStart_toEndOf="@id/deleteExpense"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/expenseAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
             android:text="Amount"
             android:textColor="@color/colorOrange"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <CheckBox
-            android:id="@+id/selectExpense"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:visibility="gone"
+            android:layout_marginTop="1dp"
+            android:tint="@color/colorRed"
+            android:id="@+id/deleteExpense"
+            android:layout_width="20dp"
+            android:src="@drawable/ic_delete"
+            android:layout_height="20dp"
             app:layout_constraintEnd_toStartOf="@id/expenseType"
             app:layout_constraintTop_toTopOf="parent" />
 

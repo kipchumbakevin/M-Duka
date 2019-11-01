@@ -272,13 +272,13 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
         String company = itemCompany.getText().toString();
         String buyingprice = itemBP.getText().toString();
         String sellingprice = itemSP.getText().toString();
-        String image = photoUri.toString();
+        final Uri image = photoUri;
         String item_group = selectItemGroupSpinner.getSelectedItem().toString();
 
 
         Call<AddStockModel> call = RetrofitClient.getInstance(mContext)
                 .getApiConnector()
-                .addnewstock(category,type,name,color,design,company,buyingprice,sellingprice,size,quantity,image,item_group);
+                .addnewstock(item_group,category,type,name,color,design,company,size,quantity,buyingprice,sellingprice,image);
         call.enqueue(new Callback<AddStockModel>() {
             @Override
             public void onResponse(Call<AddStockModel> call, Response<AddStockModel> response) {
@@ -288,7 +288,7 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
 
                 }
                 else{
-                    Toast.makeText(AddStock.this,"response:"+response.message(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddStock.this,"response:"+response.message()+image,Toast.LENGTH_SHORT).show();
                 }
 
             }
