@@ -37,7 +37,7 @@ public class ViewSalesAdapter extends RecyclerView.Adapter<ViewSalesAdapter.View
     public void onBindViewHolder(@NonNull ViewSalesHolder holder, int position) {
         GetSalesInMonthModel getSalesInMonthModel = mSalesArrayList.get(position);
         holder.itemName.setText(getSalesInMonthModel.getName());
-        holder.totalAmount.setText(getSalesInMonthModel.getTotal());
+        holder.totalAmount.setText("Kshs."+ getSalesInMonthModel.getTotal());
         holder.quantitySold.setText(getSalesInMonthModel.getQuantity());
     }
 

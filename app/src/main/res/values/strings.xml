@@ -16,4 +16,14 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="SHARED_PREFERENCES">com.example.shopkipa.sharedpref</string>
+    <string name="CLIENTS_TOKEN">com.example.shopkipa.sharedpref.accessToken</string>
+    <string name="CLIENTS_USERNAME">com.example.shopkipa.sharedpref.username</string>
+    <string name="CLIENTS_FIRSTNAME">com.example.shopkipa.sharedpref.firstname</string>
+    <string name="CLIENTS_LASTNAME">com.example.shopkipa.sharedpref.lastname</string>
+    <string name="CLIENTS_PHONE">com.example.shopkipa.sharedpref.phone</string>
+    <string name="CLIENTS_LOCATION">com.example.shopkipa.sharedpref.location</string>
+    <string name="CLIENTS_STATUS">com.example.shopkipa.sharedpref.status</string>
+
 </resources>

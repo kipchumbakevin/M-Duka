@@ -41,10 +41,10 @@ public class GetSummaryAdapter extends RecyclerView.Adapter<GetSummaryAdapter.Ge
         holder.rawProfit.setText("Kshs." + getSummaryModel.getTotalProfit());
         holder.expenses.setText("Kshs." + getSummaryModel.getTotalExpense());
         int total = (getSummaryModel.getTotalProfit() - getSummaryModel.getTotalExpense());
-        if (total>0){
+        if (total>=0){
             holder.profit_loss.setText("Profit");
             holder.totalprofit.setText("Ksh." + (getSummaryModel.getTotalProfit() - getSummaryModel.getTotalExpense()));
-        }else if (total<0){
+        }else{
             holder.profit_loss.setText("Loss");
             holder.totalprofit.setText("Ksh." + (getSummaryModel.getTotalExpense()-getSummaryModel.getTotalProfit()));
         }

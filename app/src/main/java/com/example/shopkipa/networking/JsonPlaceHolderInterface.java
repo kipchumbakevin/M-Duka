@@ -11,6 +11,7 @@ import com.example.shopkipa.models.EditStockModel;
 import com.example.shopkipa.models.GetAllGroupsModel;
 import com.example.shopkipa.models.GetCategoriesModel;
 import com.example.shopkipa.models.GetExpenseModel;
+import com.example.shopkipa.models.GetFaqsModel;
 import com.example.shopkipa.models.GetGroupModel;
 import com.example.shopkipa.models.GetMonthsModel;
 import com.example.shopkipa.models.GetSalesInMonthModel;
@@ -21,6 +22,10 @@ import com.example.shopkipa.models.GetTypesInCategoryModel;
 import com.example.shopkipa.models.GetTypesInGroupModel;
 import com.example.shopkipa.models.GetTypesModel;
 import com.example.shopkipa.models.GetYearsModel;
+import com.example.shopkipa.models.LoginModel;
+import com.example.shopkipa.models.SendMessageModel;
+import com.example.shopkipa.models.SignUpModel;
+import com.example.shopkipa.models.UsersModel;
 
 import java.util.List;
 
@@ -45,7 +50,24 @@ public interface JsonPlaceHolderInterface {
             @Field("quantity")String quantity,
             @Field("buyingprice")String buyingprice,
             @Field("sellingprice")String sellingprice,
-            @Field("image") Uri image
+            @Field("image")String image
+    );
+    @FormUrlEncoded
+    @POST("api/auth/signup")
+    Call<SignUpModel> signUp(
+            @Field("first_name")String firstname,
+            @Field("last_name")String lastname,
+            @Field("username")String username,
+            @Field("location")String location,
+            @Field("phone")String phone,
+            @Field("password")String password,
+            @Field("password_confirmation")String confirmPassword
+    );
+    @FormUrlEncoded
+    @POST("api/auth/login")
+    Call<UsersModel> login(
+            @Field("username")String username,
+            @Field("password")String password
     );
     @FormUrlEncoded
     @POST("api/editstock")
@@ -58,6 +80,11 @@ public interface JsonPlaceHolderInterface {
             @Field("size")String size,
             @Field("quantity")String quantity,
             @Field("item_id")String item_id
+    );
+    @FormUrlEncoded
+    @POST("api/sendmessage")
+    Call<SendMessageModel> sendMessage(
+            @Field("message")String message
     );
     @FormUrlEncoded
     @POST("api/deletestock")
@@ -85,7 +112,7 @@ public interface JsonPlaceHolderInterface {
     @FormUrlEncoded
     @POST("api/gettypeitem")
     Call<List<GetStockInTypeModel>> getAllStock(
-            @Field("name")String typename,
+            @Field("nametype")String typename,
             @Field("namecategory")String category
     );
     @FormUrlEncoded
@@ -120,6 +147,9 @@ public interface JsonPlaceHolderInterface {
     Call<List<GetSizeModel>> getAllSizes();
     @GET("api/getgroups")
     Call<List<GetAllGroupsModel>> getAllGroups();
+
+    @GET("api/getqa")
+    Call<List<GetFaqsModel>> getFaqs();
 
     @FormUrlEncoded
     @POST("api/getprofitloss")

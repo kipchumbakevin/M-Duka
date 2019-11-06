@@ -272,7 +272,7 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
         String company = itemCompany.getText().toString();
         String buyingprice = itemBP.getText().toString();
         String sellingprice = itemSP.getText().toString();
-        final Uri image = photoUri;
+        String image = photoUri.toString();
         String item_group = selectItemGroupSpinner.getSelectedItem().toString();
 
 
@@ -288,7 +288,7 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
 
                 }
                 else{
-                    Toast.makeText(AddStock.this,"response:"+response.message()+image,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddStock.this,"response:"+response.message(),Toast.LENGTH_SHORT).show();
                 }
 
             }

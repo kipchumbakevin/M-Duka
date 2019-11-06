@@ -20,7 +20,6 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.shopkipa.adapters.GetStockAdapter;
 import com.example.shopkipa.adapters.ItemsInTypeAdapter;
 import com.example.shopkipa.adapters.TypesInCategoryAdapter;
 import com.example.shopkipa.models.GetGroupModel;
@@ -52,37 +51,8 @@ public class ClothesStockFragment extends Fragment {
     private ArrayAdapter<String>groupadapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_clothes_stock, container, false);
-        recyclerView = view.findViewById(R.id.stock_recyclerView);
-        progressLyt = view.findViewById(R.id.progressLoad);
-        typeSpinner = view.findViewById(R.id.typeSpinner);
-        groupSpinner = view.findViewById(R.id.groupSpinner);
-        recyclerView.hasFixedSize();
-        itemsInTypeAdapter = new ItemsInTypeAdapter(getActivity(), mStockArrayList);
-        recyclerView.setAdapter(itemsInTypeAdapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
-
-        typeSpinnerArray = new ArrayList<>();
-
-        typeadapter = new ArrayAdapter<>(
-                getActivity(), android.R.layout.simple_spinner_item, typeSpinnerArray);
-
-        typeadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        typeSpinner.setAdapter(typeadapter);
-
-        groupSpinnerArray = new ArrayList<>();
-
-        groupadapter = new ArrayAdapter<>(
-                getActivity(), android.R.layout.simple_spinner_item, groupSpinnerArray);
-
-        groupadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        groupSpinner.setAdapter(groupadapter);
-        viewGroup();
-
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -129,6 +99,42 @@ public class ClothesStockFragment extends Fragment {
 
             }
         });
+
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_clothes_stock, container, false);
+        recyclerView = view.findViewById(R.id.stock_recyclerView);
+        progressLyt = view.findViewById(R.id.progressLoad);
+        typeSpinner = view.findViewById(R.id.typeSpinner);
+        groupSpinner = view.findViewById(R.id.groupSpinner);
+        recyclerView.hasFixedSize();
+        itemsInTypeAdapter = new ItemsInTypeAdapter(getActivity(), mStockArrayList);
+        recyclerView.setAdapter(itemsInTypeAdapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
+
+        typeSpinnerArray = new ArrayList<>();
+
+        typeadapter = new ArrayAdapter<>(
+                getActivity(), android.R.layout.simple_spinner_item, typeSpinnerArray);
+
+        typeadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        typeSpinner.setAdapter(typeadapter);
+
+        groupSpinnerArray = new ArrayList<>();
+
+        groupadapter = new ArrayAdapter<>(
+                getActivity(), android.R.layout.simple_spinner_item, groupSpinnerArray);
+
+        groupadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        groupSpinner.setAdapter(groupadapter);
+        viewGroup();
+
 
         groupSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -203,6 +209,7 @@ public class ClothesStockFragment extends Fragment {
 
                 }
                 else{
+                    Toast.makeText(getActivity(),response.message()+" found",Toast.LENGTH_LONG).show();
 
                 }
             }

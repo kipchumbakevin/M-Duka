@@ -1,5 +1,6 @@
 package com.example.shopkipa.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -177,7 +178,10 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                                 @Override
                                 public void onResponse(Call<EditStockModel> call, Response<EditStockModel> response) {
                                     if(response.code()==201){
-                                        Toast.makeText(mContext,item_id,Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(mContext, MainActivity.class);
+                                        mContext.startActivity(intent);
+                                        ((Activity)mContext).finish();
+                                        Toast.makeText(mContext,"Edited successfuly",Toast.LENGTH_SHORT).show();
 
                                     }
                                     else{
@@ -300,7 +304,10 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                                     public void onResponse(Call<AddSaleModel> call, Response<AddSaleModel> response) {
 //                                        progressLyt.setVisibility(View.INVISIBLE);
                                         if(response.code()==201){
-                                            Toast.makeText(mContext,response.message()+"done",Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(mContext, MainActivity.class);
+                                            mContext.startActivity(intent);
+                                            ((Activity)mContext).finish();
+                                            Toast.makeText(mContext,"Sale added",Toast.LENGTH_SHORT).show();
                                         }
                                         else{
                                             Toast.makeText(mContext,response.message()+" "+ response.code() +" found"+purchaseId,Toast.LENGTH_SHORT).show();

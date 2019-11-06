@@ -4,17 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.shopkipa.adapters.CustomerTabAdapter;
-import com.example.shopkipa.adapters.GetStockAdapter;
+
 import com.example.shopkipa.adapters.ViewExpensesAdapter;
 import com.example.shopkipa.models.AddExpenseModel;
 import com.example.shopkipa.models.AddStockModel;
 import com.example.shopkipa.models.GetCategoriesModel;
 import com.example.shopkipa.models.GetExpenseModel;
 import com.example.shopkipa.networking.RetrofitClient;
+import com.example.shopkipa.utils.SharedPreferencesConfig;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity
     private ArrayList<GetExpenseModel> mExpensesArrayList;
     private List<GetCategoriesModel> categories = new ArrayList<>();
     private Context mContext;
+    SharedPreferencesConfig sharedPreferencesConfig;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,15 +72,13 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        sharedPreferencesConfig = new SharedPreferencesConfig(MainActivity.this);
+
+        String token = sharedPreferencesConfig.readClientsAccessToken();
+        Log.d("mainactivity", token);
         FloatingActionButton fab = findViewById(R.id.fab);
         tabLayout = findViewById(R.id.cart_tab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -163,6 +163,8 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(MainActivity.this,SettingsActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -190,8 +192,19 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_addProduct){
             Intent intent = new Intent(MainActivity.this,AddStock.class);
             startActivity(intent);
-        }else if (id == R.id.nav_bookedProducts){
-            Intent intent = new Intent(MainActivity.this,BookedProduct.class);
+        }else if (id == R.id.nav_logout){
+            sharedPreferencesConfig.clear();
+            Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }else if (id == R.id.nav_updates){
+            Intent intent = new Intent(MainActivity.this,UpdatesActivity.class);
+            startActivity(intent);
+        }else if (id == R.id.nav_recipes){
+            Intent intent = new Intent(MainActivity.this,RecipesActivity.class);
+            startActivity(intent);
+        }else if (id == R.id.nav_help){
+            Intent intent = new Intent(MainActivity.this,HelpActivity.class);
             startActivity(intent);
         }else if (id == R.id.nav_share){
             Intent intent = new Intent(Intent.ACTION_SEND);

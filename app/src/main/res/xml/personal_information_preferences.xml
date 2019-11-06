@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <androidx.preference.PreferenceCategory app:title="Edit Personal Information">
+
+
+        <androidx.preference.EditTextPreference
+            app:key="username_edit_preference"
+            app:title="Username"
+            app:summary="Kevin Kiarie"
+            app:icon="@drawable/ic_create" />
+
+        <androidx.preference.EditTextPreference
+            app:key="first_name_edit_preference"
+            app:title="First Name"
+            app:summary="Kevin"
+            app:icon="@drawable/ic_create"
+            />
+
+        <androidx.preference.EditTextPreference
+            app:key="last_name_edit_preference"
+            app:title="Last Name"
+            app:summary="Kiarie"
+            app:icon="@drawable/ic_create"
+            />
+
+        <androidx.preference.EditTextPreference
+            app:key="phone_edit_preference"
+            app:title="Phone"
+            app:summary="something@Muva.com"
+            app:icon="@drawable/ic_create"
+            />
+
+
+    </androidx.preference.PreferenceCategory>
+
+
+</androidx.preference.PreferenceScreen>

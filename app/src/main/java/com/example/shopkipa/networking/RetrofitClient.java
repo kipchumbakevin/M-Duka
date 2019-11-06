@@ -1,8 +1,11 @@
 package com.example.shopkipa.networking;
 
 import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.example.shopkipa.utils.Constants;
+import com.example.shopkipa.utils.SharedPreferencesConfig;
 
 import java.io.IOException;
 
@@ -19,17 +22,20 @@ public class RetrofitClient {
     private Retrofit retrofit;
     private RetrofitClient(Context context) {
         final String accessToken;
-
+            accessToken =  new SharedPreferencesConfig(context).readClientsAccessToken();
         OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder()
                 .retryOnConnectionFailure(true)
                 .addInterceptor(new Interceptor() {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
                         Request request = chain.request();
-                        return chain.proceed(request);
+                        Request.Builder new_request = request.newBuilder()
+                                .addHeader("Authorization","Bearer "+accessToken)
+                                .addHeader("Content-Type", "application/json");
+                        return chain.proceed(new_request.build());
                     }
                 });
-        retrofit = new Retrofit.Builder()
+        retrofit=new Retrofit.Builder()
                 .baseUrl(BaseUrl)
                 .client(okHttpClient.build())
                 .addConverterFactory(GsonConverterFactory.create())

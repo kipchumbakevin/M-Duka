@@ -10,5 +10,6 @@
     <color name="colorGreen">#084D01</color>
     <color name="colorTab">#54A591</color>
     <color name="colorRed">#FF001E</color>
+    <color name="colorDark">#201304</color>
     <color name="colorOrange">#FF9100</color>
 </resources>

@@ -2,6 +2,7 @@ package com.example.shopkipa.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -93,6 +94,12 @@ public class GetMonthsAdapter extends RecyclerView.Adapter<GetMonthsAdapter.GetM
                     recyclerView.setAdapter(viewExpensesAdapter);
                     recyclerView.setLayoutManager(new GridLayoutManager(mContext,1));
                     alertDialogBuilder.setView(mView);
+                    alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
                     ArrayList<GetExpenseModel> mExpensesArray;
                     mExpensesArrayList.clear();
                     Call<List<GetExpenseModel>> call = RetrofitClient.getInstance(mContext)
@@ -132,6 +139,12 @@ public class GetMonthsAdapter extends RecyclerView.Adapter<GetMonthsAdapter.GetM
                     recyclerView.setAdapter(viewSalesAdapter);
                     recyclerView.setLayoutManager(new GridLayoutManager(mContext,1));
                     alertDialogBuilder.setView(mViewv);
+                    alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
                     ArrayList<GetSalesInMonthModel> mSalesArray;
                     mSalesArrayList.clear();
                     Call<List<GetSalesInMonthModel>> call = RetrofitClient.getInstance(mContext)
@@ -171,6 +184,12 @@ public class GetMonthsAdapter extends RecyclerView.Adapter<GetMonthsAdapter.GetM
                     recyclerView.setAdapter(getSummaryAdapter);
                     recyclerView.setLayoutManager(new GridLayoutManager(mContext,1));
                     alertDialogBuilder.setView(mViewV);
+                    alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
                     ArrayList<GetSummaryModel> mSalesArray;
                     mSummaryArrayList.clear();
                     Call<GetSummaryModel> call = RetrofitClient.getInstance(mContext)
