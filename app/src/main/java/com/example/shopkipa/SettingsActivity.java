@@ -5,11 +5,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.example.shopkipa.utils.Constants;
+import com.example.shopkipa.utils.SharedPreferencesConfig;
 
 public class SettingsActivity extends AppCompatActivity {
+    ImageView firstLetterImageView;
+    TextView usernameTextView, emailTextView;
+    private SharedPreferencesConfig sharedPreferencesConfig;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +33,27 @@ public class SettingsActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        sharedPreferencesConfig = new SharedPreferencesConfig(getApplicationContext());
+
+
+        firstLetterImageView = findViewById(R.id.first_letter_image_view);
+        usernameTextView = findViewById(R.id.username_text_view);
+        emailTextView = findViewById(R.id.email_text_view);
+        String status = sharedPreferencesConfig.readClientsStatus();
+
+        if(status.contentEquals(Constants.ACTIVE_CONSTANT)) {
+            String username = sharedPreferencesConfig.readClientsUsername();
+            String location = sharedPreferencesConfig.readClientsLocation();
+            usernameTextView.setText(username);
+            emailTextView.setText(location);
+
+            getFirstLetterInCircularBackground(firstLetterImageView, username);
+        }
+        else {
+            String username = usernameTextView.getText().toString();
+            getFirstLetterInCircularBackground(firstLetterImageView, username);
+
         }
 
     }
@@ -40,6 +72,8 @@ public class SettingsActivity extends AppCompatActivity {
             preferenceChangePassword.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
+                    Intent intent = new Intent(context,SecurityOptions.class);
+                    startActivity(intent);
 
                     return true;
                 }
@@ -50,6 +84,7 @@ public class SettingsActivity extends AppCompatActivity {
                 public boolean onPreferenceClick(Preference preference) {
                     Intent intent = new Intent(context, ChangePersonalInfo.class);
                     startActivity(intent);
+                    ((Activity)context).finish();
 
                     return false;
                 }
@@ -58,4 +93,18 @@ public class SettingsActivity extends AppCompatActivity {
 
         }
     }
+    public void getFirstLetterInCircularBackground(ImageView imageView, String username){
+        ColorGenerator generator = ColorGenerator.MATERIAL; // or use DEFAULT
+//        generate random color
+//        int color = generator.getColor(getItem());
+
+        int color = generator.getRandomColor();
+        String firstLetter = String.valueOf(username.charAt(0));
+
+        TextDrawable drawable = TextDrawable.builder()
+                .buildRound(firstLetter, color); // radius in px
+
+        imageView.setImageDrawable(drawable);
+    }
+
 }

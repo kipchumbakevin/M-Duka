@@ -14,10 +14,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ConfirmCodeActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ChangePhoneNumber"
+            android:label="Change number"
+            android:parentActivityName=".SecurityOptions" />
+        <activity
+            android:name=".SecurityOptions"
+            android:label="Options"
+            android:parentActivityName=".SettingsActivity" />
+        <activity
+            android:name=".ForgotPasswordActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ChangePasswordActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".RecipesActivity"
             android:label="Recipes"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ChangePersonalInfo"
             android:label="Personal Info"
@@ -40,6 +56,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SettingsActivity"
+            android:label="Settings"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".SendMessage"

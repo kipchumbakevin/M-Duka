@@ -34,6 +34,16 @@
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@id/linear" />
 
+    <TextView
+        android:id="@+id/textbp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="8dp"
+        android:text="Buying price:"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/quantity_sold" />
+
     <EditText
 
         android:id="@+id/cost_unit_price"
@@ -49,6 +59,15 @@
         android:textColor="@color/colorBlack"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@id/linear" />
+
+    <Spinner
+        android:id="@+id/bpspinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@id/textbp"
+        app:layout_constraintTop_toBottomOf="@id/cost_unit_price" />
 
     <View
         android:id="@+id/view"
@@ -121,7 +140,6 @@
         app:srcCompat="@drawable/ic_done" />
 
 
-
     <androidx.constraintlayout.widget.Guideline
 
         android:id="@+id/guideline3"
@@ -132,7 +150,7 @@
 
         android:orientation="horizontal"
 
-        app:layout_constraintGuide_begin="198dp" />
+        app:layout_constraintGuide_begin="209dp" />
 
 
 

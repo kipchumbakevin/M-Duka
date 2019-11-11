@@ -4,73 +4,55 @@
 
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
 
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+
+    android:layout_marginBottom="16dp">
     <TextView
-        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorGray"
         android:gravity="center"
-        android:text="Edit item details"
+        android:text="Add stock"
         android:textColor="@color/colorBlack"
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@id/linear"/>
 
-    <TextView
-        android:id="@+id/ename"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="14dp"
-        android:text="Name:"
-        android:textColor="@color/colorBlack"
-        app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/title" />
-
 
     <EditText
-        android:id="@+id/edit_name"
-        android:layout_width="match_parent"
+        android:id="@+id/quantity_bought"
+        android:layout_marginTop="40dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="105dp"
-        android:layout_marginEnd="20dp"
-        android:drawableStart="@drawable/ic_create"
-        android:drawablePadding="5dp"
-        android:drawableTint="@color/colorGray"
-        android:inputType="textCapSentences"
-        android:textColor="@color/colorOrange"
-        android:textColorHint="@color/colorOrange"
+        android:layout_marginStart="26dp"
         android:textSize="15sp"
-        app:layout_constraintStart_toEndOf="@+id/ename"
-        app:layout_constraintTop_toBottomOf="@id/title" />
-
-    <TextView
-        android:id="@+id/esp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorBlack"
-        android:layout_marginTop="24dp"
-        android:text="Selling price:"
-        android:layout_marginStart="5dp"
-        app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/ename"/>
-    <EditText
-        android:id="@+id/edit_sp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="105dp"
-        android:layout_marginEnd="20dp"
-        android:drawableStart="@drawable/ic_create"
-        android:drawablePadding="5dp"
+        android:hint="quantity bought"
+        android:padding="5dp"
         android:inputType="numberDecimal"
-        android:textColor="@color/colorOrange"
-        android:textColorHint="@color/colorOrange"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/linear" />
+
+    <EditText
+
+        android:id="@+id/cost_per_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="170dp"
+        android:inputType="numberDecimal"
         android:textSize="15sp"
-        app:layout_constraintStart_toEndOf="@id/esp"
-        app:layout_constraintTop_toBottomOf="@id/edit_name" />
+        android:hint="ksh./item"
+        android:imeOptions="actionDone"
+        android:padding="5dp"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/linear" />
+
+
+
+
     <androidx.constraintlayout.widget.Guideline
 
         android:id="@+id/guideline"
@@ -106,7 +88,7 @@
 
         android:orientation="horizontal"
 
-        app:layout_constraintGuide_begin="193dp" />
+        app:layout_constraintGuide_begin="150dp" />
 
 
 
@@ -141,6 +123,21 @@
             android:layout_height="50dp" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <include
+        layout="@layout/content_progress_bar"
+        android:layout_width="12dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/linear">
+
+    </include>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

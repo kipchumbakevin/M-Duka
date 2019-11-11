@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity
     private ArrayList<GetExpenseModel> mExpensesArrayList;
     private List<GetCategoriesModel> categories = new ArrayList<>();
     private Context mContext;
-    SharedPreferencesConfig sharedPreferencesConfig;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,10 +72,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        sharedPreferencesConfig = new SharedPreferencesConfig(MainActivity.this);
-
-        String token = sharedPreferencesConfig.readClientsAccessToken();
-        Log.d("mainactivity", token);
         FloatingActionButton fab = findViewById(R.id.fab);
         tabLayout = findViewById(R.id.cart_tab);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -193,7 +188,6 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(MainActivity.this,AddStock.class);
             startActivity(intent);
         }else if (id == R.id.nav_logout){
-            sharedPreferencesConfig.clear();
             Intent intent = new Intent(MainActivity.this,LoginActivity.class);
             startActivity(intent);
             finish();

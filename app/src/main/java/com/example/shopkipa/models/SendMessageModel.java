@@ -1,7 +1,7 @@
 package com.example.shopkipa.models;
 
 public class SendMessageModel {
-    String message;
+    String message,image;
 
     public SendMessageModel() {
     }
@@ -12,5 +12,13 @@ public class SendMessageModel {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

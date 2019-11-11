@@ -13,7 +13,7 @@ public class SharedPreferencesConfig {
         this.context = context;
         sharedPreferences = context.getSharedPreferences(context.getResources().getString(R.string.SHARED_PREFERENCES), Context.MODE_PRIVATE);
     }
-        public void saveAuthenticationInformation(String acessToken, String username, String phone,String firstname,String lastname, String status,String location){
+        public void saveAuthenticationInformation(String acessToken,String firstname,String lastname, String location,String username, String phone,String status){
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(context.getResources().getString(R.string.CLIENTS_TOKEN),acessToken);
             editor.putString(context.getResources().getString(R.string.CLIENTS_PHONE),phone);

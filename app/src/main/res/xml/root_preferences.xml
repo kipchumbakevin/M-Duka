@@ -23,14 +23,15 @@
         <Preference
             app:key="personal_information"
             app:title="Personal Information"
-            app:summary="Change your Username, First and Last Name and Email account"
+            app:summary="Change your Username, First,Last Name and Location"
             app:icon="@drawable/ic_account_circle" />
 
         <Preference
             app:key="security_information"
             app:title="Security Information"
-            app:summary="Change your Password "
+            app:summary="Change your Password,Phone number"
             app:icon="@drawable/ic_lock_open"/>
+
 
     </androidx.preference.PreferenceCategory>
 

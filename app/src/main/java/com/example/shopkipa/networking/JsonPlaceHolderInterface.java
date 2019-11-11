@@ -5,10 +5,15 @@ import android.net.Uri;
 import com.example.shopkipa.models.AddExpenseModel;
 import com.example.shopkipa.models.AddSaleModel;
 import com.example.shopkipa.models.AddStockModel;
+import com.example.shopkipa.models.ChangeDetailsModel;
+import com.example.shopkipa.models.ChangePasswordModel;
+import com.example.shopkipa.models.ChangePhoneModel;
+import com.example.shopkipa.models.ConfirmCodeModel;
 import com.example.shopkipa.models.DeleteExpenseModel;
 import com.example.shopkipa.models.DeleteItemModel;
 import com.example.shopkipa.models.EditStockModel;
 import com.example.shopkipa.models.GetAllGroupsModel;
+import com.example.shopkipa.models.GetBuyingPricesModel;
 import com.example.shopkipa.models.GetCategoriesModel;
 import com.example.shopkipa.models.GetExpenseModel;
 import com.example.shopkipa.models.GetFaqsModel;
@@ -23,6 +28,8 @@ import com.example.shopkipa.models.GetTypesInGroupModel;
 import com.example.shopkipa.models.GetTypesModel;
 import com.example.shopkipa.models.GetYearsModel;
 import com.example.shopkipa.models.LoginModel;
+import com.example.shopkipa.models.RestockModel;
+import com.example.shopkipa.models.SendCodeModel;
 import com.example.shopkipa.models.SendMessageModel;
 import com.example.shopkipa.models.SignUpModel;
 import com.example.shopkipa.models.UsersModel;
@@ -64,6 +71,16 @@ public interface JsonPlaceHolderInterface {
             @Field("password_confirmation")String confirmPassword
     );
     @FormUrlEncoded
+    @POST("api/sendcode")
+    Call<SendCodeModel> send(
+            @Field("phone")String phone
+    );
+    @FormUrlEncoded
+    @POST("api/confirmcode")
+    Call<ConfirmCodeModel> confirm(
+            @Field("code")String code
+    );
+    @FormUrlEncoded
     @POST("api/auth/login")
     Call<UsersModel> login(
             @Field("username")String username,
@@ -73,18 +90,21 @@ public interface JsonPlaceHolderInterface {
     @POST("api/editstock")
     Call<EditStockModel> editStock(
             @Field("name")String name,
-            @Field("color")String color,
-            @Field("design")String design,
-            @Field("company")String company,
             @Field("sellingprice")String sellingprice,
-            @Field("size")String size,
+            @Field("item_id")String item_id
+    );
+    @FormUrlEncoded
+    @POST("api/restock")
+    Call<RestockModel> restock(
             @Field("quantity")String quantity,
+            @Field("buyingp")String buyingprice,
             @Field("item_id")String item_id
     );
     @FormUrlEncoded
     @POST("api/sendmessage")
     Call<SendMessageModel> sendMessage(
-            @Field("message")String message
+            @Field("message")String message,
+            @Field("image")String image
     );
     @FormUrlEncoded
     @POST("api/deletestock")
@@ -122,6 +142,25 @@ public interface JsonPlaceHolderInterface {
             @Field("namegroup")String groupname
     );
     @FormUrlEncoded
+    @POST("api/changephone")
+    Call<ChangePhoneModel> changePhone(
+            @Field("oldphone")String oldphone,
+            @Field("newphone")String newphone
+    );
+    @FormUrlEncoded
+    @POST("api/changepassword")
+    Call<ChangePasswordModel> changePassword(
+            @Field("newpass")String newPass,
+            @Field("phone")String phone
+    );
+    @FormUrlEncoded
+    @POST("api/changedetails")
+    Call<ChangeDetailsModel> changeDetails(
+            @Field("username")String username,
+            @Field("firstname")String firstname,
+            @Field("lastname")String lastname
+    );
+    @FormUrlEncoded
     @POST("api/getgroup")
     Call<List<GetGroupModel>> getGroup(
             @Field("category_name")String categoryname
@@ -138,6 +177,11 @@ public interface JsonPlaceHolderInterface {
     @POST("api/getmonths")
     Call<List<GetMonthsModel>> getMonths(
             @Field("year") String year
+    );
+    @FormUrlEncoded
+    @POST("api/getbuyingprices")
+    Call<List<GetBuyingPricesModel>> getBP(
+            @Field("item_id") String item_id
     );
     @GET("api/getcategories")
     Call<List<GetCategoriesModel>> getAllCategories();

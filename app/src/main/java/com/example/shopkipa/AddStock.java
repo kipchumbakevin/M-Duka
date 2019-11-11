@@ -37,6 +37,7 @@ import com.bumptech.glide.Glide;
 import com.example.shopkipa.models.AddExpenseModel;
 import com.example.shopkipa.models.AddStockModel;
 import com.example.shopkipa.models.GetAllGroupsModel;
+import com.example.shopkipa.models.GetBuyingPricesModel;
 import com.example.shopkipa.models.GetCategoriesModel;
 import com.example.shopkipa.models.GetSizeModel;
 import com.example.shopkipa.models.GetTypesInGroupModel;
@@ -284,7 +285,10 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
             public void onResponse(Call<AddStockModel> call, Response<AddStockModel> response) {
                 hideProgress();
                 if(response.code()==201){
-                    Toast.makeText(AddStock.this,"product added",Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(AddStock.this,AddStock.class);
+                    startActivity(intent);
+                    finish();
+                    Toast.makeText(AddStock.this,response.message(),Toast.LENGTH_SHORT).show();
 
                 }
                 else{
@@ -460,6 +464,7 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
 
     }
     public void fetchAllGroups(){
+        String item_id = Integer.toString(1);
         Call<List<GetAllGroupsModel>> call = RetrofitClient.getInstance(AddStock.this)
                 .getApiConnector()
                 .getAllGroups();
@@ -515,10 +520,10 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
             }
         });
     }
-    public void pickSizeFormat(){
-        TextView pickWord,pickNumber;
+    public void pickSizeFormat() {
+        TextView pickWord, pickNumber;
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AddStock.this);
-        View view = getLayoutInflater().inflate(R.layout.pick_size_format,null);
+        View view = getLayoutInflater().inflate(R.layout.pick_size_format, null);
         pickWord = view.findViewById(R.id.pickWord);
         pickNumber = view.findViewById(R.id.pickNumber);
 
@@ -527,7 +532,6 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
         alertDialog.show();
 
         pickWord.setOnClickListener(new View.OnClickListener() {
-            int wi = 60;
             @Override
             public void onClick(View view) {
                 pickFormat.setVisibility(View.GONE);
@@ -550,4 +554,5 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
             }
         });
     }
+
 }

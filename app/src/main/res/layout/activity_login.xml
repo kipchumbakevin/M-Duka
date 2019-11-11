@@ -6,7 +6,7 @@
     android:background="@drawable/sign"
     android:fitsSystemWindows="true"
     android:layout_height="match_parent"
-    tools:context=".SignUpActivity">
+    tools:context=".LoginActivity">
     <Button
         android:id="@+id/signUp"
         android:layout_width="wrap_content"
@@ -64,11 +64,12 @@
             android:id="@+id/password"
             android:paddingStart="20dp"
             android:layout_marginTop="10dp"
-            android:paddingEnd="3dp"
+            android:paddingEnd="10dp"
             android:inputType="textPassword"
             android:textSize="14sp"
             android:drawablePadding="20dp"
             android:layout_width="match_parent"
+            android:drawableEnd="@drawable/ic_visibility"
             android:drawableStart="@drawable/ic_lock_outline"
             android:textColor="@color/colorWhite"
             android:textColorHint="@color/colorWhite"
@@ -97,6 +98,10 @@
 
     </RelativeLayout>
     </ScrollView>
-
+    <include layout="@layout/content_progress_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

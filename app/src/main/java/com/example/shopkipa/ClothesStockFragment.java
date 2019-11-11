@@ -11,11 +11,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -44,6 +46,7 @@ public class ClothesStockFragment extends Fragment {
     RelativeLayout progressLyt;
     ItemsInTypeAdapter itemsInTypeAdapter;
     String fragment_name;
+    ImageView nostock;
     Spinner typeSpinner,groupSpinner;
     private List<String> typeSpinnerArray;
     private ArrayAdapter<String>typeadapter;
@@ -53,9 +56,45 @@ public class ClothesStockFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_clothes_stock, container, false);
+        recyclerView = view.findViewById(R.id.stock_recyclerView);
+        progressLyt = view.findViewById(R.id.progressLoad);
+        typeSpinner = view.findViewById(R.id.typeSpinner);
+        groupSpinner = view.findViewById(R.id.groupSpinner);
+        nostock = view.findViewById(R.id.noStock);
+        recyclerView.hasFixedSize();
+        itemsInTypeAdapter = new ItemsInTypeAdapter(getActivity(), mStockArrayList);
+        recyclerView.setAdapter(itemsInTypeAdapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
+
+        typeSpinnerArray = new ArrayList<>();
+
+        typeadapter = new ArrayAdapter<>(
+                getActivity(), android.R.layout.simple_spinner_item, typeSpinnerArray);
+
+        typeadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        typeSpinner.setAdapter(typeadapter);
+
+        groupSpinnerArray = new ArrayList<>();
+
+        groupadapter = new ArrayAdapter<>(
+                getActivity(), android.R.layout.simple_spinner_item, groupSpinnerArray);
+
+        groupadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        groupSpinner.setAdapter(groupadapter);
+        viewGroup();
+
         typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                itemsInTypeAdapter.notifyDataSetChanged();
                 String typename = adapterView.getItemAtPosition(i).toString();
                 Toast.makeText(getActivity(),typename + " shit",Toast.LENGTH_LONG).show();
                 showProgress();
@@ -87,7 +126,6 @@ public class ClothesStockFragment extends Fragment {
 
 
                 try {
-                    //Your task here
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -100,46 +138,10 @@ public class ClothesStockFragment extends Fragment {
             }
         });
 
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_clothes_stock, container, false);
-        recyclerView = view.findViewById(R.id.stock_recyclerView);
-        progressLyt = view.findViewById(R.id.progressLoad);
-        typeSpinner = view.findViewById(R.id.typeSpinner);
-        groupSpinner = view.findViewById(R.id.groupSpinner);
-        recyclerView.hasFixedSize();
-        itemsInTypeAdapter = new ItemsInTypeAdapter(getActivity(), mStockArrayList);
-        recyclerView.setAdapter(itemsInTypeAdapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
-
-        typeSpinnerArray = new ArrayList<>();
-
-        typeadapter = new ArrayAdapter<>(
-                getActivity(), android.R.layout.simple_spinner_item, typeSpinnerArray);
-
-        typeadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        typeSpinner.setAdapter(typeadapter);
-
-        groupSpinnerArray = new ArrayList<>();
-
-        groupadapter = new ArrayAdapter<>(
-                getActivity(), android.R.layout.simple_spinner_item, groupSpinnerArray);
-
-        groupadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        groupSpinner.setAdapter(groupadapter);
-        viewGroup();
-
-
         groupSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-             //   getFragmentManager().beginTransaction().detach(this).attach(this).commit();
+                mStockArrayList.clear();
                 String groupname = adapterView.getItemAtPosition(i).toString();
                 showProgress();
                 fragment_name = getArguments().getString("fragment_name", fragment_name);
@@ -157,8 +159,8 @@ public class ClothesStockFragment extends Fragment {
                             for (int index = 0; index < response.body().size(); index++) {
                                 typeSpinnerArray.add(response.body().get(index).getTypeName());
                             }
-
                             typeadapter.notifyDataSetChanged();
+                            itemsInTypeAdapter.notifyDataSetChanged();
 
                         } else {
                         }
@@ -233,6 +235,7 @@ public class ClothesStockFragment extends Fragment {
     }
 
     public static ClothesStockFragment newInstance(String fragmentname){
+        mStockArrayList.clear();
         ClothesStockFragment viewCustomerStockFragment =new ClothesStockFragment();
         Bundle bundle=new Bundle();
 //        bundle.putInt(REQUEST_TYPE,val);

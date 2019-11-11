@@ -8,27 +8,26 @@
         <androidx.preference.EditTextPreference
             app:key="username_edit_preference"
             app:title="Username"
-            app:summary="Kevin Kiarie"
+            app:summary="username"
             app:icon="@drawable/ic_create" />
 
         <androidx.preference.EditTextPreference
             app:key="first_name_edit_preference"
             app:title="First Name"
-            app:summary="Kevin"
+            app:summary="first name"
             app:icon="@drawable/ic_create"
             />
 
         <androidx.preference.EditTextPreference
             app:key="last_name_edit_preference"
             app:title="Last Name"
-            app:summary="Kiarie"
+            app:summary="last name"
             app:icon="@drawable/ic_create"
             />
-
         <androidx.preference.EditTextPreference
-            app:key="phone_edit_preference"
-            app:title="Phone"
-            app:summary="something@Muva.com"
+            app:key="location_edit_preference"
+            app:title="Location"
+            app:summary="location"
             app:icon="@drawable/ic_create"
             />
 

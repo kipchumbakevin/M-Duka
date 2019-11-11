@@ -112,7 +112,7 @@
             android:drawableStart="@drawable/ic_local_phone"
             android:textColor="@color/colorWhite"
             android:textColorHint="@color/colorWhite"
-            android:inputType="number"
+            android:inputType="phone"
             android:layout_height="40dp"
             android:paddingStart="20dp"
             android:layout_marginTop="10dp"
@@ -175,6 +175,9 @@
 
     </RelativeLayout>
     </ScrollView>
-
-
+    <include layout="@layout/content_progress_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

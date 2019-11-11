@@ -37,7 +37,7 @@ public class SendMessage extends AppCompatActivity {
     Button sendMessage;
     ImageView imageOne,addImageOne;
     private Uri photoUri;
-    RelativeLayout firstScreenshot;
+    RelativeLayout firstScreenshot,progressLyt;
 
 
     @Override
@@ -47,6 +47,7 @@ public class SendMessage extends AppCompatActivity {
         writeMessage = findViewById(R.id.write_message);
         imageOne = findViewById(R.id.image_one);
         addImageOne = findViewById(R.id.addImageOne);
+        progressLyt = findViewById(R.id.progressLoad);
         sendMessage = findViewById(R.id.send_message);
         firstScreenshot = findViewById(R.id.first_screenshot);
 
@@ -71,13 +72,16 @@ public class SendMessage extends AppCompatActivity {
     }
 
     private void send() {
+        showProgress();
+        String image = photoUri.toString();
         String message = writeMessage.getText().toString();
         Call<SendMessageModel> call = RetrofitClient.getInstance(this)
                 .getApiConnector()
-                .sendMessage(message);
+                .sendMessage(message,image);
         call.enqueue(new Callback<SendMessageModel>() {
             @Override
             public void onResponse(Call<SendMessageModel> call, Response<SendMessageModel> response) {
+                hideProgress();
                 if(response.code()==201){
                     writeMessage.getText().clear();
                     AlertDialog.Builder alertdialog = new AlertDialog.Builder(SendMessage.this);
@@ -101,6 +105,7 @@ public class SendMessage extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<SendMessageModel> call, Throwable t) {
+                hideProgress();
                 Toast.makeText(SendMessage.this,"errot:"+t.getMessage(),Toast.LENGTH_SHORT).show();
             }
         });
@@ -143,5 +148,12 @@ public class SendMessage extends AppCompatActivity {
             Glide.with(this).load(photoUri)
                     .into(imageOne);
         }
+    }
+    private void hideProgress() {
+        progressLyt.setVisibility(View.INVISIBLE);
+    }
+
+    private void showProgress() {
+        progressLyt.setVisibility(View.VISIBLE);
     }
 }
