@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,9 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.shopkipa.MainActivity;
 import com.example.shopkipa.R;
-import com.example.shopkipa.SummaryActivity;
+import com.example.shopkipa.ui.SummaryActivity;
 import com.example.shopkipa.models.DeleteExpenseModel;
 import com.example.shopkipa.models.GetExpenseModel;
 import com.example.shopkipa.networking.RetrofitClient;

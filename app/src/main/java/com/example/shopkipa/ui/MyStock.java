@@ -1,8 +1,10 @@
-package com.example.shopkipa;
+package com.example.shopkipa.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.shopkipa.R;
 
 public class MyStock extends AppCompatActivity {
 

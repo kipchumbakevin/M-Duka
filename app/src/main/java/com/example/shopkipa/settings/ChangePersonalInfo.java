@@ -1,4 +1,4 @@
-package com.example.shopkipa;
+package com.example.shopkipa.settings;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,9 +11,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
+import com.example.shopkipa.R;
 import com.example.shopkipa.models.ChangeDetailsModel;
 import com.example.shopkipa.networking.RetrofitClient;
 import com.example.shopkipa.utils.SharedPreferencesConfig;
@@ -65,7 +65,7 @@ public class ChangePersonalInfo extends AppCompatActivity {
 
             String username = sharedPreferencesConfig.readClientsUsername();
             String firstname = sharedPreferencesConfig.readClientsFirstName();
-            String lastame = sharedPreferencesConfig.readClientsLastName();
+            String lastname = sharedPreferencesConfig.readClientsLastName();
             String location = sharedPreferencesConfig.readClientsLocation();
 
             if (preferenceUsername != null) {
@@ -75,12 +75,35 @@ public class ChangePersonalInfo extends AppCompatActivity {
                 preferencefirstname.setSummary(firstname);
             }
             if (preferencelastname != null) {
-                preferencelastname.setSummary(lastame);
+                preferencelastname.setSummary(lastname);
             }
             if (preferenceLocation != null){
                 preferenceLocation.setSummary(location);
             }
 
+
+
+            Call<ChangeDetailsModel> call = RetrofitClient.getInstance(context)
+                    .getApiConnector()
+                    .changeDetails(username,firstname,lastname);
+            Toast.makeText(context,username +" "+firstname,Toast.LENGTH_LONG).show();
+            call.enqueue(new Callback<ChangeDetailsModel>() {
+                @Override
+                public void onResponse(Call<ChangeDetailsModel> call, Response<ChangeDetailsModel> response) {
+                    if(response.code()==201){
+                        Toast.makeText(context,response.message(),Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        Toast.makeText(context,"Response:"+response.message(),Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<ChangeDetailsModel> call, Throwable t) {
+                    Toast.makeText(context,"Error:"+t.getMessage(),Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
     private static void bindSummaryValue(Preference preference){
@@ -104,31 +127,6 @@ public class ChangePersonalInfo extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String username = sharedPreferences.getString("username_edit_preference","");
-        String firstname = sharedPreferences.getString("first_name_edit_preference","");
-        String lastname = sharedPreferences.getString("last_name_edit_preference","");
-        String location = sharedPreferences.getString("location_edit_preference","");
-
-        Call<ChangeDetailsModel> call = RetrofitClient.getInstance(ChangePersonalInfo.this)
-                .getApiConnector()
-                .changeDetails(username,firstname,lastname);
-        call.enqueue(new Callback<ChangeDetailsModel>() {
-            @Override
-            public void onResponse(Call<ChangeDetailsModel> call, Response<ChangeDetailsModel> response) {
-                if(response.code()==201){
-                    Toast.makeText(ChangePersonalInfo.this,response.message(),Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Toast.makeText(ChangePersonalInfo.this,"Response:"+response.message(),Toast.LENGTH_SHORT).show();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<ChangeDetailsModel> call, Throwable t) {
-                Toast.makeText(ChangePersonalInfo.this,"Error:"+t.getMessage(),Toast.LENGTH_SHORT).show();
-            }
-        });
         Intent intent = new Intent (ChangePersonalInfo.this,SettingsActivity.class);
         startActivity(intent);
         finish();

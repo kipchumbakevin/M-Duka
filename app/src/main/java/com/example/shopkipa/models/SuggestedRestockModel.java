@@ -3,8 +3,7 @@ package com.example.shopkipa.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class GetStockInTypeModel {
-
+public class SuggestedRestockModel {
 
     @SerializedName("id")
     @Expose
@@ -193,5 +192,4 @@ public class GetStockInTypeModel {
     public void setTypeName(String typeName) {
         this.typeName = typeName;
     }
-
 }

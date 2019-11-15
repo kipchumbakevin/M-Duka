@@ -28,6 +28,7 @@ import com.example.shopkipa.models.GetTypesInGroupModel;
 import com.example.shopkipa.models.GetTypesModel;
 import com.example.shopkipa.models.GetYearsModel;
 import com.example.shopkipa.models.LoginModel;
+import com.example.shopkipa.models.LogoutModel;
 import com.example.shopkipa.models.RestockModel;
 import com.example.shopkipa.models.SendCodeModel;
 import com.example.shopkipa.models.SendMessageModel;
@@ -127,7 +128,8 @@ public interface JsonPlaceHolderInterface {
     Call<AddSaleModel> addnewsale(
             @Field("purchase_id")String purchaseId,
             @Field("quantity")String quantitysold,
-            @Field("costprice")String costprice
+            @Field("costprice")String costprice,
+            @Field("buyingprice") String bp
     );
     @FormUrlEncoded
     @POST("api/gettypeitem")
@@ -142,10 +144,16 @@ public interface JsonPlaceHolderInterface {
             @Field("namegroup")String groupname
     );
     @FormUrlEncoded
+    @POST("api/generatecode")
+    Call<ChangePhoneModel> generateCode(
+            @Field("oldphone")String oldphone,
+            @Field("passcode")String pas
+    );
+    @FormUrlEncoded
     @POST("api/changephone")
     Call<ChangePhoneModel> changePhone(
-            @Field("oldphone")String oldphone,
-            @Field("newphone")String newphone
+            @Field("newphone")String newphone,
+            @Field("code")String code
     );
     @FormUrlEncoded
     @POST("api/changepassword")
@@ -181,7 +189,7 @@ public interface JsonPlaceHolderInterface {
     @FormUrlEncoded
     @POST("api/getbuyingprices")
     Call<List<GetBuyingPricesModel>> getBP(
-            @Field("item_id") String item_id
+            @Field("item_id") String i
     );
     @GET("api/getcategories")
     Call<List<GetCategoriesModel>> getAllCategories();
@@ -191,6 +199,8 @@ public interface JsonPlaceHolderInterface {
     Call<List<GetSizeModel>> getAllSizes();
     @GET("api/getgroups")
     Call<List<GetAllGroupsModel>> getAllGroups();
+    @GET("api/auth/logout")
+    Call<LogoutModel> logOut();
 
     @GET("api/getqa")
     Call<List<GetFaqsModel>> getFaqs();

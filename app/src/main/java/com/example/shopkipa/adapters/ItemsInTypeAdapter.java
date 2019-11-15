@@ -23,14 +23,12 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.shopkipa.AddStock;
-import com.example.shopkipa.MainActivity;
+import com.example.shopkipa.ui.MainActivity;
 import com.example.shopkipa.R;
 import com.example.shopkipa.models.AddSaleModel;
 import com.example.shopkipa.models.DeleteItemModel;
 import com.example.shopkipa.models.EditStockModel;
 import com.example.shopkipa.models.GetBuyingPricesModel;
-import com.example.shopkipa.models.GetSizeModel;
 import com.example.shopkipa.models.GetStockInTypeModel;
 import com.example.shopkipa.models.RestockModel;
 import com.example.shopkipa.networking.RetrofitClient;
@@ -58,20 +56,17 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
     @Override
     public ItemsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = mLayoutInflator.inflate(R.layout.items_layout,parent,false);
-        Log.d("Fetch", "Reached here too");
 
         return new ItemsViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ItemsViewHolder holder, int position) {
-        Log.d("Fetch", "Reached here too");
         GetStockInTypeModel getStockInTypeModel = mStockArrayList.get(position);
         holder.itemname.setText(getStockInTypeModel.getName());
         Glide.with(mContext)
-                .load(getStockInTypeModel.getImage())
+                .load( getStockInTypeModel.getImage())
                 .into(holder.itemImage);
-        holder.itemquantity.setText(getStockInTypeModel.getQuantity());
         holder.itemsize.setText(getStockInTypeModel.getSize());
         holder.mCurrentPosition = position;
         holder.itemId = mStockArrayList.get(position).getId();
@@ -79,7 +74,14 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
         holder.header.setText(getStockInTypeModel.getName());
         holder.headerSize.setText("("+getStockInTypeModel.getSize()+")");
         holder.headerColor.setText("("+getStockInTypeModel.getColor()+")");
-        holder.q = getStockInTypeModel.getQuantity();
+        holder.idItem = Integer.toString(mStockArrayList.get(position).getId());
+        holder.itemQua = mStockArrayList.get(position).getQuantity();
+        holder.qq = Integer.toString(holder.itemQua);
+        holder.itemquantity.setText(holder.qq);
+        if (holder.itemQua<=2){
+            holder.alert.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override
@@ -92,12 +94,14 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
         ImageView itemImage, deleteItem, restock, arrowUp, arrowDown, cancelSale, addSale,alert;
         Button sold, edit;
         int mCurrentPosition;
+        String idItem;
+        int itemQua;
+        String qq;
         LinearLayoutCompat fulldetails, linearSale;
-        RelativeLayout dropdown, relativeSale;
+        RelativeLayout dropdown, relativeSale,noProducts;
         EditText quantitySold, costUnitPrice;
         int itemId;
         int purchaseid;
-        String q;
         private ArrayAdapter<String>bpadapter;
         private List<String> bpSpinnerArray;
         Spinner bpSpinner;
@@ -115,9 +119,11 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
             costUnitPrice = itemView.findViewById(R.id.cost_unit_price);
             relativeSale = itemView.findViewById(R.id.relativeSale);
             cancelSale = itemView.findViewById(R.id.cancel_sale);
+            noProducts = itemView.findViewById(R.id.no_products_view);
             addSale = itemView.findViewById(R.id.sold_done);
             headerSize = itemView.findViewById(R.id.header_size);
             fulldetails = itemView.findViewById(R.id.fulldetails);
+            quantitySold = itemView.findViewById(R.id.quantity_sold);
             alert = itemView.findViewById(R.id.alert);
             arrowDown = itemView.findViewById(R.id.arrowDown);
             arrowUp = itemView.findViewById(R.id.arrowUp);
@@ -128,6 +134,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
             edit = itemView.findViewById(R.id.editProduct);
             moreDetails = itemView.findViewById(R.id.more_details);
 
+
             bpSpinnerArray = new ArrayList<>();
 
             bpadapter = new ArrayAdapter<>(
@@ -136,15 +143,16 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
             bpadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
             bpSpinner.setAdapter(bpadapter);
-            String item_id = Integer.toString(itemId);
+
+            GetStockInTypeModel getStockModel = mStockArrayList.get(mCurrentPosition);
+            final String i = Integer.toString(getStockModel.getId());
             Call<List<GetBuyingPricesModel>> call = RetrofitClient.getInstance(mContext)
                     .getApiConnector()
-                    .getBP(item_id);
+                    .getBP(i);
             call.enqueue(new Callback<List<GetBuyingPricesModel>>() {
                 @Override
                 public void onResponse(Call<List<GetBuyingPricesModel>> call, Response<List<GetBuyingPricesModel>> response) {
-                    Log.d("cc", response.code()+"");
-                    if(response.isSuccessful()){
+                    if(response.code()==200){
 
                         for(int index= 0;index<response.body().size();index++){
                             bpSpinnerArray.add(response.body().get(index).getAmount());
@@ -342,7 +350,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                     alertDialog.show();
                     GetStockInTypeModel getStockModel = mStockArrayList.get(mCurrentPosition);
                     editName.setText(getStockModel.getName());
-                    editsp.setText(getStockModel.getQuantity());
+                    editsp.setText(qq);
                 }
             });
 
@@ -398,9 +406,11 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                         final String quantitysold = quantitySold.getText().toString();
                         String costprice = costUnitPrice.getText().toString();
                         final String purchaseId = Integer.toString(purchaseid);
+                        String bp = bpSpinner.getSelectedItem().toString();
+
                         Call<AddSaleModel> call = RetrofitClient.getInstance(mContext)
                                 .getApiConnector()
-                                .addnewsale(purchaseId, quantitysold, costprice);
+                                .addnewsale(purchaseId, quantitysold, costprice,bp);
                         call.enqueue(new Callback<AddSaleModel>() {
                             @Override
                             public void onResponse(Call<AddSaleModel> call, Response<AddSaleModel> response) {

@@ -1,17 +1,15 @@
-package com.example.shopkipa;
+package com.example.shopkipa.ui;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +20,8 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.shopkipa.R;
 import com.example.shopkipa.adapters.ItemsInTypeAdapter;
-import com.example.shopkipa.adapters.TypesInCategoryAdapter;
 import com.example.shopkipa.models.GetGroupModel;
 import com.example.shopkipa.models.GetStockInTypeModel;
 import com.example.shopkipa.models.GetTypesInCategoryModel;
@@ -43,8 +41,9 @@ public class ClothesStockFragment extends Fragment {
     private static ArrayList<GetGroupModel>mGroupArrayList=new ArrayList<>();
     private static ArrayList<GetStockInTypeModel>mStockArrayList=new ArrayList<>();
     RecyclerView recyclerView;
-    RelativeLayout progressLyt;
+    RelativeLayout progressLyt,noProducts;
     ItemsInTypeAdapter itemsInTypeAdapter;
+    LinearLayoutCompat productView;
     String fragment_name;
     ImageView nostock;
     Spinner typeSpinner,groupSpinner;
@@ -64,6 +63,8 @@ public class ClothesStockFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_clothes_stock, container, false);
         recyclerView = view.findViewById(R.id.stock_recyclerView);
         progressLyt = view.findViewById(R.id.progressLoad);
+        noProducts = view.findViewById(R.id.no_products_view);
+        productView = view.findViewById(R.id.products_view);
         typeSpinner = view.findViewById(R.id.typeSpinner);
         groupSpinner = view.findViewById(R.id.groupSpinner);
         nostock = view.findViewById(R.id.noStock);
@@ -111,7 +112,10 @@ public class ClothesStockFragment extends Fragment {
                         if (response.code() == 200) {
                             mStockArrayList.addAll(response.body());
                             itemsInTypeAdapter.notifyDataSetChanged();
-
+                            if (mStockArrayList.size()<1){
+                                noProducts.setVisibility(View.VISIBLE);
+                                productView.setVisibility(View.GONE);
+                            }
                         } else {
 
                         }
@@ -238,7 +242,6 @@ public class ClothesStockFragment extends Fragment {
         mStockArrayList.clear();
         ClothesStockFragment viewCustomerStockFragment =new ClothesStockFragment();
         Bundle bundle=new Bundle();
-//        bundle.putInt(REQUEST_TYPE,val);
         bundle.putString("fragment_name",fragmentname);
         viewCustomerStockFragment.setArguments(bundle);
         return viewCustomerStockFragment;

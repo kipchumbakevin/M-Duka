@@ -14,12 +14,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.LinearLayoutCompat;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.shopkipa.R;
-import com.example.shopkipa.ViewExpensesDialogFragment;
 import com.example.shopkipa.models.GetExpenseModel;
 import com.example.shopkipa.models.GetMonthsModel;
 import com.example.shopkipa.models.GetSalesInMonthModel;

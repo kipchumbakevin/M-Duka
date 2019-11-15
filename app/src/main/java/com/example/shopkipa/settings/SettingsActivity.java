@@ -1,4 +1,4 @@
-package com.example.shopkipa;
+package com.example.shopkipa.settings;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.example.shopkipa.R;
 import com.example.shopkipa.utils.Constants;
 import com.example.shopkipa.utils.SharedPreferencesConfig;
 

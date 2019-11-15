@@ -1,22 +1,21 @@
-package com.example.shopkipa;
+package com.example.shopkipa.ui;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 
-import com.example.shopkipa.adapters.ViewExpensesAdapter;
+import com.example.shopkipa.auth.LoginActivity;
+import com.example.shopkipa.R;
+import com.example.shopkipa.models.LogoutModel;
+import com.example.shopkipa.settings.SettingsActivity;
 import com.example.shopkipa.models.AddExpenseModel;
-import com.example.shopkipa.models.AddStockModel;
 import com.example.shopkipa.models.GetCategoriesModel;
 import com.example.shopkipa.models.GetExpenseModel;
 import com.example.shopkipa.networking.RetrofitClient;
 import com.example.shopkipa.utils.SharedPreferencesConfig;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.appcompat.app.AlertDialog;
@@ -34,19 +33,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
 import android.view.Menu;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -64,6 +56,7 @@ public class MainActivity extends AppCompatActivity
     private ArrayList<GetExpenseModel> mExpensesArrayList;
     private List<GetCategoriesModel> categories = new ArrayList<>();
     private Context mContext;
+    private SharedPreferencesConfig sharedPreferencesConfig;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +66,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
+        sharedPreferencesConfig = new SharedPreferencesConfig(getApplicationContext());
         tabLayout = findViewById(R.id.cart_tab);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -158,7 +152,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(MainActivity.this,SettingsActivity.class);
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
             startActivity(intent);
         }
 
@@ -188,9 +182,7 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(MainActivity.this,AddStock.class);
             startActivity(intent);
         }else if (id == R.id.nav_logout){
-            Intent intent = new Intent(MainActivity.this,LoginActivity.class);
-            startActivity(intent);
-            finish();
+            logOut();
         }else if (id == R.id.nav_updates){
             Intent intent = new Intent(MainActivity.this,UpdatesActivity.class);
             startActivity(intent);
@@ -212,6 +204,36 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void logOut() {
+        Call<LogoutModel> call = RetrofitClient.getInstance(mContext)
+                .getApiConnector()
+                .logOut();
+        call.enqueue(new Callback<LogoutModel>() {
+            @Override
+            public void onResponse(Call<LogoutModel> call, Response<LogoutModel> response) {
+                hideProgress();
+                if(response.code()==200){
+                    sharedPreferencesConfig.clear();
+                    Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                    Toast.makeText(MainActivity.this,response.message()+"success logout",Toast.LENGTH_SHORT).show();
+
+                }
+                else{
+                    Toast.makeText(MainActivity.this,"response:"+response.message(),Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<LogoutModel> call, Throwable t) {
+                hideProgress();
+                Toast.makeText(MainActivity.this,"errot:"+t.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void addexpense() {

@@ -1,4 +1,4 @@
-package com.example.shopkipa;
+package com.example.shopkipa.auth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,9 +12,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.shopkipa.models.LoginModel;
+import com.example.shopkipa.R;
 import com.example.shopkipa.models.UsersModel;
 import com.example.shopkipa.networking.RetrofitClient;
+import com.example.shopkipa.ui.MainActivity;
 import com.example.shopkipa.utils.Constants;
 import com.example.shopkipa.utils.SharedPreferencesConfig;
 
@@ -86,8 +87,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<UsersModel> call, Response<UsersModel> response) {
                 hideProgress();
                 if(response.isSuccessful()){
-                    userName.getText().clear();
-                    pass.getText().clear();
                     accessToken = response.body().getAccessToken();
                     Log.d("token", accessToken);
                     clientsFirstName = response.body().getUser().getFirstName();
@@ -96,6 +95,8 @@ public class LoginActivity extends AppCompatActivity {
                     clientsUsername = response.body().getUser().getUsername();
                     clientsPhone = response.body().getUser().getPhone();
                     sharedPreferencesConfig.saveAuthenticationInformation(accessToken,clientsFirstName,clientsLastName,clientsLocation,clientsUsername,clientsPhone, Constants.ACTIVE_CONSTANT);
+                    userName.getText().clear();
+                    pass.getText().clear();
                     welcome();
                 }
                 else{
@@ -112,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
     public void welcome(){
-        Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
     }

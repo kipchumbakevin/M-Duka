@@ -1,4 +1,4 @@
-package com.example.shopkipa;
+package com.example.shopkipa.settings;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.shopkipa.auth.LoginActivity;
+import com.example.shopkipa.R;
 import com.example.shopkipa.models.ChangePasswordModel;
 import com.example.shopkipa.networking.RetrofitClient;
 
@@ -46,7 +48,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
             public void onResponse(Call<ChangePasswordModel> call, Response<ChangePasswordModel> response) {
                 if(response.code()==201){
                     Toast.makeText(ChangePasswordActivity.this,response.message(),Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(ChangePasswordActivity.this,LoginActivity.class);
+                    Intent intent = new Intent(ChangePasswordActivity.this, LoginActivity.class);
                     startActivity(intent);
                     finish();
                 }

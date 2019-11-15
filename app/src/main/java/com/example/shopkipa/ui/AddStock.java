@@ -1,6 +1,5 @@
-package com.example.shopkipa;
+package com.example.shopkipa.ui;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,33 +14,25 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
-import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.shopkipa.models.AddExpenseModel;
+import com.example.shopkipa.R;
 import com.example.shopkipa.models.AddStockModel;
 import com.example.shopkipa.models.GetAllGroupsModel;
-import com.example.shopkipa.models.GetBuyingPricesModel;
 import com.example.shopkipa.models.GetCategoriesModel;
 import com.example.shopkipa.models.GetSizeModel;
 import com.example.shopkipa.models.GetTypesInGroupModel;
-import com.example.shopkipa.models.GetTypesModel;
 import com.example.shopkipa.networking.RetrofitClient;
 
 import java.io.File;
@@ -383,10 +374,12 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
     }
 
     private void addStockImageGallery() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent,"Choose product photo"),GALLERY_REQUEST_CODE);
+        Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(i,GALLERY_REQUEST_CODE);
+//        Intent intent = new Intent();
+//        intent.setType("image/*");
+//        intent.setAction(Intent.ACTION_GET_CONTENT);
+//        startActivityForResult(Intent.createChooser(intent,"Choose product photo"),GALLERY_REQUEST_CODE);
     }
 
     @Override

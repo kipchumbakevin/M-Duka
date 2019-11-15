@@ -1,4 +1,4 @@
-package com.example.shopkipa;
+package com.example.shopkipa.ui;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,8 +14,6 @@ import com.example.shopkipa.R;
 import com.example.shopkipa.adapters.GetFaqsAdapter;
 import com.example.shopkipa.models.GetFaqsModel;
 import com.example.shopkipa.networking.RetrofitClient;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,10 +1,9 @@
-package com.example.shopkipa;
+package com.example.shopkipa.auth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,7 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.shopkipa.models.AddStockModel;
+import com.example.shopkipa.R;
 import com.example.shopkipa.models.SendCodeModel;
 import com.example.shopkipa.models.SignUpModel;
 import com.example.shopkipa.networking.RetrofitClient;

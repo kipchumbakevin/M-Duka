@@ -1,4 +1,4 @@
-package com.example.shopkipa;
+package com.example.shopkipa.ui;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -16,6 +16,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.shopkipa.R;
 import com.example.shopkipa.adapters.ViewExpensesAdapter;
 import com.example.shopkipa.models.GetExpenseModel;
 import com.example.shopkipa.networking.RetrofitClient;

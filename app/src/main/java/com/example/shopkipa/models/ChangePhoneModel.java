@@ -1,7 +1,7 @@
 package com.example.shopkipa.models;
 
 public class ChangePhoneModel {
-    String oldPhone,newPhone;
+    String oldPhone,newPhone,pas,code;
 
     public ChangePhoneModel() {
     }
@@ -20,5 +20,21 @@ public class ChangePhoneModel {
 
     public void setNewPhone(String newPhone) {
         this.newPhone = newPhone;
+    }
+
+    public String getPas() {
+        return pas;
+    }
+
+    public void setPas(String pas) {
+        this.pas = pas;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

@@ -6,7 +6,7 @@
     android:background="@drawable/sign"
     android:fitsSystemWindows="true"
     android:layout_height="match_parent"
-    tools:context=".ConfirmCodeActivity">
+    tools:context=".settings.ConfirmCodeActivity">
     <TextView
         android:id="@+id/titleR"
         android:layout_width="wrap_content"
