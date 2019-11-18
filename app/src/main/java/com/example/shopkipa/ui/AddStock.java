@@ -135,8 +135,6 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
         fetchCategory();
         fetchSize();
 
-
-        setTitle("Add products");
         itemSP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

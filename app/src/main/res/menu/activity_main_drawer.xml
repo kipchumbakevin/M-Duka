@@ -17,6 +17,10 @@
             android:id="@+id/nav_addProduct"
             android:icon="@drawable/ic_ac_unit"
             android:title="Add product(s)" />
+        <item
+            android:id="@+id/nav_restock"
+            android:icon="@drawable/ic_ac_unit"
+            android:title="Suggested restock"/>
     </group>
     <item android:title="Leisure">
 
@@ -35,10 +39,6 @@
     <item android:title="">
 
         <menu>
-            <item
-                android:id="@+id/nav_help"
-                android:icon="@drawable/ic_help"
-                android:title="Help" />
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"

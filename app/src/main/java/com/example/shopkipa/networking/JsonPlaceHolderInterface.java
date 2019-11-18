@@ -1,14 +1,14 @@
 package com.example.shopkipa.networking;
 
-import android.net.Uri;
-
 import com.example.shopkipa.models.AddExpenseModel;
 import com.example.shopkipa.models.AddSaleModel;
 import com.example.shopkipa.models.AddStockModel;
 import com.example.shopkipa.models.ChangeDetailsModel;
 import com.example.shopkipa.models.ChangePasswordModel;
-import com.example.shopkipa.models.ChangePhoneModel;
-import com.example.shopkipa.models.ConfirmCodeModel;
+import com.example.shopkipa.models.ChangedForgotPassModel;
+import com.example.shopkipa.models.ConfirmPhoneChangeCodeModel;
+import com.example.shopkipa.models.ForgotPasswordModel;
+import com.example.shopkipa.models.GenerateCodeModel;
 import com.example.shopkipa.models.DeleteExpenseModel;
 import com.example.shopkipa.models.DeleteItemModel;
 import com.example.shopkipa.models.EditStockModel;
@@ -27,12 +27,12 @@ import com.example.shopkipa.models.GetTypesInCategoryModel;
 import com.example.shopkipa.models.GetTypesInGroupModel;
 import com.example.shopkipa.models.GetTypesModel;
 import com.example.shopkipa.models.GetYearsModel;
-import com.example.shopkipa.models.LoginModel;
 import com.example.shopkipa.models.LogoutModel;
 import com.example.shopkipa.models.RestockModel;
 import com.example.shopkipa.models.SendCodeModel;
 import com.example.shopkipa.models.SendMessageModel;
 import com.example.shopkipa.models.SignUpModel;
+import com.example.shopkipa.models.SuggestedRestockModel;
 import com.example.shopkipa.models.UsersModel;
 
 import java.util.List;
@@ -75,11 +75,6 @@ public interface JsonPlaceHolderInterface {
     @POST("api/sendcode")
     Call<SendCodeModel> send(
             @Field("phone")String phone
-    );
-    @FormUrlEncoded
-    @POST("api/confirmcode")
-    Call<ConfirmCodeModel> confirm(
-            @Field("code")String code
     );
     @FormUrlEncoded
     @POST("api/auth/login")
@@ -138,6 +133,11 @@ public interface JsonPlaceHolderInterface {
             @Field("namecategory")String category
     );
     @FormUrlEncoded
+    @POST("api/suggestedrestock")
+    Call<List<SuggestedRestockModel>> getSuggestedRestock(
+            @Field("namecategory")String category
+    );
+    @FormUrlEncoded
     @POST("api/getcategorytype")
     Call<List<GetTypesInCategoryModel>> getTypes(
             @Field("namecategory")String categoryname,
@@ -145,13 +145,13 @@ public interface JsonPlaceHolderInterface {
     );
     @FormUrlEncoded
     @POST("api/generatecode")
-    Call<ChangePhoneModel> generateCode(
+    Call<GenerateCodeModel> generateCode(
             @Field("oldphone")String oldphone,
             @Field("passcode")String pas
     );
     @FormUrlEncoded
     @POST("api/changephone")
-    Call<ChangePhoneModel> changePhone(
+    Call<ConfirmPhoneChangeCodeModel> changePhone(
             @Field("newphone")String newphone,
             @Field("code")String code
     );
@@ -159,7 +159,18 @@ public interface JsonPlaceHolderInterface {
     @POST("api/changepassword")
     Call<ChangePasswordModel> changePassword(
             @Field("newpass")String newPass,
-            @Field("phone")String phone
+            @Field("oldpass")String oldPass
+    );
+    @FormUrlEncoded
+    @POST("api/sendcode")
+    Call<ForgotPasswordModel> sendForgotCode(
+            @Field("phone")String newPass
+    );
+    @FormUrlEncoded
+    @POST("api/newpassword")
+    Call<ChangedForgotPassModel> newPass(
+            @Field("code")String code,
+            @Field("newpass")String newPass
     );
     @FormUrlEncoded
     @POST("api/changedetails")

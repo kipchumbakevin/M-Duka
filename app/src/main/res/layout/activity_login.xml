@@ -69,7 +69,6 @@
             android:textSize="14sp"
             android:drawablePadding="20dp"
             android:layout_width="match_parent"
-            android:drawableEnd="@drawable/ic_visibility"
             android:drawableStart="@drawable/ic_lock_outline"
             android:textColor="@color/colorWhite"
             android:textColorHint="@color/colorWhite"

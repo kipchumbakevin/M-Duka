@@ -35,7 +35,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class ClothesStockFragment extends Fragment {
+public class StockFragment extends Fragment {
     private  static final String REQUEST_TYPE = "com.example.shopkipa.REQUEST_TYPE" ;
     private static ArrayList<GetTypesInCategoryModel>mTypesArrayList=new ArrayList<>();
     private static ArrayList<GetGroupModel>mGroupArrayList=new ArrayList<>();
@@ -45,7 +45,6 @@ public class ClothesStockFragment extends Fragment {
     ItemsInTypeAdapter itemsInTypeAdapter;
     LinearLayoutCompat productView;
     String fragment_name;
-    ImageView nostock;
     Spinner typeSpinner,groupSpinner;
     private List<String> typeSpinnerArray;
     private ArrayAdapter<String>typeadapter;
@@ -60,14 +59,13 @@ public class ClothesStockFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_clothes_stock, container, false);
+        View view = inflater.inflate(R.layout.fragment_stock, container, false);
         recyclerView = view.findViewById(R.id.stock_recyclerView);
         progressLyt = view.findViewById(R.id.progressLoad);
         noProducts = view.findViewById(R.id.no_products_view);
         productView = view.findViewById(R.id.products_view);
         typeSpinner = view.findViewById(R.id.typeSpinner);
         groupSpinner = view.findViewById(R.id.groupSpinner);
-        nostock = view.findViewById(R.id.noStock);
         recyclerView.hasFixedSize();
         itemsInTypeAdapter = new ItemsInTypeAdapter(getActivity(), mStockArrayList);
         recyclerView.setAdapter(itemsInTypeAdapter);
@@ -238,9 +236,9 @@ public class ClothesStockFragment extends Fragment {
         progressLyt.setVisibility(View.VISIBLE);
     }
 
-    public static ClothesStockFragment newInstance(String fragmentname){
+    public static StockFragment newInstance(String fragmentname){
         mStockArrayList.clear();
-        ClothesStockFragment viewCustomerStockFragment =new ClothesStockFragment();
+        StockFragment viewCustomerStockFragment =new StockFragment();
         Bundle bundle=new Bundle();
         bundle.putString("fragment_name",fragmentname);
         viewCustomerStockFragment.setArguments(bundle);

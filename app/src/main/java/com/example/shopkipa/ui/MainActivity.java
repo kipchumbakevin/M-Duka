@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
         sharedPreferencesConfig = new SharedPreferencesConfig(getApplicationContext());
         tabLayout = findViewById(R.id.cart_tab);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -76,7 +75,6 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         progressLyt = findViewById(R.id.progressLoad);
         navigationView.setNavigationItemSelectedListener(this);
-        setTitle("My stock");
         getCategoryList();
 
         if (!categories.isEmpty()){
@@ -110,7 +108,7 @@ public class MainActivity extends AppCompatActivity
 
     }
     public void getTabContent(String tabIndex){
-            ClothesStockFragment tabContentFragment = ClothesStockFragment.newInstance(tabIndex);
+            StockFragment tabContentFragment = StockFragment.newInstance(tabIndex);
 
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
@@ -118,8 +116,8 @@ public class MainActivity extends AppCompatActivity
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.commit();
     }
-//    public static ClothesStockFragment newInstance(int val) {
-//        ClothesStockFragment fragment = new ClothesStockFragment();
+//    public static StockFragment newInstance(int val) {
+//        StockFragment fragment = new StockFragment();
 //        Bundle args = new Bundle();
 //        args.putInt("someInt", val);
 //        fragment.setArguments(args);
@@ -153,6 +151,9 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
+        }else if (id == R.id.action_help){
+            Intent intent = new Intent(MainActivity.this,HelpActivity.class);
             startActivity(intent);
         }
 
@@ -189,8 +190,8 @@ public class MainActivity extends AppCompatActivity
         }else if (id == R.id.nav_recipes){
             Intent intent = new Intent(MainActivity.this,RecipesActivity.class);
             startActivity(intent);
-        }else if (id == R.id.nav_help){
-            Intent intent = new Intent(MainActivity.this,HelpActivity.class);
+        }else if (id == R.id.nav_restock) {
+            Intent intent = new Intent(MainActivity.this, RestockActivity.class);
             startActivity(intent);
         }else if (id == R.id.nav_share){
             Intent intent = new Intent(Intent.ACTION_SEND);

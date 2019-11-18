@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,6 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.shopkipa.ui.MainActivity;
 import com.example.shopkipa.R;
 import com.example.shopkipa.models.AddSaleModel;
 import com.example.shopkipa.models.DeleteItemModel;
@@ -31,8 +29,10 @@ import com.example.shopkipa.models.EditStockModel;
 import com.example.shopkipa.models.GetBuyingPricesModel;
 import com.example.shopkipa.models.GetStockInTypeModel;
 import com.example.shopkipa.models.RestockModel;
+import com.example.shopkipa.models.SuggestedRestockModel;
 import com.example.shopkipa.networking.RetrofitClient;
-import com.example.shopkipa.utils.Constants;
+import com.example.shopkipa.ui.MainActivity;
+import com.example.shopkipa.ui.RestockActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,47 +41,45 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.ItemsViewHolder> {
-
+public class RestockAdapter extends RecyclerView.Adapter<RestockAdapter.RestockViewHolders> {
     private final Context mContext;
-    private final ArrayList<GetStockInTypeModel> mStockArrayList;
+    private final ArrayList<SuggestedRestockModel> mStockArrayList;
     private final LayoutInflater mLayoutInflator;
 
-    public ItemsInTypeAdapter(Context context, ArrayList<GetStockInTypeModel>stockArrayList){
+    public RestockAdapter(Context context, ArrayList<SuggestedRestockModel>stockArrayList){
         mContext = context;
         mStockArrayList = stockArrayList;
         mLayoutInflator = LayoutInflater.from(mContext);
     }
     @NonNull
     @Override
-    public ItemsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RestockViewHolders onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = mLayoutInflator.inflate(R.layout.items_layout,parent,false);
 
-        return new ItemsViewHolder(view);
+        return new RestockViewHolders(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemsViewHolder holder, int position) {
-        GetStockInTypeModel getStockInTypeModel = mStockArrayList.get(position);
-        holder.itemname.setText(getStockInTypeModel.getName());
+    public void onBindViewHolder(@NonNull RestockViewHolders holder, int position) {
+        SuggestedRestockModel suggestedRestockModel = mStockArrayList.get(position);
+        holder.itemname.setText(suggestedRestockModel.getName());
         Glide.with(mContext)
-                .load( getStockInTypeModel.getImage())
+                .load( suggestedRestockModel.getImage())
                 .into(holder.itemImage);
-        holder.itemsize.setText(getStockInTypeModel.getSize());
+        holder.itemsize.setText(suggestedRestockModel.getSize());
         holder.mCurrentPosition = position;
         holder.itemId = mStockArrayList.get(position).getId();
         holder.purchaseid = mStockArrayList.get(position).getPurchaseId();
-        holder.header.setText(getStockInTypeModel.getName());
-        holder.headerSize.setText("("+getStockInTypeModel.getSize()+")");
-        holder.headerColor.setText("("+getStockInTypeModel.getColor()+")");
+        holder.header.setText(suggestedRestockModel.getName());
+        holder.headerSize.setText("("+suggestedRestockModel.getSize()+")");
+        holder.headerColor.setText("("+suggestedRestockModel.getColor()+")");
         holder.idItem = Integer.toString(mStockArrayList.get(position).getId());
         holder.itemQua = mStockArrayList.get(position).getQuantity();
         holder.qq = Integer.toString(holder.itemQua);
         holder.itemquantity.setText(holder.qq);
-        if (holder.itemQua<=2){
-            holder.alert.setVisibility(View.VISIBLE);
+        if (holder.itemQua==0){
+            holder.sold.setVisibility(View.GONE);
         }
-
     }
 
     @Override
@@ -89,7 +87,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
         return mStockArrayList.size();
     }
 
-    public class ItemsViewHolder extends RecyclerView.ViewHolder {
+    public class RestockViewHolders extends RecyclerView.ViewHolder {
         TextView itemname, itemsize, itemquantity, moreDetails, header, headerSize, headerColor;
         ImageView itemImage, deleteItem, restock, arrowUp, arrowDown, cancelSale, addSale,alert;
         Button sold, edit;
@@ -102,11 +100,11 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
         EditText quantitySold, costUnitPrice;
         int itemId;
         int purchaseid;
-        private ArrayAdapter<String>bpadapter;
+        private ArrayAdapter<String> bpadapter;
         private List<String> bpSpinnerArray;
         Spinner bpSpinner;
 
-        public ItemsViewHolder(@NonNull View itemView) {
+        public RestockViewHolders(@NonNull View itemView) {
             super(itemView);
             itemname = itemView.findViewById(R.id.itemname);
             itemsize = itemView.findViewById(R.id.itemsize);
@@ -144,9 +142,8 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
 
             bpSpinner.setAdapter(bpadapter);
 
-            GetStockInTypeModel get = mStockArrayList.get(mCurrentPosition);
-            int ii = get.getId();
-            final String i = Integer.toString(ii);
+            final SuggestedRestockModel suggestedRestockModel = mStockArrayList.get(mCurrentPosition);
+            final String i = Integer.toString(suggestedRestockModel.getId());
             Call<List<GetBuyingPricesModel>> call = RetrofitClient.getInstance(mContext)
                     .getApiConnector()
                     .getBP(i);
@@ -221,7 +218,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                                             @Override
                                             public void onResponse(Call<RestockModel> call, Response<RestockModel> response) {
                                                 if (response.code() == 201) {
-                                                    Intent intent = new Intent(mContext, MainActivity.class);
+                                                    Intent intent = new Intent(mContext, RestockActivity.class);
                                                     mContext.startActivity(intent);
                                                     ((Activity) mContext).finish();
                                                     Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
@@ -270,7 +267,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                                         @Override
                                         public void onResponse(Call<DeleteItemModel> call, Response<DeleteItemModel> response) {
                                             if (response.code() == 201) {
-                                                Intent intent = new Intent(mContext, MainActivity.class);
+                                                Intent intent = new Intent(mContext, RestockActivity.class);
                                                 mContext.startActivity(intent);
                                                 Toast.makeText(mContext, "Deleted successfully", Toast.LENGTH_SHORT).show();
                                             } else {
@@ -323,7 +320,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                                 public void onResponse(Call<EditStockModel> call, Response<EditStockModel> response) {
                                     if (response.code() == 201) {
                                         Toast.makeText(mContext, "Edited successfuly", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(mContext, MainActivity.class);
+                                        Intent intent = new Intent(mContext, RestockActivity.class);
                                         mContext.startActivity(intent);
                                         ((Activity) mContext).finish();
 
@@ -349,9 +346,9 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                     });
                     final AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
-                    GetStockInTypeModel getStockModel = mStockArrayList.get(mCurrentPosition);
-                    editName.setText(getStockModel.getName());
-                    editsp.setText(getStockModel.getSellingprice());
+                    SuggestedRestockModel suggestedRestockModel = mStockArrayList.get(mCurrentPosition);
+                    editName.setText(suggestedRestockModel.getName());
+                    editsp.setText(suggestedRestockModel.getSellingprice());
                 }
             });
 
@@ -374,10 +371,10 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                     });
                     final AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
-                    GetStockInTypeModel getStockModel = mStockArrayList.get(mCurrentPosition);
-                    itemcolor.setText(getStockModel.getColor());
-                    itemdesign.setText(getStockModel.getDesign());
-                    itemcompany.setText(getStockModel.getCompany());
+                    SuggestedRestockModel suggestedRestockModel1 = mStockArrayList.get(mCurrentPosition);
+                    itemcolor.setText(suggestedRestockModel.getColor());
+                    itemdesign.setText(suggestedRestockModel.getDesign());
+                    itemcompany.setText(suggestedRestockModel.getCompany());
 
                 }
             });
@@ -417,7 +414,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                             public void onResponse(Call<AddSaleModel> call, Response<AddSaleModel> response) {
 //                                        progressLyt.setVisibility(View.INVISIBLE);
                                 if (response.code() == 201) {
-                                    Intent intent = new Intent(mContext, MainActivity.class);
+                                    Intent intent = new Intent(mContext, RestockActivity.class);
                                     mContext.startActivity(intent);
                                     ((Activity) mContext).finish();
                                     Toast.makeText(mContext, "Sale added", Toast.LENGTH_SHORT).show();

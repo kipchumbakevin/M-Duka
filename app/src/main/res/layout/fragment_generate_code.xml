@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".settings.GenerateCodeFragment">
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:padding="20dp"
         android:layout_width="match_parent"
@@ -72,5 +74,7 @@
             android:layout_marginTop="25dp"
             android:background="@drawable/button"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+    <include layout="@layout/content_progress_bar"/>
 
 </FrameLayout>

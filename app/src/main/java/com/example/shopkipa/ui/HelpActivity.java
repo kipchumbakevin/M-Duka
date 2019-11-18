@@ -50,7 +50,6 @@ public class HelpActivity extends AppCompatActivity {
         if (actionBar!=null){
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        setTitle("Help center");
         fetchFaqs();
     }
 

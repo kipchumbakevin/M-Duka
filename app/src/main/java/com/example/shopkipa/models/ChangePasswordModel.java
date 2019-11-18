@@ -1,7 +1,7 @@
 package com.example.shopkipa.models;
 
 public class ChangePasswordModel {
-    String newPass,phone;
+    String newPass,oldPass;
 
     public ChangePasswordModel() {
     }
@@ -14,11 +14,11 @@ public class ChangePasswordModel {
         this.newPass = newPass;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getOldPass() {
+        return oldPass;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setOldPass(String oldPass) {
+        this.oldPass = oldPass;
     }
 }

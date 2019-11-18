@@ -55,8 +55,6 @@ public class SummaryActivity extends AppCompatActivity {
 
         yearSpinner.setAdapter(yearadapter);
 
-        setTitle("Summary");
-
         viewYears();
         yearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

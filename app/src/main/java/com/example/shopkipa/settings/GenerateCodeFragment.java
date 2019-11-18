@@ -14,10 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.shopkipa.R;
-import com.example.shopkipa.models.ChangePhoneModel;
+import com.example.shopkipa.models.GenerateCodeModel;
 import com.example.shopkipa.networking.RetrofitClient;
 
 import retrofit2.Call;
@@ -32,7 +33,7 @@ public class GenerateCodeFragment extends Fragment {
     EditText oldPhone,newPhone,enterPass;
     Button submit;
     String Pnumber;
-
+    RelativeLayout progress;
     public GenerateCodeFragment() {
         // Required empty public constructor
     }
@@ -47,6 +48,7 @@ public class GenerateCodeFragment extends Fragment {
         newPhone = view.findViewById(R.id.enter_new_phone);
         submit = view.findViewById(R.id.submit);
         enterPass = view.findViewById(R.id.enter_password);
+        progress = view.findViewById(R.id.progressLoad);
 
 
         submit.setOnClickListener(new View.OnClickListener() {
@@ -63,20 +65,21 @@ public class GenerateCodeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
     private void generate() {
+        showProgress();
         String oldphone = oldPhone.getText().toString();
         String pas = enterPass.getText().toString();
-        Call<ChangePhoneModel> call = RetrofitClient.getInstance(getActivity())
+        Call<GenerateCodeModel> call = RetrofitClient.getInstance(getActivity())
                 .getApiConnector()
                 .generateCode(oldphone,pas);
-        call.enqueue(new Callback<ChangePhoneModel>() {
+        call.enqueue(new Callback<GenerateCodeModel>() {
             @Override
-            public void onResponse(Call<ChangePhoneModel> call, Response<ChangePhoneModel> response) {
+            public void onResponse(Call<GenerateCodeModel> call, Response<GenerateCodeModel> response) {
+                hideProgress();
                 if(response.code()==201){
                     oldPhone.getText().clear();
                     enterPass.getText().clear();
                     Pnumber = newPhone.getText().toString();
                     Log.d("ppn", Pnumber);
-                    Toast.makeText(getActivity(),response.message(),Toast.LENGTH_SHORT).show();
 
                     changeFragment();
                 }
@@ -87,7 +90,8 @@ public class GenerateCodeFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<ChangePhoneModel> call, Throwable t) {
+            public void onFailure(Call<GenerateCodeModel> call, Throwable t) {
+                hideProgress();
                 Toast.makeText(getActivity(),"errot:"+t.getMessage(),Toast.LENGTH_SHORT).show();
             }
         });
@@ -100,5 +104,11 @@ public class GenerateCodeFragment extends Fragment {
         fragments.setArguments(number);
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.fragment,fragments,fragments.getTag()).commit();
+    }
+    private void showProgress() {
+        progress.setVisibility(View.VISIBLE);
+    }
+    private void hideProgress(){
+        progress.setVisibility(View.GONE);
     }
 }

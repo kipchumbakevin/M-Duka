@@ -6,10 +6,10 @@
         android:id="@+id/buttonAddStock"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:text="add"
         android:textColor="@color/colorWhite"
-        android:backgroundTint="@color/colorGreen"
+        android:background="@drawable/addstock"
         android:layout_gravity="bottom"/>
     <include layout="@layout/content_progress_bar"/>
 

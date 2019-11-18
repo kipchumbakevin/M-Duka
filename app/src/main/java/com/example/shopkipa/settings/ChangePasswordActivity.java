@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.shopkipa.auth.LoginActivity;
@@ -19,15 +20,17 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ChangePasswordActivity extends AppCompatActivity {
-    EditText phoneNo,newpass;
+    EditText oldpass,newpass;
     Button changePass;
+    RelativeLayout progress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
-        phoneNo = findViewById(R.id.phone);
+        oldpass = findViewById(R.id.oldpass);
         newpass = findViewById(R.id.new_password);
         changePass = findViewById(R.id.change_pass);
+        progress = findViewById(R.id.progressLoad);
 
         changePass.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,14 +41,16 @@ public class ChangePasswordActivity extends AppCompatActivity {
     }
 
     private void changePassword() {
-        String phone = phoneNo.getText().toString();
+        showProgress();
+        String oldPass = oldpass.getText().toString();
         String newPass = newpass.getText().toString();
         Call<ChangePasswordModel> call = RetrofitClient.getInstance(this)
                 .getApiConnector()
-                .changePassword(newPass,phone);
+                .changePassword(newPass,oldPass);
         call.enqueue(new Callback<ChangePasswordModel>() {
             @Override
             public void onResponse(Call<ChangePasswordModel> call, Response<ChangePasswordModel> response) {
+                hideProgress();
                 if(response.code()==201){
                     Toast.makeText(ChangePasswordActivity.this,response.message(),Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(ChangePasswordActivity.this, LoginActivity.class);
@@ -60,8 +65,15 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ChangePasswordModel> call, Throwable t) {
+                hideProgress();
                 Toast.makeText(ChangePasswordActivity.this,"errot:"+t.getMessage(),Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private void showProgress() {
+        progress.setVisibility(View.VISIBLE);
+    }
+    private void hideProgress(){
+        progress.setVisibility(View.GONE);
     }
 }

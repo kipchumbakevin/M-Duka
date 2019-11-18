@@ -95,8 +95,6 @@ public class LoginActivity extends AppCompatActivity {
                     clientsUsername = response.body().getUser().getUsername();
                     clientsPhone = response.body().getUser().getPhone();
                     sharedPreferencesConfig.saveAuthenticationInformation(accessToken,clientsFirstName,clientsLastName,clientsLocation,clientsUsername,clientsPhone, Constants.ACTIVE_CONSTANT);
-                    userName.getText().clear();
-                    pass.getText().clear();
                     welcome();
                 }
                 else{
