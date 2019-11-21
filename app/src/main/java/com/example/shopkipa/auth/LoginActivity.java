@@ -27,10 +27,18 @@ public class LoginActivity extends AppCompatActivity {
     Button signup,login;
     EditText userName,pass;
     TextView forgotPass;
-    public String clientsFirstName,clientsLastName,clientsUsername,clientsPhone,clientsLocation,accessToken;
+    private String clientsFirstName,clientsLastName,clientsUsername,clientsPhone,clientsLocation,token;
     private SharedPreferencesConfig sharedPreferencesConfig;
     RelativeLayout progressLyt;
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        if (sharedPreferencesConfig.isloggedIn()){
+//            welcome();
+//        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +62,8 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                startActivity(intent);
                 loginUser();
             }
         });
@@ -65,14 +75,6 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
             }
         });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        if (sharedPreferencesConfig.isloggedIn()){
-//            welcome();
-//        }
     }
 
     private void loginUser() {
@@ -87,14 +89,14 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<UsersModel> call, Response<UsersModel> response) {
                 hideProgress();
                 if(response.isSuccessful()){
-                    accessToken = response.body().getAccessToken();
-                    Log.d("token", accessToken);
+                    token = response.body().getAccessToken();
+                    Log.d("token", token);
                     clientsFirstName = response.body().getUser().getFirstName();
                     clientsLastName = response.body().getUser().getLastName();
                     clientsLocation = response.body().getUser().getLocation();
                     clientsUsername = response.body().getUser().getUsername();
                     clientsPhone = response.body().getUser().getPhone();
-                    sharedPreferencesConfig.saveAuthenticationInformation(accessToken,clientsFirstName,clientsLastName,clientsLocation,clientsUsername,clientsPhone, Constants.ACTIVE_CONSTANT);
+                    sharedPreferencesConfig.saveAuthenticationInformation(token,clientsFirstName,clientsLastName,clientsLocation,clientsUsername,clientsPhone, Constants.ACTIVE_CONSTANT);
                     welcome();
                 }
                 else{

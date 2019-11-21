@@ -52,6 +52,9 @@ public class ChangePersonalInfo extends AppCompatActivity {
             bindSummaryValue(findPreference("first_name_edit_preference"));
             bindSummaryValue(findPreference("last_name_edit_preference"));
             bindSummaryValue(findPreference("location_edit_preference"));
+            final String user = findPreference("username_edit_preference").getSummary().toString();
+            final String first = findPreference("first_name_edit_preference").getSummary().toString();
+            final String last = findPreference("last_name_edit_preference").getSummary().toString();
 
             final Context context = getContext();
             sharedPreferencesConfig = new SharedPreferencesConfig(context);
@@ -80,30 +83,6 @@ public class ChangePersonalInfo extends AppCompatActivity {
             if (preferenceLocation != null){
                 preferenceLocation.setSummary(location);
             }
-
-
-
-            Call<ChangeDetailsModel> call = RetrofitClient.getInstance(context)
-                    .getApiConnector()
-                    .changeDetails(username,firstname,lastname);
-            Toast.makeText(context,username +" "+firstname,Toast.LENGTH_LONG).show();
-            call.enqueue(new Callback<ChangeDetailsModel>() {
-                @Override
-                public void onResponse(Call<ChangeDetailsModel> call, Response<ChangeDetailsModel> response) {
-                    if(response.code()==201){
-                        Toast.makeText(context,response.message(),Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        Toast.makeText(context,"Response:"+response.message(),Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-
-                @Override
-                public void onFailure(Call<ChangeDetailsModel> call, Throwable t) {
-                    Toast.makeText(context,"Error:"+t.getMessage(),Toast.LENGTH_SHORT).show();
-                }
-            });
         }
     }
     private static void bindSummaryValue(Preference preference){

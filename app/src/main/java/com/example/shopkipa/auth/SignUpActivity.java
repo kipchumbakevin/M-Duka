@@ -59,7 +59,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void registerUser() {
         showProgress();
-        String firstname,lastname,username,location,phone,password,confirmPassword;
+        final String firstname,lastname,username,location,phone,password,confirmPassword;
         firstname = firstName.getText().toString();
         lastname = lastName.getText().toString();
         username = userName.getText().toString();
@@ -78,7 +78,8 @@ public class SignUpActivity extends AppCompatActivity {
                 hideProgress();
                 if(response.code()==201){
                     Toast.makeText(SignUpActivity.this,"Successfully registered",Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(SignUpActivity.this,LoginActivity.class);
+                    Intent intent = new Intent(SignUpActivity.this,CodeAfterSignUpActivity.class);
+                    intent.putExtra("NUMBER",phone);
                     startActivity(intent);
                     finish();
                 }

@@ -22,7 +22,12 @@ public class RetrofitClient {
     private Retrofit retrofit;
     private RetrofitClient(Context context) {
         final String accessToken;
-            accessToken =  new SharedPreferencesConfig(context).readClientsAccessToken();
+        if(new SharedPreferencesConfig(context).isloggedIn()){
+            accessToken=new SharedPreferencesConfig(context).readClientsAccessToken();
+
+        }else{
+            accessToken="";
+        }
         OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder()
                 .retryOnConnectionFailure(true)
                 .addInterceptor(new Interceptor() {

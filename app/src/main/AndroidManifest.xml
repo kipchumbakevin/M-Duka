@@ -14,9 +14,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.RestockActivity"
-            android:parentActivityName=".ui.MainActivity"
-            android:label="Restock"></activity>
+        <activity android:name=".auth.CodeAfterSignUpActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ui.RestockActivity"
+            android:label="Restock"
+            android:parentActivityName=".ui.MainActivity" />
         <activity
             android:name=".settings.ChangePhoneNumber"
             android:label="Change number"
@@ -61,20 +64,20 @@
             android:parentActivityName=".ui.MainActivity" />
         <activity
             android:name=".ui.SendMessage"
-            android:parentActivityName=".ui.HelpActivity"
-            android:label="Send message"/>
+            android:label="Send message"
+            android:parentActivityName=".ui.HelpActivity" />
         <activity
             android:name=".ui.HelpActivity"
-            android:parentActivityName=".ui.MainActivity"
-            android:label="Help center"/>
+            android:label="Help center"
+            android:parentActivityName=".ui.MainActivity" />
         <activity
             android:name=".ui.SummaryActivity"
-            android:parentActivityName=".ui.MainActivity"
-            android:label="Summary"/>
+            android:label="Summary"
+            android:parentActivityName=".ui.MainActivity" />
         <activity
             android:name=".ui.AddStock"
-            android:parentActivityName=".ui.MainActivity"
-            android:label="Add products"/>
+            android:label="Add products"
+            android:parentActivityName=".ui.MainActivity" />
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/app_name"

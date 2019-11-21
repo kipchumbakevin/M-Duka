@@ -108,21 +108,13 @@ public class SendMessage extends AppCompatActivity {
             }
         });
     }
-    private File getPhotoFile() {
-        File filesDir = getFilesDir();
-        return new File(filesDir,getPhotoFilename());
-    }
-
-    public String getPhotoFilename() {
-
-        return "IMG_" + new Random().nextDouble() + ".jpg";
-
-    }
     private void gallery() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent,"Choose product photo"),GALLERY_REQUEST_CODE);
+        Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(i,GALLERY_REQUEST_CODE);
+//        Intent intent = new Intent();
+//        intent.setType("image/*");
+//        intent.setAction(Intent.ACTION_GET_CONTENT);
+//        startActivityForResult(Intent.createChooser(intent,"Choose product photo"),GALLERY_REQUEST_CODE);
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

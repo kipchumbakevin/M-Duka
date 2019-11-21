@@ -7,6 +7,7 @@ import com.example.shopkipa.models.ChangeDetailsModel;
 import com.example.shopkipa.models.ChangePasswordModel;
 import com.example.shopkipa.models.ChangedForgotPassModel;
 import com.example.shopkipa.models.ConfirmPhoneChangeCodeModel;
+import com.example.shopkipa.models.ConfirmSignUpCode;
 import com.example.shopkipa.models.ForgotPasswordModel;
 import com.example.shopkipa.models.GenerateCodeModel;
 import com.example.shopkipa.models.DeleteExpenseModel;
@@ -156,6 +157,12 @@ public interface JsonPlaceHolderInterface {
             @Field("code")String code
     );
     @FormUrlEncoded
+    @POST("api/signupcode")
+    Call<ConfirmSignUpCode> signUpCode(
+            @Field("phone")String numb,
+            @Field("code")String code
+    );
+    @FormUrlEncoded
     @POST("api/changepassword")
     Call<ChangePasswordModel> changePassword(
             @Field("newpass")String newPass,
@@ -175,9 +182,9 @@ public interface JsonPlaceHolderInterface {
     @FormUrlEncoded
     @POST("api/changedetails")
     Call<ChangeDetailsModel> changeDetails(
-            @Field("username")String username,
-            @Field("firstname")String firstname,
-            @Field("lastname")String lastname
+            @Field("username")String user,
+            @Field("firstname")String first,
+            @Field("lastname")String last
     );
     @FormUrlEncoded
     @POST("api/getgroup")
