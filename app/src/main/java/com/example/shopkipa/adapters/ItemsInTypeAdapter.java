@@ -65,7 +65,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
         GetStockInTypeModel getStockInTypeModel = mStockArrayList.get(position);
         holder.itemname.setText(getStockInTypeModel.getName());
         Glide.with(mContext)
-                .load( getStockInTypeModel.getImage())
+                .load( Constants.BASE_URL+"/images" + getStockInTypeModel.getImage())
                 .into(holder.itemImage);
         holder.itemsize.setText(getStockInTypeModel.getSize());
         holder.mCurrentPosition = position;
@@ -143,34 +143,6 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
             bpadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
             bpSpinner.setAdapter(bpadapter);
-
-            GetStockInTypeModel get = mStockArrayList.get(mCurrentPosition);
-            int ii = get.getId();
-            final String i = Integer.toString(ii);
-            Call<List<GetBuyingPricesModel>> call = RetrofitClient.getInstance(mContext)
-                    .getApiConnector()
-                    .getBP(i);
-            call.enqueue(new Callback<List<GetBuyingPricesModel>>() {
-                @Override
-                public void onResponse(Call<List<GetBuyingPricesModel>> call, Response<List<GetBuyingPricesModel>> response) {
-                    if(response.code()==200){
-
-                        for(int index= 0;index<response.body().size();index++){
-                            bpSpinnerArray.add(response.body().get(index).getAmount());
-                        }
-                        bpadapter.notifyDataSetChanged();
-                    }
-                    else{
-                        Toast.makeText(mContext,"response: " +response.message()+response.code(),Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-
-                @Override
-                public void onFailure(Call<List<GetBuyingPricesModel>> call, Throwable t) {
-                    Toast.makeText(mContext,"Error: "+t.getMessage(),Toast.LENGTH_SHORT).show();
-                }
-            });
 
             dropdown.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -384,6 +356,32 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
             sold.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    String i = Integer.toString(itemId);
+                    bpSpinnerArray.clear();
+                    Call<List<GetBuyingPricesModel>> call = RetrofitClient.getInstance(mContext)
+                            .getApiConnector()
+                            .getBP(i);
+                    call.enqueue(new Callback<List<GetBuyingPricesModel>>() {
+                        @Override
+                        public void onResponse(Call<List<GetBuyingPricesModel>> call, Response<List<GetBuyingPricesModel>> response) {
+                            if(response.code()==200){
+
+                                for(int index= 0;index<response.body().size();index++){
+                                    bpSpinnerArray.add(response.body().get(index).getAmount());
+                                }
+                                bpadapter.notifyDataSetChanged();
+                            }
+                            else{
+                                Toast.makeText(mContext,"response: " +response.message()+response.code(),Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<GetBuyingPricesModel>> call, Throwable t) {
+                            Toast.makeText(mContext,"Error: "+t.getMessage(),Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     linearSale.setVisibility(View.GONE);
                     relativeSale.setVisibility(View.VISIBLE);
                 }

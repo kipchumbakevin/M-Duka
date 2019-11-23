@@ -1,13 +1,95 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".settings.ChangePersonalInfo"
+    tools:context=".settings.ChangePersonalInfo">
+<LinearLayout
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
     android:orientation="vertical">
-
-    <FrameLayout
-        android:id="@+id/settings"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorBlack"
+        android:textSize="15sp"
+        android:text="Username:"/>
+    <EditText
+        android:id="@+id/set_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_create"
+        android:textSize="12sp"
+        android:textColor="@color/colorBlack"
+        android:drawablePadding="10dp"
+        android:layout_marginStart="10dp"
+        android:hint="username"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorBlack"
+        android:textSize="15sp"
+        android:text="First name:"/>
+    <EditText
+        android:id="@+id/set_firstname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorBlack"
+        android:textSize="12sp"
+        android:drawableStart="@drawable/ic_create"
+        android:drawablePadding="10dp"
+        android:layout_marginStart="10dp"
+        android:hint="first name"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:textColor="@color/colorBlack"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:text="Last name:"/>
+    <EditText
+        android:id="@+id/set_lastname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorBlack"
+        android:textSize="12sp"
+        android:layout_marginStart="10dp"
+        android:drawableStart="@drawable/ic_create"
+        android:drawablePadding="10dp"
+        android:hint="last name"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:textColor="@color/colorBlack"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:text="Location:"/>
+    <EditText
+        android:id="@+id/set_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:drawableStart="@drawable/ic_create"
+        android:textColor="@color/colorBlack"
+        android:textSize="12sp"
+        android:drawablePadding="10dp"
+        android:hint="location"/>
+    <Button
+        android:id="@+id/submit_changes"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:textSize="12sp"
+        android:text="update"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/button"/>
 </LinearLayout>
+
+    <include
+        layout="@layout/content_progress_bar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

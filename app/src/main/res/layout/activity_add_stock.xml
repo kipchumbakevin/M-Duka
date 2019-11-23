@@ -228,35 +228,49 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorBlack"
-        android:text="Add image"/>
+        android:text="Add images(2)"/>
         <androidx.cardview.widget.CardView
-            android:layout_width="200dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             app:cardBackgroundColor="@android:color/white"
             android:layout_marginBottom="10dp"
             app:cardCornerRadius="6dp"
-
             app:cardElevation="@dimen/card_elevation">
-            <RelativeLayout
+            <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="6dp"
+                    app:cardElevation="@dimen/card_elevation">
             <ImageView
                 android:id="@+id/productImage"
                 android:layout_width="200dp"
                 android:scaleType="fitXY"
                 android:layout_height="200dp"
                 android:src="@drawable/placeholder"/>
-
-            <ImageView
-                android:id="@+id/addImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="5dp"
-                android:src="@drawable/ic_menu_camera" />
-            </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    app:cardCornerRadius="6dp"
+                    app:cardElevation="@dimen/card_elevation">
+                <ImageView
+                    android:id="@+id/productImage2"
+                    android:layout_width="200dp"
+                    android:layout_alignParentEnd="true"
+                    android:scaleType="fitXY"
+                    android:layout_height="200dp"
+                    android:src="@drawable/placeholder"/>
+                </androidx.cardview.widget.CardView>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </HorizontalScrollView>
         </androidx.cardview.widget.CardView>
         <include layout="@layout/content_add_stock"/>
     </androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,7 +1,7 @@
 package com.example.shopkipa.models;
 
 public class SignUpModel {
-    String firstname,lastname,username,location,phone,password,confirmPassword;
+    String firstname,lastname,username,location,phone,password,confirmPassword,code;
     public SignUpModel() {
     }
 
@@ -59,5 +59,13 @@ public class SignUpModel {
 
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

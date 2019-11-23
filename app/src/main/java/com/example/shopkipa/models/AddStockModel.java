@@ -1,7 +1,7 @@
 package com.example.shopkipa.models;
 
 public class AddStockModel {
-    String category,type,name,buyingprice,sellingprice,size,quantity,color,design,company,image,item_group;
+    String category,type,name,buyingprice,sellingprice,size,quantity,color,design,company,image,image2,item_group;
 
     public AddStockModel() {
     }
@@ -100,5 +100,13 @@ public class AddStockModel {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getImage2() {
+        return image2;
+    }
+
+    public void setImage2(String image2) {
+        this.image2 = image2;
     }
 }

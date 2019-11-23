@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.shopkipa.R;
 import com.example.shopkipa.models.SendCodeModel;
+import com.example.shopkipa.models.SendSignUpCode;
 import com.example.shopkipa.models.SignUpModel;
 import com.example.shopkipa.networking.RetrofitClient;
 
@@ -69,17 +70,23 @@ public class SignUpActivity extends AppCompatActivity {
         confirmPassword = confirmPass.getText().toString();
 
 
-        Call<SignUpModel> call = RetrofitClient.getInstance(SignUpActivity.this)
+        Call<SendSignUpCode> call = RetrofitClient.getInstance(SignUpActivity.this)
                 .getApiConnector()
-                .signUp(firstname,lastname,username,location,phone,password,confirmPassword);
-        call.enqueue(new Callback<SignUpModel>() {
+                .signUpCode(phone);
+        call.enqueue(new Callback<SendSignUpCode>() {
             @Override
-            public void onResponse(Call<SignUpModel> call, Response<SignUpModel> response) {
+            public void onResponse(Call<SendSignUpCode> call, Response<SendSignUpCode> response) {
                 hideProgress();
                 if(response.code()==201){
                     Toast.makeText(SignUpActivity.this,"Successfully registered",Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(SignUpActivity.this,CodeAfterSignUpActivity.class);
+                    intent.putExtra("FIRST",firstname);
+                    intent.putExtra("LAST",lastname);
+                    intent.putExtra("USER",username);
+                    intent.putExtra("LOCATION",location);
                     intent.putExtra("NUMBER",phone);
+                    intent.putExtra("PASS",password);
+                    intent.putExtra("CONFIRM",confirmPassword);
                     startActivity(intent);
                     finish();
                 }
@@ -90,33 +97,7 @@ public class SignUpActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<SignUpModel> call, Throwable t) {
-                hideProgress();
-                Toast.makeText(SignUpActivity.this,t.getMessage()+"error",Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    private void sendcode() {
-        String phone = phoneNumber.getText().toString();
-        Call<SendCodeModel> call = RetrofitClient.getInstance(SignUpActivity.this)
-                .getApiConnector()
-                .send(phone);
-        call.enqueue(new Callback<SendCodeModel>() {
-            @Override
-            public void onResponse(Call<SendCodeModel> call, Response<SendCodeModel> response) {
-                hideProgress();
-                if(response.code()==201){
-                    Toast.makeText(SignUpActivity.this,"imetumwa",Toast.LENGTH_LONG).show();
-                }
-                else{
-                    Toast.makeText(SignUpActivity.this,response.message()+"response",Toast.LENGTH_LONG).show();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<SendCodeModel> call, Throwable t) {
+            public void onFailure(Call<SendSignUpCode> call, Throwable t) {
                 hideProgress();
                 Toast.makeText(SignUpActivity.this,t.getMessage()+"error",Toast.LENGTH_LONG).show();
             }

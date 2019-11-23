@@ -17,6 +17,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -40,6 +41,8 @@ import com.example.shopkipa.models.GetTypesInGroupModel;
 import com.example.shopkipa.models.ImagesModel;
 import com.example.shopkipa.networking.RetrofitClient;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -54,10 +57,12 @@ import retrofit2.Response;
 
 public class AddStock extends AppCompatActivity implements NumberPicker.OnValueChangeListener {
     private static final int GALLERY_REQUEST_CODE = 766;
+    private static final int GALLERY_REQUEST_CODE_TWO = 700;
     private static final int REQUEST_CODE = 422;
+    private static final int REQUEST_CODE_TWO = 400;
     Spinner spinnerCategory,spinnerType,spinnerSize,selectItemGroupSpinner;
     NumberPicker numberPickerSize,numberPickerQuantity;
-    ImageView addImage,productImage;
+    ImageView addImage,productImage,productImage2;
     private File mPhotoFile;
     TextView pickFormat,titleSize;
     View sizeView;
@@ -75,6 +80,8 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
     private List<String> typeSpinnerArray;
     private List<String> sizeSpinnerArray;
     private List<String> groupSpinnerArray;
+    private Boolean firstImageView = true;
+    private Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,10 +104,9 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
         buttonAddStock = findViewById(R.id.buttonAddStock);
         productImage = findViewById(R.id.productImage);
         titleSize = findViewById(R.id.titleSize);
-        addImage = findViewById(R.id.addImage);
+        productImage2 = findViewById(R.id.productImage2);
         numberPickerQuantity = findViewById(R.id.numberPickerQuantity);
         numberPickerSize = findViewById(R.id.numberPickerSize);
-
         categorySpinnerArray = new ArrayList<>();
 
         categoryadapter = new ArrayAdapter<>(
@@ -154,15 +160,24 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
         if (actionBar!=null){
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        addImage.setOnClickListener(new View.OnClickListener() {
+        productImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                firstImageView = true;
+                startStockImageDialog();
+            }
+        });
+        productImage2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                firstImageView = false;
                 startStockImageDialog();
             }
         });
         buttonAddStock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                productImage2.setImageDrawable(productImage.getDrawable());
                 if (photoUri!=null){
                     newStock();
                 }else {
@@ -258,19 +273,20 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
 
     private void newStock() {
         showProgress();
+        String imagee,image,category,type,name,color,design,size,quantity,company,buyingprice,sellingprice,item_group;
         int quantityI = numberPickerQuantity.getValue();
-        String category = spinnerCategory.getSelectedItem().toString();
-        String type = spinnerType.getSelectedItem().toString();
-        String name = itemName.getText().toString();
-        String color = itemColor.getText().toString();
-        String design = itemDesign.getText().toString();
-        String size = ss();
-        String quantity = Integer.toString(quantityI);
-        String company = itemCompany.getText().toString();
-        String buyingprice = itemBP.getText().toString();
-        String sellingprice = itemSP.getText().toString();
-        String image = photoUri.toString();
-        String item_group = selectItemGroupSpinner.getSelectedItem().toString();
+        category = spinnerCategory.getSelectedItem().toString();
+        type = spinnerType.getSelectedItem().toString();
+        name = itemName.getText().toString();
+        color = itemColor.getText().toString();
+        design = itemDesign.getText().toString();
+        size = ss();
+        quantity = Integer.toString(quantityI);
+        company = itemCompany.getText().toString();
+        buyingprice = itemBP.getText().toString();
+        sellingprice = itemSP.getText().toString();
+        item_group = selectItemGroupSpinner.getSelectedItem().toString();
+        image = imageToString();
 
 
         Call<AddStockModel> call = RetrofitClient.getInstance(mContext)
@@ -383,6 +399,7 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
         startActivityForResult(i,GALLERY_REQUEST_CODE);
 //        Intent intent = new Intent();
 //        intent.setType("image/*");
+//        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
 //        intent.setAction(Intent.ACTION_GET_CONTENT);
 //        startActivityForResult(Intent.createChooser(intent,"Choose product photo"),GALLERY_REQUEST_CODE);
     }
@@ -397,11 +414,12 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
             photoUri = uri;
             revokeUriPermission(uri,Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             updatePhotoView();
-        }else if (requestCode == GALLERY_REQUEST_CODE){
+        }
+        else if (requestCode == GALLERY_REQUEST_CODE){
             Uri photopath = data.getData();
             photoUri = photopath;
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),photopath);
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),photopath);
                 updatePhotoView();
             }catch (IOException e){
                 e.printStackTrace();
@@ -410,10 +428,17 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
     }
 
     private void updatePhotoView() {
-        if(photoUri!=null) {
-
+        ImageView imageView;
+        if(firstImageView){
+            imageView = productImage;
+        }
+        else{
+            imageView = productImage2;
+        }
+        if(photoUri!=null
+        ) {
             Glide.with(this).load(photoUri)
-                    .into(productImage);
+                    .into(imageView);
         }
     }
 
@@ -552,5 +577,10 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
             }
         });
     }
-
+    private String imageToString(){
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+        byte[] imageByte = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(imageByte,Base64.DEFAULT);
+    }
 }
