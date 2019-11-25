@@ -1,31 +1,20 @@
 package com.example.shopkipa.models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class ChangeDetailsModel {
-    String username,firstname,lastname;
-    public ChangeDetailsModel() {
+
+
+    @SerializedName("user")
+    @Expose
+    private UserResponseModel user;
+
+    public UserResponseModel getUser() {
+        return user;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setUser(UserResponseModel user) {
+        this.user = user;
     }
 }

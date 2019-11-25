@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,6 +50,8 @@ public class ViewSalesAdapter extends RecyclerView.Adapter<ViewSalesAdapter.View
         holder.itemName.setText(getSalesInMonthModel.getName());
         holder.totalAmount.setText("Kshs."+ getSalesInMonthModel.getTotal());
         holder.quantitySold.setText(getSalesInMonthModel.getQuantity());
+        holder.colorC.setText(getSalesInMonthModel.getColor());
+        holder.sizeS.setText(getSalesInMonthModel.getSize());
         holder.id = mSalesArrayList.get(position).getId();
     }
 
@@ -58,10 +61,11 @@ public class ViewSalesAdapter extends RecyclerView.Adapter<ViewSalesAdapter.View
     }
 
     public class ViewSalesHolder extends RecyclerView.ViewHolder {
-        TextView itemName,quantitySold,totalAmount;
+        TextView itemName,quantitySold,totalAmount,sizeS,colorC;
         ConstraintLayout select;
+        LinearLayoutCompat salesInfo;
         int id;
-        ImageView deleteSale;
+        ImageView deleteSale,moreInfo;
         public ViewSalesHolder(@NonNull View itemView) {
             super(itemView);
             itemName = itemView.findViewById(R.id.itemName);
@@ -69,6 +73,10 @@ public class ViewSalesAdapter extends RecyclerView.Adapter<ViewSalesAdapter.View
             totalAmount = itemView.findViewById(R.id.totalAmount);
             select = itemView.findViewById(R.id.selectItemsToDelete);
             deleteSale = itemView.findViewById(R.id.deleteSale);
+            sizeS = itemView.findViewById(R.id.size);
+            colorC = itemView.findViewById(R.id.color);
+            moreInfo = itemView.findViewById(R.id.moreInfo);
+            salesInfo = itemView.findViewById(R.id.salesDetails);
             select.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -86,6 +94,28 @@ public class ViewSalesAdapter extends RecyclerView.Adapter<ViewSalesAdapter.View
                     delete();
                 }
             });
+            moreInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    info();
+                }
+            });
+        }
+
+        private void info() {
+            if (itemName.isShown()){
+                salesInfo.setVisibility(View.VISIBLE);
+                itemName.setVisibility(View.GONE);
+                quantitySold.setVisibility(View.GONE);
+                totalAmount.setVisibility(View.GONE);
+
+
+            }else{
+                salesInfo.setVisibility(View.GONE);
+                itemName.setVisibility(View.VISIBLE);
+                quantitySold.setVisibility(View.VISIBLE);
+                totalAmount.setVisibility(View.VISIBLE);
+            }
         }
 
         private void delete() {

@@ -4,15 +4,25 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class GetSalesInMonthModel {
+
     @SerializedName("id")
     @Expose
     private Integer id;
+    @SerializedName("user_id")
+    @Expose
+    private Integer userId;
     @SerializedName("purchase_id")
     @Expose
     private Integer purchaseId;
     @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("color")
+    @Expose
+    private String color;
+    @SerializedName("size")
+    @Expose
+    private String size;
     @SerializedName("quantity")
     @Expose
     private String quantity;
@@ -43,6 +53,14 @@ public class GetSalesInMonthModel {
         this.id = id;
     }
 
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
     public Integer getPurchaseId() {
         return purchaseId;
     }
@@ -57,6 +75,22 @@ public class GetSalesInMonthModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
     }
 
     public String getQuantity() {
@@ -114,4 +148,5 @@ public class GetSalesInMonthModel {
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
     }
+
 }

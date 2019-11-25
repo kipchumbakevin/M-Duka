@@ -57,12 +57,10 @@ import retrofit2.Response;
 
 public class AddStock extends AppCompatActivity implements NumberPicker.OnValueChangeListener {
     private static final int GALLERY_REQUEST_CODE = 766;
-    private static final int GALLERY_REQUEST_CODE_TWO = 700;
     private static final int REQUEST_CODE = 422;
-    private static final int REQUEST_CODE_TWO = 400;
     Spinner spinnerCategory,spinnerType,spinnerSize,selectItemGroupSpinner;
     NumberPicker numberPickerSize,numberPickerQuantity;
-    ImageView addImage,productImage,productImage2;
+    ImageView productImage,productImage2;
     private File mPhotoFile;
     TextView pickFormat,titleSize;
     View sizeView;

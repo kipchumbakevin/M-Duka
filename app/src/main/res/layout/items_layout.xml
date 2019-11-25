@@ -50,14 +50,6 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorGreen"
                 android:text="color"/>
-            <ImageView
-                android:id="@+id/alert"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:visibility="gone"
-                android:tint="@color/colorRed"
-                android:src="@drawable/ic_priority"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
         <ImageView
@@ -76,8 +68,8 @@
     </RelativeLayout>
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/fulldetails"
-        android:visibility="gone"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
@@ -98,69 +90,7 @@
                 android:layout_height="200dp"
                 android:src="@drawable/nike"/>
         </androidx.cardview.widget.CardView>
-        <RelativeLayout
-            android:id="@+id/relativeSale"
-            android:layout_width="match_parent"
-            android:paddingStart="10dp"
-            android:paddingEnd="20dp"
-            android:visibility="gone"
-            android:layout_height="wrap_content">
-            <EditText
-                android:drawableStart="@drawable/ic_create"
-                android:drawablePadding="5dp"
-                android:id="@+id/quantity_sold"
-                android:padding="5dp"
-                android:layout_marginStart="25dp"
-                android:textSize="14sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="quantity sold"/>
-            <EditText
-                android:id="@+id/cost_unit_price"
-                android:drawableStart="@drawable/ic_attach_money"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="20dp"
-                android:textSize="14sp"
-                android:hint="ksh/item"/>
-            <TextView
-                android:id="@+id/textbp"
-                android:layout_below="@id/quantity_sold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginStart="45dp"
-                android:text="Buying price:"/>
-            <Spinner
-                android:id="@+id/bpspinner"
-                android:layout_below="@id/cost_unit_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="45dp"
-                android:layout_alignParentEnd="true"/>
-            <ImageView
-                android:id="@+id/cancel_sale"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="55dp"
-                android:layout_below="@id/textbp"
-                android:layout_marginTop="2dp"
-                android:tint="@color/colorRed"
-                app:srcCompat="@drawable/ic_close" />
-            <ImageView
-                android:id="@+id/sold_done"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginBottom="1dp"
-                android:layout_below="@id/bpspinner"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="42dp"
-                android:tint="@color/colorPrimary"
-                app:srcCompat="@drawable/ic_done" />
 
-        </RelativeLayout>
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/linearSale"
             android:layout_width="match_parent"

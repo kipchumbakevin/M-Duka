@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.example.shopkipa.R;
@@ -23,6 +26,7 @@ import retrofit2.Response;
 public class RestockActivity extends AppCompatActivity {
     TabLayout tabLayout;
     RelativeLayout progressLyt;
+    ImageView go_back;
     private List<GetCategoriesModel> categories = new ArrayList<>();
     private Context mContext;
     @Override
@@ -30,17 +34,21 @@ public class RestockActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restock);
         tabLayout = findViewById(R.id.cart_tab);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar!=null){
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
+        go_back = findViewById(R.id.goBack);
         getCategoryList();
 
         if (!categories.isEmpty()){
             String tabIndex = categories.get(0).getName();
             getTabContent(tabIndex);
         }
+        go_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(RestockActivity.this,MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -101,5 +109,13 @@ public class RestockActivity extends AppCompatActivity {
                 tabLayout.addTab(tabLayout.newTab().setText(fragmentname));
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(RestockActivity.this,MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

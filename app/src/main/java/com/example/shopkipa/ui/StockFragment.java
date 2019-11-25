@@ -44,7 +44,7 @@ public class StockFragment extends Fragment {
     RelativeLayout progressLyt,noProducts;
     ItemsInTypeAdapter itemsInTypeAdapter;
     LinearLayoutCompat productView;
-    String fragment_name,typename;
+    String fragment_name;
     Spinner typeSpinner,groupSpinner;
     private List<String> typeSpinnerArray;
     private ArrayAdapter<String>typeadapter;
@@ -110,7 +110,6 @@ public class StockFragment extends Fragment {
                         if (response.code() == 200) {
                             for (int index = 0; index < response.body().size(); index++) {
                                 typeSpinnerArray.add(response.body().get(index).getTypeName());
-                                typename = typeSpinnerArray.get(0);
                             }
                             if (mStockArrayList.size()<1 && typeSpinnerArray.size()<1) {
                                 noProducts.setVisibility(View.VISIBLE);
@@ -147,7 +146,9 @@ public class StockFragment extends Fragment {
         typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                typename = adapterView.getItemAtPosition(i).toString();
+                mStockArrayList.clear();
+                itemsInTypeAdapter.notifyDataSetChanged();
+                String typename = adapterView.getItemAtPosition(i).toString();
                 showProgress();
                 fragment_name = getArguments().getString("fragment_name", fragment_name);
                 mStockArrayList.clear();

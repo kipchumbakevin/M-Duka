@@ -1,21 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="10dp"
-    android:id="@+id/selectItemsToDelete"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
-    <TextView
-        android:id="@+id/itemName"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Item"
-        android:layout_marginStart="5dp"
-        android:textColor="@color/colorBlack"
-        app:layout_constraintStart_toEndOf="@id/deleteSale"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginEnd="20dp"
+        android:padding="10dp"
+        android:id="@+id/selectItemsToDelete"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/moreInfo">
 
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:id="@+id/lin"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toEndOf="@id/deleteSale"
+        app:layout_constraintTop_toTopOf="parent">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/salesDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Size:"
+                android:textSize="12sp"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/colorBlack" />
+            <TextView
+                android:id="@+id/size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ExtraLarge"
+                android:textSize="12sp"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/colorOrange" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Color:"
+                android:textSize="12sp"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/colorBlack" />
+            <TextView
+                android:id="@+id/color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Orange"
+                android:textSize="12sp"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/colorOrange" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <TextView
+            android:id="@+id/itemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Item"
+            android:textColor="@color/colorBlack" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
     <TextView
         android:id="@+id/quantitySold"
         android:layout_width="wrap_content"
@@ -33,7 +81,6 @@
         android:textColor="@color/colorOrange"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
     <ImageView
         android:layout_marginTop="1dp"
         android:tint="@color/colorRed"
@@ -42,7 +89,15 @@
         android:layout_width="20dp"
         android:src="@drawable/ic_delete"
         android:layout_height="20dp"
-        app:layout_constraintEnd_toStartOf="@id/itemName"
+        app:layout_constraintEnd_toStartOf="@id/lin"
         app:layout_constraintTop_toTopOf="parent" />
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/moreInfo"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/ic_info"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

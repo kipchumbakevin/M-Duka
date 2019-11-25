@@ -56,7 +56,7 @@ public class GetMonthsAdapter extends RecyclerView.Adapter<GetMonthsAdapter.GetM
         holder.mMonth.setText(getMonthsModel.getMonth());
         holder.year = mMonthsArrayList.get(position).getYear();
         holder.month = mMonthsArrayList.get(position).getMonth();
-
+        holder.mCurrentPosition = position;
     }
 
     @Override
@@ -68,6 +68,7 @@ public class GetMonthsAdapter extends RecyclerView.Adapter<GetMonthsAdapter.GetM
         LinearLayoutCompat fullDetails;
         RelativeLayout dropDown;
         ImageView arrowUp,arrowDown;
+        int mCurrentPosition;
         String year,month;
         TextView mMonth,summaryMonth,salesMonth,expensesMonth;
         public GetMonthsViewHolder(@NonNull View itemView) {
@@ -80,12 +81,15 @@ public class GetMonthsAdapter extends RecyclerView.Adapter<GetMonthsAdapter.GetM
             salesMonth = itemView.findViewById(R.id.monthSales);
             fullDetails = itemView.findViewById(R.id.full);
             summaryMonth = itemView.findViewById(R.id.monthSummary);
+            GetMonthsModel get = mMonthsArrayList.get(mCurrentPosition);
+            final String nn = get.getMonth();
 
             expensesMonth.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
                     View mView = mLayoutInflator.inflate(R.layout.all_expenses,null);
+                    TextView title = mView.findViewById(R.id.titleMonthExpenses);
                     RecyclerView recyclerView = mView.findViewById(R.id.expenses_recyclerView);
                     final ArrayList<GetExpenseModel> mExpensesArrayList = new ArrayList<>();
                     final ViewExpensesAdapter viewExpensesAdapter = new ViewExpensesAdapter(mContext,mExpensesArrayList);
@@ -124,6 +128,7 @@ public class GetMonthsAdapter extends RecyclerView.Adapter<GetMonthsAdapter.GetM
                     });
                     final AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
+                    title.setText(nn + " expenses");
                 }
             });
             salesMonth.setOnClickListener(new View.OnClickListener() {
@@ -131,6 +136,7 @@ public class GetMonthsAdapter extends RecyclerView.Adapter<GetMonthsAdapter.GetM
                 public void onClick(View view) {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
                     View mViewv = mLayoutInflator.inflate(R.layout.all_sales,null);
+                    TextView title = mViewv.findViewById(R.id.titleMonthSales);
                     RecyclerView recyclerView = mViewv.findViewById(R.id.sales_recyclerView);
                     final ArrayList<GetSalesInMonthModel> mSalesArrayList = new ArrayList<>();
                     final ViewSalesAdapter viewSalesAdapter = new ViewSalesAdapter(mContext,mSalesArrayList);
@@ -169,6 +175,7 @@ public class GetMonthsAdapter extends RecyclerView.Adapter<GetMonthsAdapter.GetM
                     });
                     final AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
+                    title.setText(nn + " sales");
                 }
             });
             summaryMonth.setOnClickListener(new View.OnClickListener() {
@@ -176,11 +183,13 @@ public class GetMonthsAdapter extends RecyclerView.Adapter<GetMonthsAdapter.GetM
                 public void onClick(View view) {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
                     View mViewV = mLayoutInflator.inflate(R.layout.summary_layout,null);
+                    TextView title = mViewV.findViewById(R.id.titleMonthSummary);
                     RecyclerView recyclerView = mViewV.findViewById(R.id.summary_recyclerView);
                     final ArrayList<GetSummaryModel> mSummaryArrayList = new ArrayList<>();
                     final GetSummaryAdapter getSummaryAdapter = new GetSummaryAdapter(mContext,mSummaryArrayList);
                     recyclerView.setAdapter(getSummaryAdapter);
                     recyclerView.setLayoutManager(new GridLayoutManager(mContext,1));
+
                     alertDialogBuilder.setView(mViewV);
                     alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
@@ -215,6 +224,7 @@ public class GetMonthsAdapter extends RecyclerView.Adapter<GetMonthsAdapter.GetM
                     });
                     final AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
+                    title.setText(nn + " summary");
                 }
             });
             dropDown.setOnClickListener(new View.OnClickListener() {

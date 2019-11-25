@@ -31,6 +31,7 @@ public class ChangePersonalInfo extends AppCompatActivity {
     Button submitChanges;
     RelativeLayout progress;
     SharedPreferencesConfig sharedPreferencesConfig;
+    private String clientsFirstName,clientsLastName,clientsUsername,clientsLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +79,12 @@ public class ChangePersonalInfo extends AppCompatActivity {
             @Override
             public void onResponse(Call<ChangeDetailsModel> call, Response<ChangeDetailsModel> response) {
                 hideProgress();
-                if(response.code()==201){
-                    sharedPreferencesConfig.saveAuthenticationInformation();
+                if(response.isSuccessful()){
+                    clientsFirstName = response.body().getUser().getFirstName();
+                    clientsLastName = response.body().getUser().getLastName();
+                    clientsLocation = response.body().getUser().getLocation();
+                    clientsUsername = response.body().getUser().getUsername();
+                    sharedPreferencesConfig.saveChangedDetails(clientsFirstName,clientsLastName,clientsLocation,clientsUsername);
                     Toast.makeText(ChangePersonalInfo.this,response.message(),Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(ChangePersonalInfo.this, SettingsActivity.class);
                     startActivity(intent);

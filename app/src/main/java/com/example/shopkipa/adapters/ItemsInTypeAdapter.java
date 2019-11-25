@@ -64,8 +64,9 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
     public void onBindViewHolder(@NonNull ItemsViewHolder holder, int position) {
         GetStockInTypeModel getStockInTypeModel = mStockArrayList.get(position);
         holder.itemname.setText(getStockInTypeModel.getName());
+        Log.d("Imageurl", getStockInTypeModel.getImage());
         Glide.with(mContext)
-                .load( Constants.BASE_URL+"/images" + getStockInTypeModel.getImage())
+                .load( Constants.BASE_URL+"images/" + getStockInTypeModel.getImage())
                 .into(holder.itemImage);
         holder.itemsize.setText(getStockInTypeModel.getSize());
         holder.mCurrentPosition = position;
@@ -78,9 +79,6 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
         holder.itemQua = mStockArrayList.get(position).getQuantity();
         holder.qq = Integer.toString(holder.itemQua);
         holder.itemquantity.setText(holder.qq);
-        if (holder.itemQua<=2){
-            holder.alert.setVisibility(View.VISIBLE);
-        }
 
     }
 
@@ -91,20 +89,19 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
 
     public class ItemsViewHolder extends RecyclerView.ViewHolder {
         TextView itemname, itemsize, itemquantity, moreDetails, header, headerSize, headerColor;
-        ImageView itemImage, deleteItem, restock, arrowUp, arrowDown, cancelSale, addSale,alert;
+        ImageView itemImage, deleteItem, restock, arrowUp, arrowDown;
         Button sold, edit;
         int mCurrentPosition;
         String idItem;
         int itemQua;
         String qq;
         LinearLayoutCompat fulldetails, linearSale;
-        RelativeLayout dropdown, relativeSale,noProducts;
+        RelativeLayout dropdown,noProducts;
         EditText quantitySold, costUnitPrice;
         int itemId;
         int purchaseid;
         private ArrayAdapter<String>bpadapter;
         private List<String> bpSpinnerArray;
-        Spinner bpSpinner;
 
         public ItemsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -115,16 +112,11 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
             dropdown = itemView.findViewById(R.id.dropDown);
             headerColor = itemView.findViewById(R.id.header_color);
             linearSale = itemView.findViewById(R.id.linearSale);
-            bpSpinner = itemView.findViewById(R.id.bpspinner);
             costUnitPrice = itemView.findViewById(R.id.cost_unit_price);
-            relativeSale = itemView.findViewById(R.id.relativeSale);
-            cancelSale = itemView.findViewById(R.id.cancel_sale);
             noProducts = itemView.findViewById(R.id.no_products_view);
-            addSale = itemView.findViewById(R.id.sold_done);
             headerSize = itemView.findViewById(R.id.header_size);
             fulldetails = itemView.findViewById(R.id.fulldetails);
             quantitySold = itemView.findViewById(R.id.quantity_sold);
-            alert = itemView.findViewById(R.id.alert);
             arrowDown = itemView.findViewById(R.id.arrowDown);
             arrowUp = itemView.findViewById(R.id.arrowUp);
             header = itemView.findViewById(R.id.header);
@@ -133,16 +125,6 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
             sold = itemView.findViewById(R.id.soldproduct);
             edit = itemView.findViewById(R.id.editProduct);
             moreDetails = itemView.findViewById(R.id.more_details);
-
-
-            bpSpinnerArray = new ArrayList<>();
-
-            bpadapter = new ArrayAdapter<>(
-                    mContext, android.R.layout.simple_spinner_item, bpSpinnerArray);
-
-            bpadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-            bpSpinner.setAdapter(bpadapter);
 
             dropdown.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -233,7 +215,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    String item_id = Integer.toString(itemId);
+                                    final String item_id = Integer.toString(itemId);
 
                                     Call<DeleteItemModel> call = RetrofitClient.getInstance(mContext)
                                             .getApiConnector()
@@ -246,7 +228,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                                                 mContext.startActivity(intent);
                                                 Toast.makeText(mContext, "Deleted successfully", Toast.LENGTH_SHORT).show();
                                             } else {
-                                                Toast.makeText(mContext, "response:" + response.message(), Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(mContext, "response:" + " "+ item_id+" "+response.message(), Toast.LENGTH_SHORT).show();
                                             }
 
                                         }
@@ -356,6 +338,24 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
             sold.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    final EditText quantity,perQuantity;
+                    final Spinner bpSpinner;
+                    ImageView cancel,done;
+                    final AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+                    View view1 = mLayoutInflator.inflate(R.layout.soldstock,null);
+                    quantity = view1.findViewById(R.id.quantity_sold);
+                    perQuantity = view1.findViewById(R.id.cost_unit_price);
+                    bpSpinner = view1.findViewById(R.id.bpspinner);
+                    cancel = view1.findViewById(R.id.dialog_close);
+                    done = view1.findViewById(R.id.dialog_sold_done);
+                    bpSpinnerArray = new ArrayList<>();
+
+                    bpadapter = new ArrayAdapter<>(
+                            mContext, android.R.layout.simple_spinner_item, bpSpinnerArray);
+
+                    bpadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                    bpSpinner.setAdapter(bpadapter);
                     String i = Integer.toString(itemId);
                     bpSpinnerArray.clear();
                     Call<List<GetBuyingPricesModel>> call = RetrofitClient.getInstance(mContext)
@@ -382,55 +382,59 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                             Toast.makeText(mContext,"Error: "+t.getMessage(),Toast.LENGTH_SHORT).show();
                         }
                     });
-                    linearSale.setVisibility(View.GONE);
-                    relativeSale.setVisibility(View.VISIBLE);
-                }
-            });
-            cancelSale.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    linearSale.setVisibility(View.VISIBLE);
-                    relativeSale.setVisibility(View.GONE);
-                }
-            });
-            addSale.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (costUnitPrice.getText().toString().isEmpty()) {
-                        costUnitPrice.setError("Required");
-                    }
-                    if (quantitySold.getText().toString().isEmpty()) {
-                        quantitySold.setError("Required");
-                    } else {
-                        final String quantitysold = quantitySold.getText().toString();
-                        String costprice = costUnitPrice.getText().toString();
-                        final String purchaseId = Integer.toString(purchaseid);
-                        String bp = bpSpinner.getSelectedItem().toString();
+                    alertDialog.setView(view1);
+                    final AlertDialog alertDialog1 = alertDialog.create();
+                    alertDialog1.show();
+                    cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            alertDialog1.dismiss();
+                        }
+                    });
+                    done.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            int iii = Integer.parseInt(quantity.getText().toString());
+                            if (quantity.getText().toString().isEmpty()) {
+                                quantity.setError("Required");
+                            }
+                            if (perQuantity.getText().toString().isEmpty()) {
+                                perQuantity.setError("Required");
+                            }if(iii>itemQua){
+                                Toast.makeText(mContext,"You cant sell more than you have",Toast.LENGTH_LONG).show();
+                            }
+                            else {
+                                final String quantitysold = quantity.getText().toString();
+                                String costprice = perQuantity.getText().toString();
+                                final String purchaseId = Integer.toString(purchaseid);
+                                String bp = bpSpinner.getSelectedItem().toString();
 
-                        Call<AddSaleModel> call = RetrofitClient.getInstance(mContext)
-                                .getApiConnector()
-                                .addnewsale(purchaseId, quantitysold, costprice,bp);
-                        call.enqueue(new Callback<AddSaleModel>() {
-                            @Override
-                            public void onResponse(Call<AddSaleModel> call, Response<AddSaleModel> response) {
+                                Call<AddSaleModel> call = RetrofitClient.getInstance(mContext)
+                                        .getApiConnector()
+                                        .addnewsale(purchaseId, quantitysold, costprice,bp);
+                                call.enqueue(new Callback<AddSaleModel>() {
+                                    @Override
+                                    public void onResponse(Call<AddSaleModel> call, Response<AddSaleModel> response) {
 //                                        progressLyt.setVisibility(View.INVISIBLE);
-                                if (response.code() == 201) {
-                                    Intent intent = new Intent(mContext, MainActivity.class);
-                                    mContext.startActivity(intent);
-                                    ((Activity) mContext).finish();
-                                    Toast.makeText(mContext, "Sale added", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(mContext, response.message() + " " + response.code() + " found" + purchaseId, Toast.LENGTH_SHORT).show();
-                                }
+                                        if (response.code() == 201) {
+                                            Intent intent = new Intent(mContext, MainActivity.class);
+                                            mContext.startActivity(intent);
+                                            ((Activity) mContext).finish();
+                                            Toast.makeText(mContext, "Sale added", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(mContext, response.message() + " " + response.code() + " found" + purchaseId, Toast.LENGTH_SHORT).show();
+                                        }
 
-                            }
+                                    }
 
-                            @Override
-                            public void onFailure(Call<AddSaleModel> call, Throwable t) {
-                                Toast.makeText(mContext, t.getMessage() + "failed", Toast.LENGTH_SHORT).show();
+                                    @Override
+                                    public void onFailure(Call<AddSaleModel> call, Throwable t) {
+                                        Toast.makeText(mContext, t.getMessage() + "failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
-                        });
-                    }
+                        }
+                    });
                 }
             });
         }

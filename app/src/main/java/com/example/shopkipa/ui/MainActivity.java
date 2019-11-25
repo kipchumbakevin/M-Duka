@@ -193,6 +193,7 @@ public class MainActivity extends AppCompatActivity
         }else if (id == R.id.nav_restock) {
             Intent intent = new Intent(MainActivity.this, RestockActivity.class);
             startActivity(intent);
+            finish();
         }else if (id == R.id.nav_share){
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/plain");
