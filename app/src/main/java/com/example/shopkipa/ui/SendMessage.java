@@ -72,6 +72,8 @@ public class SendMessage extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.length()!=0){
+                    vieew.setBackgroundColor(getResources().getColor(R.color.colorTab));
+                    describe.setVisibility(View.GONE);
                     sendMessage.setEnabled(true);
                     sendMessage.setBackground(getDrawable(R.drawable.button));
                 }
@@ -103,8 +105,13 @@ public class SendMessage extends AppCompatActivity {
     }
 
     private void send() {
+        String image;
         showProgress();
-        String image = photoUri.toString();
+        if (photoUri!=null){
+            image = photoUri.toString();
+        }else{
+            image = "";
+        }
         String message = writeMessage.getText().toString();
         Call<SendMessageModel> call = RetrofitClient.getInstance(this)
                 .getApiConnector()
