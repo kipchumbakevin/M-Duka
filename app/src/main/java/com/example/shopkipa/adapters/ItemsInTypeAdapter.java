@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.example.shopkipa.ui.MainActivity;
@@ -46,11 +47,12 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
     private final Context mContext;
     private final ArrayList<GetStockInTypeModel> mStockArrayList;
     private final LayoutInflater mLayoutInflator;
-
+    private ViewPagerAdapter viewPagerAdapter;
     public ItemsInTypeAdapter(Context context, ArrayList<GetStockInTypeModel>stockArrayList){
         mContext = context;
         mStockArrayList = stockArrayList;
         mLayoutInflator = LayoutInflater.from(mContext);
+        viewPagerAdapter = new ViewPagerAdapter(mContext);
     }
     @NonNull
     @Override
@@ -65,9 +67,8 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
         GetStockInTypeModel getStockInTypeModel = mStockArrayList.get(position);
         holder.itemname.setText(getStockInTypeModel.getName());
         Log.d("Imageurl", getStockInTypeModel.getImage());
-        Glide.with(mContext)
-                .load( Constants.BASE_URL+"images/" + getStockInTypeModel.getImage())
-                .into(holder.itemImage);
+        ViewPagerAdapter.images = new String[]{Constants.BASE_URL + "/images/"+getStockInTypeModel.getImage()};
+        holder.viewPager.setAdapter(viewPagerAdapter);
         holder.itemsize.setText(getStockInTypeModel.getSize());
         holder.mCurrentPosition = position;
         holder.itemId = mStockArrayList.get(position).getId();
@@ -89,7 +90,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
 
     public class ItemsViewHolder extends RecyclerView.ViewHolder {
         TextView itemname, itemsize, itemquantity, moreDetails, header, headerSize, headerColor;
-        ImageView itemImage, deleteItem, restock, arrowUp, arrowDown;
+        ImageView deleteItem, restock, arrowUp, arrowDown;
         Button sold, edit;
         int mCurrentPosition;
         String idItem;
@@ -98,6 +99,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
         LinearLayoutCompat fulldetails, linearSale;
         RelativeLayout dropdown,noProducts,progressL;
         EditText quantitySold, costUnitPrice;
+        ViewPager viewPager;
         int itemId;
         int purchaseid;
         private ArrayAdapter<String>bpadapter;
@@ -108,7 +110,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
             itemname = itemView.findViewById(R.id.itemname);
             itemsize = itemView.findViewById(R.id.itemsize);
             itemquantity = itemView.findViewById(R.id.itemquantity);
-            itemImage = itemView.findViewById(R.id.itemimage);
+            viewPager = itemView.findViewById(R.id.viewPagerAdapter);
             dropdown = itemView.findViewById(R.id.dropDown);
             headerColor = itemView.findViewById(R.id.header_color);
             linearSale = itemView.findViewById(R.id.linearSale);
@@ -405,7 +407,8 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                             if (perQuantity.getText().toString().isEmpty()) {
                                 perQuantity.setError("Required");
                             }if(iii>itemQua){
-                                Toast.makeText(mContext,"You cant sell more than you have",Toast.LENGTH_LONG).show();
+                                quantity.setError("You only have "+itemQua);
+                                Toast.makeText(mContext,"You only have "+itemQua +  " items of this product",Toast.LENGTH_LONG).show();
                             }
                             else {
                                 final String quantitysold = quantity.getText().toString();

@@ -33,7 +33,7 @@ import retrofit2.Response;
 public class SuggestedRestockFragment extends Fragment {
     private static ArrayList<SuggestedRestockModel> mStockArrayList=new ArrayList<>();
     RecyclerView recyclerView;
-    RelativeLayout progressLyt;
+    RelativeLayout progressLyt, noProducts;
     String fragment_name;
     RestockAdapter restockAdapter;
 
@@ -44,6 +44,8 @@ public class SuggestedRestockFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_suggested_restock, container, false);
         recyclerView = view.findViewById(R.id.restock_recyclerView);
+        progressLyt = view.findViewById(R.id.progressLoad);
+        noProducts = view.findViewById(R.id.no_suggested_products_view);
         recyclerView.hasFixedSize();
         restockAdapter = new RestockAdapter(getContext(),mStockArrayList);
         recyclerView.setAdapter(restockAdapter);
@@ -54,6 +56,7 @@ public class SuggestedRestockFragment extends Fragment {
     }
 
     private void getRestock() {
+        showProgress();
         fragment_name = getArguments().getString("fragment_name", fragment_name);
         mStockArrayList.clear();
         String category = fragment_name;
@@ -64,10 +67,14 @@ public class SuggestedRestockFragment extends Fragment {
         call.enqueue(new Callback<List<SuggestedRestockModel>>() {
             @Override
             public void onResponse(Call<List<SuggestedRestockModel>> call, Response<List<SuggestedRestockModel>> response) {
+                hideProgress();
                 if (response.code() == 200) {
                     mStockArrayList.addAll(response.body());
                     restockAdapter.notifyDataSetChanged();
-                    Toast.makeText(getActivity(),response.message()+response.code() + "shiet",Toast.LENGTH_LONG).show();
+                    if (mStockArrayList.size()<1) {
+                        noProducts.setVisibility(View.VISIBLE);
+                        recyclerView.setVisibility(View.GONE);
+                    }
 
                 } else {
                     Toast.makeText(getActivity(),response.message()+response.code(),Toast.LENGTH_LONG).show();
@@ -76,6 +83,7 @@ public class SuggestedRestockFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<SuggestedRestockModel>> call, Throwable t) {
+                hideProgress();
                 Toast.makeText(getContext(), t.getMessage() + "kkk", Toast.LENGTH_LONG).show();
             }
 
@@ -90,4 +98,11 @@ public class SuggestedRestockFragment extends Fragment {
         return suggestedRestockFragment;
     }
 
+    private void hideProgress() {
+        progressLyt.setVisibility(View.INVISIBLE);
+    }
+
+    private void showProgress() {
+        progressLyt.setVisibility(View.VISIBLE);
+    }
 }

@@ -10,11 +10,15 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -34,6 +38,8 @@ public class SendMessage extends AppCompatActivity {
     private static final int GALLERY_REQUEST_CODE = 422;
     EditText writeMessage;
     Button sendMessage;
+    TextView describe;
+    View vieew;
     ImageView imageOne,addImageOne;
     private Uri photoUri;
     RelativeLayout firstScreenshot,progressLyt;
@@ -45,6 +51,8 @@ public class SendMessage extends AppCompatActivity {
         setContentView(R.layout.activity_send_message);
         writeMessage = findViewById(R.id.write_message);
         imageOne = findViewById(R.id.image_one);
+        describe = findViewById(R.id.describe);
+        vieew = findViewById(R.id.vieew);
         addImageOne = findViewById(R.id.addImageOne);
         progressLyt = findViewById(R.id.progressLoad);
         sendMessage = findViewById(R.id.send_message);
@@ -54,17 +62,41 @@ public class SendMessage extends AppCompatActivity {
         if (actionBar!=null){
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        writeMessage.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.length()!=0){
+                    sendMessage.setEnabled(true);
+                    sendMessage.setBackground(getDrawable(R.drawable.button));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         sendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                send();
+                if (writeMessage.getText().length()<20){
+                    vieew.setBackgroundColor(getResources().getColor(R.color.colorRed));
+                    describe.setVisibility(View.VISIBLE);
+                }
+                else{
+                    send();
+                }
             }
         });
         firstScreenshot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 gallery();
-                addImageOne.setVisibility(View.GONE);
             }
         });
     }
@@ -82,6 +114,7 @@ public class SendMessage extends AppCompatActivity {
                 hideProgress();
                 if(response.code()==201){
                     writeMessage.getText().clear();
+                    photoUri = null;
                     AlertDialog.Builder alertdialog = new AlertDialog.Builder(SendMessage.this);
                     alertdialog.setTitle("Success:")
                             .setMessage("Your message has been received. We will get back as soon as possible")
@@ -135,6 +168,7 @@ public class SendMessage extends AppCompatActivity {
 
     private void updatePhotoView() {
         if(photoUri!=null) {
+            addImageOne.setVisibility(View.GONE);
             Glide.with(this).load(photoUri)
                     .into(imageOne);
         }

@@ -70,6 +70,8 @@ public class LoginActivity extends AppCompatActivity {
                     pass.setError("Password required");
                 }else{
                     loginUser();
+                    userName.getText().clear();
+                    pass.getText().clear();
                 }
             }
         });

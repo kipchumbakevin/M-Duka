@@ -15,6 +15,9 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.example.shopkipa.R;
+import com.example.shopkipa.models.GetStockInTypeModel;
+
+import java.util.ArrayList;
 
 public class ViewPagerAdapter extends PagerAdapter implements
         GestureDetector.OnGestureListener,
@@ -47,9 +50,8 @@ public class ViewPagerAdapter extends PagerAdapter implements
     public Object instantiateItem(@NonNull ViewGroup container, final int position) {
 
         layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = layoutInflater.inflate(R.layout.items_layout, null);
-
-        ImageView imageView = view.findViewById(R.id.productImage);
+        View view = layoutInflater.inflate(R.layout.image_view_pager, null);
+        ImageView imageView = view.findViewById(R.id.itemimageviewpager);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

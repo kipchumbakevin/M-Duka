@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.shopkipa.R;
 import com.example.shopkipa.adapters.GetFaqsAdapter;
@@ -27,12 +29,13 @@ public class HelpActivity extends AppCompatActivity {
     GetFaqsAdapter getFaqsAdapter;
     ArrayList<GetFaqsModel>mFaqsArrayList = new ArrayList<>();
     TextView sendMessage;
-
+    RelativeLayout progress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
         recyclerView = findViewById(R.id.faqs_recyclerView);
+        progress = findViewById(R.id.progressLoad);
         sendMessage = findViewById(R.id.send_message);
         getFaqsAdapter = new GetFaqsAdapter(HelpActivity.this,mFaqsArrayList);
         recyclerView.setAdapter(getFaqsAdapter);
@@ -54,26 +57,36 @@ public class HelpActivity extends AppCompatActivity {
     }
 
     private void fetchFaqs() {
+        showProgress();
         Call<List<GetFaqsModel>> call = RetrofitClient.getInstance(HelpActivity.this)
                 .getApiConnector()
                 .getFaqs();
         call.enqueue(new Callback<List<GetFaqsModel>>() {
             @Override
             public void onResponse(Call<List<GetFaqsModel>> call, Response<List<GetFaqsModel>> response) {
+                hideProgress();
                 if(response.code()==200){
                      mFaqsArrayList.addAll(response.body());
                      getFaqsAdapter.notifyDataSetChanged();
                 }
                 else{
+                    Toast.makeText(HelpActivity.this,"Internal server error. Please retry",Toast.LENGTH_SHORT).show();
                 }
 
             }
 
             @Override
             public void onFailure(Call<List<GetFaqsModel>> call, Throwable t) {
+                hideProgress();
+                Toast.makeText(HelpActivity.this,"Network error",Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-
+    private void showProgress() {
+        progress.setVisibility(View.VISIBLE);
+    }
+    private void hideProgress() {
+        progress.setVisibility(View.GONE);
+    }
 }

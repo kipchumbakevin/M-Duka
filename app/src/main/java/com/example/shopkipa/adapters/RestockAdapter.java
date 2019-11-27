@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.example.shopkipa.R;
@@ -64,9 +65,6 @@ public class RestockAdapter extends RecyclerView.Adapter<RestockAdapter.RestockV
     public void onBindViewHolder(@NonNull RestockViewHolders holder, int position) {
         SuggestedRestockModel suggestedRestockModel = mStockArrayList.get(position);
         holder.itemname.setText(suggestedRestockModel.getName());
-        Glide.with(mContext)
-                .load(Constants.BASE_URL +"images/"+suggestedRestockModel.getImage())
-                .into(holder.itemImage);
         holder.itemsize.setText(suggestedRestockModel.getSize());
         holder.mCurrentPosition = position;
         holder.itemId = mStockArrayList.get(position).getId();
@@ -101,6 +99,7 @@ public class RestockAdapter extends RecyclerView.Adapter<RestockAdapter.RestockV
         EditText quantitySold, costUnitPrice;
         int itemId;
         int purchaseid;
+        ViewPager viewPager;
         private ArrayAdapter<String> bpadapter;
         private List<String> bpSpinnerArray;
 
@@ -109,7 +108,7 @@ public class RestockAdapter extends RecyclerView.Adapter<RestockAdapter.RestockV
             itemname = itemView.findViewById(R.id.itemname);
             itemsize = itemView.findViewById(R.id.itemsize);
             itemquantity = itemView.findViewById(R.id.itemquantity);
-            itemImage = itemView.findViewById(R.id.itemimage);
+            viewPager = itemView.findViewById(R.id.itemimageviewpager);
             dropdown = itemView.findViewById(R.id.dropDown);
             headerColor = itemView.findViewById(R.id.header_color);
             linearSale = itemView.findViewById(R.id.linearSale);

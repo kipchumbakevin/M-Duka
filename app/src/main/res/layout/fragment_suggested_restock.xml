@@ -5,7 +5,20 @@
     android:layout_height="match_parent"
     android:padding="5dp"
     tools:context=".ui.SuggestedRestockFragment">
+    <RelativeLayout
+        android:id="@+id/no_suggested_products_view"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textSize="20sp"
+            android:text="You have enough stock (products) in this category "/>
 
+    </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
 
         android:id="@+id/restock_recyclerView"
@@ -13,5 +26,6 @@
         android:layout_width="match_parent"
 
         android:layout_height="match_parent" />
+    <include layout="@layout/content_progress_bar"/>
 
 </FrameLayout>

@@ -22,10 +22,11 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="10dp"/>
             <TextView
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Items for restock"
+                android:textSize="18sp"
                 android:layout_marginStart="10dp"
                 android:textColor="@color/colorWhite"/>
         </androidx.appcompat.widget.LinearLayoutCompat>

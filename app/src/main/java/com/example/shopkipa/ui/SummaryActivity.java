@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -32,13 +33,15 @@ public class SummaryActivity extends AppCompatActivity {
     ArrayList<GetMonthsModel>mMonthsArrayList = new ArrayList<>();
     private ArrayAdapter<String> yearadapter;
     private List<String> yearSpinnerArray;
+    RelativeLayout progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_summary);
-        recyclerView = findViewById(R.id.sales_recyclerView);
+        recyclerView = findViewById(R.id.months_recyclerView);
         yearSpinner = findViewById(R.id.yearSpinner);
+        progress = findViewById(R.id.progressLoad);
         getMonthsAdapter = new GetMonthsAdapter(SummaryActivity.this,mMonthsArrayList);
         recyclerView.setAdapter(getMonthsAdapter);
         recyclerView.setLayoutManager(new GridLayoutManager(SummaryActivity.this,getResources().getInteger(R.integer.product_grid_span)));
@@ -59,8 +62,7 @@ public class SummaryActivity extends AppCompatActivity {
         yearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getApplicationContext(), "This is " +
-                        adapterView.getItemAtPosition(i).toString(), Toast.LENGTH_LONG).show();
+                showProgress();
                 String year= adapterView.getItemAtPosition(i).toString();
                 mMonthsArrayList.clear();
                 Call<List<GetMonthsModel>> call = RetrofitClient.getInstance(SummaryActivity.this)
@@ -69,6 +71,7 @@ public class SummaryActivity extends AppCompatActivity {
                 call.enqueue(new Callback<List<GetMonthsModel>>() {
                     @Override
                     public void onResponse(Call<List<GetMonthsModel>> call, Response<List<GetMonthsModel>> response) {
+                        hideProgress();
                         if(response.code()==200){
                              mMonthsArrayList.addAll(response.body());
                             getMonthsAdapter.notifyDataSetChanged();
@@ -81,6 +84,7 @@ public class SummaryActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<List<GetMonthsModel>> call, Throwable t) {
+                        hideProgress();
                         Toast.makeText(SummaryActivity.this,t.getMessage() + "hhhhhd",Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -125,5 +129,11 @@ public class SummaryActivity extends AppCompatActivity {
                 Toast.makeText(SummaryActivity.this,t.getMessage() + "hhhhhd",Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private void showProgress(){
+        progress.setVisibility(View.VISIBLE);
+    }
+    private void hideProgress(){
+        progress.setVisibility(View.GONE);
     }
 }
