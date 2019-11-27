@@ -65,7 +65,8 @@ public class SendMessage extends AppCompatActivity {
         writeMessage.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                sendMessage.setEnabled(false);
+                sendMessage.setBackground(getDrawable(R.drawable.no_message));
             }
 
             @Override
