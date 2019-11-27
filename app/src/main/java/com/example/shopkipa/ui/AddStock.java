@@ -1,11 +1,14 @@
 package com.example.shopkipa.ui;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +18,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -58,6 +62,12 @@ import retrofit2.Response;
 public class AddStock extends AppCompatActivity implements NumberPicker.OnValueChangeListener {
     private static final int GALLERY_REQUEST_CODE = 766;
     private static final int REQUEST_CODE = 422;
+    private static final int REQUEST_CAMERA_PERMISSIONS = 67;
+    private static final String[] CAMERA_PERMISSION = new String[]{
+            Manifest.permission.CAMERA,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+    } ;
     Spinner spinnerCategory,spinnerType,spinnerSize,selectItemGroupSpinner;
     NumberPicker numberPickerSize,numberPickerQuantity;
     ImageView productImage,productImage2;
@@ -162,37 +172,45 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
             @Override
             public void onClick(View view) {
                 firstImageView = true;
-                startStockImageDialog();
+                if (isPermissionGranted()){
+                    startStockImageDialog();
+                }else{
+                    requestCameraPermissions();
+                }
             }
         });
         productImage2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 firstImageView = false;
-                startStockImageDialog();
+                if (isPermissionGranted()){
+                    startStockImageDialog();
+                }else{
+                    requestCameraPermissions();
+                }
             }
         });
         buttonAddStock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                productImage2.setImageDrawable(productImage.getDrawable());
                 if (photoUri!=null){
+                    //Toast.makeText(AddStock.this,photoUri.toString(),Toast.LENGTH_LONG).show();
                     newStock();
                 }else {
                     Toast.makeText(AddStock.this,"Add photo",Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        numberPickerSize.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-            }
-        });
-        numberPickerQuantity.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-            }
-        });
+//        numberPickerSize.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+//            @Override
+//            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+//            }
+//        });
+//        numberPickerQuantity.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+//            @Override
+//            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+//            }
+//        });
         pickFormat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -254,6 +272,80 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
             }
         });
     }
+    private boolean isPermissionGranted() {
+
+
+
+        int result=3;
+
+        for (int i = 0; i < CAMERA_PERMISSION.length; i++) {
+
+            result = ContextCompat
+
+                    .checkSelfPermission(AddStock.this,
+
+                            CAMERA_PERMISSION[i]);
+
+            if(result!= PackageManager.PERMISSION_GRANTED){
+
+                break;
+
+            }
+
+        }
+
+        return result==PackageManager.PERMISSION_GRANTED;
+
+    }
+
+    private void requestCameraPermissions(){
+
+        if(!isPermissionGranted() && Build.VERSION.SDK_INT>= Build.VERSION_CODES.M) {
+
+
+
+            requestPermissions(CAMERA_PERMISSION,
+
+                    REQUEST_CAMERA_PERMISSIONS);
+
+
+
+        }
+
+    }
+    @Override
+
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        switch (requestCode) {
+
+            case REQUEST_CAMERA_PERMISSIONS: {
+
+                if (isPermissionGranted()){
+
+                    startStockImageDialog();
+
+                }
+                else{
+
+                    return;
+
+                }
+
+            }
+
+            default:
+
+                super.onRequestPermissionsResult(requestCode,
+
+                        permissions, grantResults);
+
+        }
+
+
+
+    }
+
 
     private void sellingPriceInfo() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AddStock.this);

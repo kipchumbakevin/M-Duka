@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.shopkipa.R;
+import com.example.shopkipa.ui.MainActivity;
 
 public class SecurityOptions extends AppCompatActivity {
     TextView phoneChange,passChange;
@@ -28,6 +29,7 @@ public class SecurityOptions extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(SecurityOptions.this,ChangePasswordActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         phoneChange.setOnClickListener(new View.OnClickListener() {
@@ -37,5 +39,13 @@ public class SecurityOptions extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(SecurityOptions.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

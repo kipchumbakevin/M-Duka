@@ -64,7 +64,13 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
 //                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
 //                startActivity(intent);
-                loginUser();
+                if (userName.getText().toString().isEmpty()){
+                    userName.setError("Username required");
+                }if (pass.getText().toString().isEmpty()){
+                    pass.setError("Password required");
+                }else{
+                    loginUser();
+                }
             }
         });
         forgotPass.setOnClickListener(new View.OnClickListener() {

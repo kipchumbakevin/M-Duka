@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,9 @@ import android.widget.Toast;
 import com.example.shopkipa.R;
 import com.example.shopkipa.models.ChangedForgotPassModel;
 import com.example.shopkipa.networking.RetrofitClient;
+import com.example.shopkipa.ui.MainActivity;
+import com.example.shopkipa.utils.Constants;
+import com.example.shopkipa.utils.SharedPreferencesConfig;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,6 +34,8 @@ public class NewPassForgotFragment extends Fragment {
     Button confirmCodeSent;
     String newpass;
     RelativeLayout progress;
+    private String clientsFirstName,clientsLastName,clientsUsername,clientsPhone,clientsLocation,token;
+    private SharedPreferencesConfig sharedPreferencesConfig;
 
 
     public NewPassForgotFragment() {
@@ -45,6 +51,7 @@ public class NewPassForgotFragment extends Fragment {
         enterCodeSent = view.findViewById(R.id.code_sent);
         confirmCodeSent = view.findViewById(R.id.confirm_code_sent);
         progress = view.findViewById(R.id.progressLoad);
+        sharedPreferencesConfig = new SharedPreferencesConfig(getActivity());
         newpass= getArguments().getString("NEW_PASS");
 
         confirmCodeSent.setOnClickListener(new View.OnClickListener() {
@@ -66,9 +73,16 @@ public class NewPassForgotFragment extends Fragment {
             @Override
             public void onResponse(Call<ChangedForgotPassModel> call, Response<ChangedForgotPassModel> response) {
                 hideProgress();
-                if(response.code()==201){
-                    Toast.makeText(getActivity(),response.message(), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getActivity(),LoginActivity.class);
+                if(response.isSuccessful()){
+                    Toast.makeText(getActivity(),response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    token = response.body().getAccessToken();
+                    clientsFirstName = response.body().getUser().getFirstName();
+                    clientsLastName = response.body().getUser().getLastName();
+                    clientsLocation = response.body().getUser().getLocation();
+                    clientsUsername = response.body().getUser().getUsername();
+                    clientsPhone = response.body().getUser().getPhone();
+                    sharedPreferencesConfig.saveAuthenticationInformation(token,clientsFirstName,clientsLastName,clientsLocation,clientsUsername,clientsPhone, Constants.ACTIVE_CONSTANT);
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
                     startActivity(intent);
                     getActivity().finish();
                 }

@@ -96,7 +96,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
         int itemQua;
         String qq;
         LinearLayoutCompat fulldetails, linearSale;
-        RelativeLayout dropdown,noProducts;
+        RelativeLayout dropdown,noProducts,progressL;
         EditText quantitySold, costUnitPrice;
         int itemId;
         int purchaseid;
@@ -154,6 +154,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                     View viewView = mLayoutInflator.inflate(R.layout.restock, null);
                     quantityBought = viewView.findViewById(R.id.quantity_bought);
                     buyingPrice = viewView.findViewById(R.id.cost_per_unit);
+                    progressL = viewView.findViewById(R.id.progressLoad);
 
                     alert.setView(viewView)
                             .setPositiveButton("Done", new DialogInterface.OnClickListener() {
@@ -168,12 +169,14 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                                         String quantity = quantityBought.getText().toString();
                                         String buyingprice = buyingPrice.getText().toString();
                                         final String item_id = Integer.toString(itemId);
+                                        showProgress();
                                         Call<RestockModel> call = RetrofitClient.getInstance(mContext)
                                                 .getApiConnector()
                                                 .restock(quantity, buyingprice, item_id);
                                         call.enqueue(new Callback<RestockModel>() {
                                             @Override
                                             public void onResponse(Call<RestockModel> call, Response<RestockModel> response) {
+                                                hideProgress();
                                                 if (response.code() == 201) {
                                                     Intent intent = new Intent(mContext, MainActivity.class);
                                                     mContext.startActivity(intent);
@@ -188,6 +191,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
 
                                             @Override
                                             public void onFailure(Call<RestockModel> call, Throwable t) {
+                                                hideProgress();
                                                 Toast.makeText(mContext, "errot:" + t.getMessage(), Toast.LENGTH_SHORT).show();
                                             }
                                         });
@@ -408,10 +412,11 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                                 String costprice = perQuantity.getText().toString();
                                 final String purchaseId = Integer.toString(purchaseid);
                                 String bp = bpSpinner.getSelectedItem().toString();
+                                String itemid = Integer.toString(itemId);
 
                                 Call<AddSaleModel> call = RetrofitClient.getInstance(mContext)
                                         .getApiConnector()
-                                        .addnewsale(purchaseId, quantitysold, costprice,bp);
+                                        .addnewsale(purchaseId, quantitysold, costprice,bp,itemid);
                                 call.enqueue(new Callback<AddSaleModel>() {
                                     @Override
                                     public void onResponse(Call<AddSaleModel> call, Response<AddSaleModel> response) {
@@ -437,6 +442,13 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                     });
                 }
             });
+        }
+
+        private void showProgress() {
+            progressL.setVisibility(View.VISIBLE);
+        }
+        private void hideProgress() {
+            progressL.setVisibility(View.GONE);
         }
     }
 }

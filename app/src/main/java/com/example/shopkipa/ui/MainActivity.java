@@ -152,6 +152,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
             Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
             startActivity(intent);
+            finish();
         }else if (id == R.id.action_help){
             Intent intent = new Intent(MainActivity.this,HelpActivity.class);
             startActivity(intent);
@@ -276,20 +277,22 @@ public class MainActivity extends AppCompatActivity
                         public void onResponse(Call<AddExpenseModel> call, Response<AddExpenseModel> response) {
                             hideProgress();
                             if(response.code()==201){
-                                Toast.makeText(MainActivity.this,expensetype + " expense added",Toast.LENGTH_SHORT).show();
+                                alertDialog.dismiss();
+                                Toast.makeText(MainActivity.this,expensetype + " Expense added successfully",Toast.LENGTH_SHORT).show();
                             }
                             else{
+                                Toast.makeText(MainActivity.this,"Internal server error",Toast.LENGTH_SHORT).show();
                             }
 
                         }
 
                         @Override
                         public void onFailure(Call<AddExpenseModel> call, Throwable t) {
+                            Toast.makeText(MainActivity.this,"Network error",Toast.LENGTH_SHORT).show();
                             hideProgress();
                         }
                     });
                 }
-                    alertDialog.dismiss();
                 }
         });
     }

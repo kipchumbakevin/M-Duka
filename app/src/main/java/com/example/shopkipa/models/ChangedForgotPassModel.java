@@ -1,31 +1,62 @@
 package com.example.shopkipa.models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class ChangedForgotPassModel {
-    private String code,newpassword,confirm;
-    public ChangedForgotPassModel() {
+    @SerializedName("access_token")
+    @Expose
+    private String accessToken;
+    @SerializedName("user")
+    @Expose
+    private User user;
+    @SerializedName("message")
+    @Expose
+    private String message;
+    @SerializedName("token_type")
+    @Expose
+    private String tokenType;
+    @SerializedName("expires_at")
+    @Expose
+    private String expiresAt;
+
+    public String getAccessToken() {
+        return accessToken;
     }
 
-    public String getCode() {
-        return code;
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public User getUser() {
+        return user;
     }
 
-    public String getNewpassword() {
-        return newpassword;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public void setNewpassword(String newpassword) {
-        this.newpassword = newpassword;
+    public String getMessage() {
+        return message;
     }
 
-    public String getConfirm() {
-        return confirm;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public void setConfirm(String confirm) {
-        this.confirm = confirm;
+    public String getTokenType() {
+        return tokenType;
+    }
+
+    public void setTokenType(String tokenType) {
+        this.tokenType = tokenType;
+    }
+
+    public String getExpiresAt() {
+        return expiresAt;
+    }
+
+    public void setExpiresAt(String expiresAt) {
+        this.expiresAt = expiresAt;
     }
 }

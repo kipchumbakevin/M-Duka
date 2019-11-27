@@ -45,10 +45,9 @@ public class SuggestedRestockFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_suggested_restock, container, false);
         recyclerView = view.findViewById(R.id.restock_recyclerView);
         recyclerView.hasFixedSize();
-
         restockAdapter = new RestockAdapter(getContext(),mStockArrayList);
         recyclerView.setAdapter(restockAdapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),1));
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),getResources().getInteger(R.integer.product_grid_span)));
 
         getRestock();
         return view;

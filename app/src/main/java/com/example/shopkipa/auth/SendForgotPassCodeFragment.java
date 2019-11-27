@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.shopkipa.R;
 import com.example.shopkipa.models.ForgotPasswordModel;
 import com.example.shopkipa.networking.RetrofitClient;
+import com.example.shopkipa.utils.SharedPreferencesConfig;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -84,7 +85,7 @@ public class SendForgotPassCodeFragment extends Fragment {
                     changeFragment();
                 }
                 else{
-                    Toast.makeText(getActivity(),"response:"+response.message(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),"response:"+response.message() + response.code(),Toast.LENGTH_SHORT).show();
                 }
 
             }

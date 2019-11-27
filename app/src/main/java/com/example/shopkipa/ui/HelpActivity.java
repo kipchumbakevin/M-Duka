@@ -36,7 +36,7 @@ public class HelpActivity extends AppCompatActivity {
         sendMessage = findViewById(R.id.send_message);
         getFaqsAdapter = new GetFaqsAdapter(HelpActivity.this,mFaqsArrayList);
         recyclerView.setAdapter(getFaqsAdapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(this,1));
+        recyclerView.setLayoutManager(new GridLayoutManager(this,getResources().getInteger(R.integer.product_grid_span)));
 
         sendMessage.setOnClickListener(new View.OnClickListener() {
             @Override

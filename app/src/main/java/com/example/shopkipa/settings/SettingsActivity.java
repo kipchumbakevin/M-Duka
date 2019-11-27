@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.example.shopkipa.R;
+import com.example.shopkipa.ui.MainActivity;
 import com.example.shopkipa.utils.Constants;
 import com.example.shopkipa.utils.SharedPreferencesConfig;
 
@@ -75,6 +76,7 @@ public class SettingsActivity extends AppCompatActivity {
                 public boolean onPreferenceClick(Preference preference) {
                     Intent intent = new Intent(context,SecurityOptions.class);
                     startActivity(intent);
+                    ((Activity)context).finish();
 
                     return true;
                 }
@@ -85,7 +87,6 @@ public class SettingsActivity extends AppCompatActivity {
                 public boolean onPreferenceClick(Preference preference) {
                     Intent intent = new Intent(context, ChangePersonalInfo.class);
                     startActivity(intent);
-                    ((Activity)context).finish();
 
                     return false;
                 }
@@ -108,4 +109,11 @@ public class SettingsActivity extends AppCompatActivity {
         imageView.setImageDrawable(drawable);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }

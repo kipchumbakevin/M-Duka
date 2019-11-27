@@ -132,7 +132,8 @@ public interface JsonPlaceHolderInterface {
             @Field("purchase_id")String purchaseId,
             @Field("quantity")String quantitysold,
             @Field("costprice")String costprice,
-            @Field("buyingprice") String bp
+            @Field("buyingprice") String bp,
+            @Field("item_id")String itemid
     );
     @FormUrlEncoded
     @POST("api/gettypeitem")
@@ -165,7 +166,7 @@ public interface JsonPlaceHolderInterface {
     );
     @FormUrlEncoded
     @POST("api/changepassword")
-    Call<ChangePasswordModel> changePassword(
+    Call<ChangedForgotPassModel> changePassword(
             @Field("newpass")String newPass,
             @Field("oldpass")String oldPass
     );

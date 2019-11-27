@@ -69,7 +69,7 @@ public class StockFragment extends Fragment {
         recyclerView.hasFixedSize();
         itemsInTypeAdapter = new ItemsInTypeAdapter(getActivity(), mStockArrayList);
         recyclerView.setAdapter(itemsInTypeAdapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), getResources().getInteger(R.integer.product_grid_span)));
 
         typeSpinnerArray = new ArrayList<>();
 

@@ -405,10 +405,11 @@ public class RestockAdapter extends RecyclerView.Adapter<RestockAdapter.RestockV
                                 String costprice = perQuantity.getText().toString();
                                 final String purchaseId = Integer.toString(purchaseid);
                                 String bp = bpSpinner.getSelectedItem().toString();
+                                String itemid = Integer.toString(itemId);
 
                                 Call<AddSaleModel> call = RetrofitClient.getInstance(mContext)
                                         .getApiConnector()
-                                        .addnewsale(purchaseId, quantitysold, costprice,bp);
+                                        .addnewsale(purchaseId, quantitysold, costprice,bp,itemid);
                                 call.enqueue(new Callback<AddSaleModel>() {
                                     @Override
                                     public void onResponse(Call<AddSaleModel> call, Response<AddSaleModel> response) {

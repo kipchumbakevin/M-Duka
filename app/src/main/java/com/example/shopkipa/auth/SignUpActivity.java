@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -53,11 +54,46 @@ public class SignUpActivity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                registerUser();
+                if (isErrors()){
+                    Toast.makeText(SignUpActivity.this,"Please ensure you fill all fields",Toast.LENGTH_SHORT).show();
+                }else{
+                    registerUser();
+                }
             }
         });
     }
+    public boolean isErrors(){
+        String firstname,lastname,username,phone,passw,confirm;
+        firstname = firstName.getText().toString();
+        lastname= lastName.getText().toString();
+        username = userName.getText().toString();
+        phone = phoneNumber.getText().toString();
+        passw = pass.getText().toString();
+        confirm = confirmPass.getText().toString();
+        if (TextUtils.isEmpty(firstname)) {
+            firstName.setError("This is a required field");
+            return true;}
+        if (TextUtils.isEmpty(lastname)) {
+            lastName.setError("This is a required field");
+            return true;
+        }
+        if (TextUtils.isEmpty(username)) {
+            userName.setError("This is a required field");
+            return true;}
 
+        if (TextUtils.isEmpty(phone)) {
+            phoneNumber.setError("This is a required field");
+            return true;}
+        if (TextUtils.isEmpty(passw)) {
+            pass.setError("This is a required field");
+            return true;}
+        if (TextUtils.isEmpty(confirm)) {
+            confirmPass.setError("This is a required field");
+            return true;}
+        else {
+            return false;
+        }
+    }
     private void registerUser() {
         showProgress();
         final String firstname,lastname,username,location,phone,password,confirmPassword;

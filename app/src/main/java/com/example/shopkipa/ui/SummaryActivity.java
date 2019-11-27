@@ -41,7 +41,7 @@ public class SummaryActivity extends AppCompatActivity {
         yearSpinner = findViewById(R.id.yearSpinner);
         getMonthsAdapter = new GetMonthsAdapter(SummaryActivity.this,mMonthsArrayList);
         recyclerView.setAdapter(getMonthsAdapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(SummaryActivity.this,1));
+        recyclerView.setLayoutManager(new GridLayoutManager(SummaryActivity.this,getResources().getInteger(R.integer.product_grid_span)));
         ActionBar actionBar = getSupportActionBar();
         if (actionBar!=null){
             actionBar.setDisplayHomeAsUpEnabled(true);
