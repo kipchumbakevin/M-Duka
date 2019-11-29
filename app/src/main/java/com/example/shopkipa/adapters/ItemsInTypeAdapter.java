@@ -33,6 +33,7 @@ import com.example.shopkipa.models.GetBuyingPricesModel;
 import com.example.shopkipa.models.GetStockInTypeModel;
 import com.example.shopkipa.models.RestockModel;
 import com.example.shopkipa.networking.RetrofitClient;
+import com.example.shopkipa.ui.ViewPhotos;
 import com.example.shopkipa.utils.Constants;
 
 import java.util.ArrayList;
@@ -47,12 +48,10 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
     private final Context mContext;
     private final ArrayList<GetStockInTypeModel> mStockArrayList;
     private final LayoutInflater mLayoutInflator;
-    private ViewPagerAdapter viewPagerAdapter;
     public ItemsInTypeAdapter(Context context, ArrayList<GetStockInTypeModel>stockArrayList){
         mContext = context;
         mStockArrayList = stockArrayList;
         mLayoutInflator = LayoutInflater.from(mContext);
-        viewPagerAdapter = new ViewPagerAdapter(mContext);
     }
     @NonNull
     @Override
@@ -66,9 +65,10 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
     public void onBindViewHolder(@NonNull ItemsViewHolder holder, int position) {
         GetStockInTypeModel getStockInTypeModel = mStockArrayList.get(position);
         holder.itemname.setText(getStockInTypeModel.getName());
-        Log.d("Imageurl", getStockInTypeModel.getImage());
-        ViewPagerAdapter.images = new String[]{Constants.BASE_URL + "/images/"+getStockInTypeModel.getImage()};
-        holder.viewPager.setAdapter(viewPagerAdapter);
+        Glide.with(mContext).load(Constants.BASE_URL + "images/"+getStockInTypeModel.getImage())
+                .into(holder.itemImage);
+//        ViewPagerAdapter.images = new String[]{Constants.BASE_URL + "images/"+getStockInTypeModel.getImage()};
+//        holder.viewPager.setAdapter(holder.viewPagerAdapter);
         holder.itemsize.setText(getStockInTypeModel.getSize());
         holder.mCurrentPosition = position;
         holder.itemId = mStockArrayList.get(position).getId();
@@ -90,7 +90,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
 
     public class ItemsViewHolder extends RecyclerView.ViewHolder {
         TextView itemname, itemsize, itemquantity, moreDetails, header, headerSize, headerColor;
-        ImageView deleteItem, restock, arrowUp, arrowDown;
+        ImageView deleteItem, restock, arrowUp, arrowDown,itemImage;
         Button sold, edit;
         int mCurrentPosition;
         String idItem;
@@ -104,14 +104,17 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
         int purchaseid;
         private ArrayAdapter<String>bpadapter;
         private List<String> bpSpinnerArray;
+        private ViewPagerAdapter viewPagerAdapter;
 
         public ItemsViewHolder(@NonNull View itemView) {
             super(itemView);
             itemname = itemView.findViewById(R.id.itemname);
             itemsize = itemView.findViewById(R.id.itemsize);
             itemquantity = itemView.findViewById(R.id.itemquantity);
-            viewPager = itemView.findViewById(R.id.viewPagerAdapter);
+            itemImage = itemView.findViewById(R.id.itemimagees);
             dropdown = itemView.findViewById(R.id.dropDown);
+//            viewPagerAdapter = new ViewPagerAdapter(mContext);
+//            viewPager = itemView.findViewById(R.id.viewPagerAdapterIm);
             headerColor = itemView.findViewById(R.id.header_color);
             linearSale = itemView.findViewById(R.id.linearSale);
             costUnitPrice = itemView.findViewById(R.id.cost_unit_price);
@@ -127,6 +130,16 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
             sold = itemView.findViewById(R.id.soldproduct);
             edit = itemView.findViewById(R.id.editProduct);
             moreDetails = itemView.findViewById(R.id.more_details);
+
+            itemImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String id = Integer.toString(itemId);
+                    Intent intent = new Intent(mContext, ViewPhotos.class);
+                    intent.putExtra("ITEMID",id);
+                    mContext.startActivity(intent);
+                }
+            });
 
             dropdown.setOnClickListener(new View.OnClickListener() {
                 @Override

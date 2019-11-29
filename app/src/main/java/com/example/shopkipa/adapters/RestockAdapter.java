@@ -108,7 +108,7 @@ public class RestockAdapter extends RecyclerView.Adapter<RestockAdapter.RestockV
             itemname = itemView.findViewById(R.id.itemname);
             itemsize = itemView.findViewById(R.id.itemsize);
             itemquantity = itemView.findViewById(R.id.itemquantity);
-            viewPager = itemView.findViewById(R.id.itemimageviewpager);
+            //viewPager = itemView.findViewById(R.id.itemimageviewpager);
             dropdown = itemView.findViewById(R.id.dropDown);
             headerColor = itemView.findViewById(R.id.header_color);
             linearSale = itemView.findViewById(R.id.linearSale);

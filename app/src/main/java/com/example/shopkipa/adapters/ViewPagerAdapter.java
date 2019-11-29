@@ -31,10 +31,7 @@ public class ViewPagerAdapter extends PagerAdapter implements
 
     public ViewPagerAdapter(Context context) {
         this.context = context;
-
-
     }
-
     @Override
     public int getCount() {
         return images.length;
@@ -51,7 +48,7 @@ public class ViewPagerAdapter extends PagerAdapter implements
 
         layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.image_view_pager, null);
-        ImageView imageView = view.findViewById(R.id.itemimageviewpager);
+        ImageView imageView = view.findViewById(R.id.itemimage);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

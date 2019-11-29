@@ -14,11 +14,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".auth.CodeAfterSignUpActivity"
+        <activity android:name=".ui.ViewPhotos"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
+            android:name=".auth.CodeAfterSignUpActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".ui.RestockActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".settings.ChangePhoneNumber"
             android:label="Change number"
@@ -91,6 +94,14 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/files" />
         </provider>
+
+        <receiver
+            android:name=".receivers.ZikySMSReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.auth.api.phone.SMS_RETRIEVED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

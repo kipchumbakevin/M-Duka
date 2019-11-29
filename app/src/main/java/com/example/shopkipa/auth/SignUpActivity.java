@@ -95,7 +95,6 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
     private void registerUser() {
-        showProgress();
         final String firstname,lastname,username,location,phone,password,confirmPassword;
         firstname = firstName.getText().toString();
         lastname = lastName.getText().toString();
@@ -104,17 +103,6 @@ public class SignUpActivity extends AppCompatActivity {
         phone = phoneNumber.getText().toString();
         password = pass.getText().toString();
         confirmPassword = confirmPass.getText().toString();
-
-
-        Call<SendSignUpCode> call = RetrofitClient.getInstance(SignUpActivity.this)
-                .getApiConnector()
-                .signUpCode(phone);
-        call.enqueue(new Callback<SendSignUpCode>() {
-            @Override
-            public void onResponse(Call<SendSignUpCode> call, Response<SendSignUpCode> response) {
-                hideProgress();
-                if(response.code()==201){
-                    Toast.makeText(SignUpActivity.this,"Successfully registered",Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(SignUpActivity.this,CodeAfterSignUpActivity.class);
                     intent.putExtra("FIRST",firstname);
                     intent.putExtra("LAST",lastname);
@@ -125,19 +113,6 @@ public class SignUpActivity extends AppCompatActivity {
                     intent.putExtra("CONFIRM",confirmPassword);
                     startActivity(intent);
                     finish();
-                }
-                else{
-                    Toast.makeText(SignUpActivity.this,response.message()+"response",Toast.LENGTH_LONG).show();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<SendSignUpCode> call, Throwable t) {
-                hideProgress();
-                Toast.makeText(SignUpActivity.this,t.getMessage()+"error",Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
     private void hideProgress() {

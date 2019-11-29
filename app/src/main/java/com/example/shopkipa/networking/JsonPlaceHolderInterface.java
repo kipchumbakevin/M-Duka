@@ -8,6 +8,7 @@ import com.example.shopkipa.models.ChangePasswordModel;
 import com.example.shopkipa.models.ChangedForgotPassModel;
 import com.example.shopkipa.models.ConfirmPhoneChangeCodeModel;
 import com.example.shopkipa.models.DeleteSaleModel;
+import com.example.shopkipa.models.GetItemImagesModel;
 import com.example.shopkipa.models.SendSignUpCode;
 import com.example.shopkipa.models.ForgotPasswordModel;
 import com.example.shopkipa.models.GenerateCodeModel;
@@ -77,7 +78,8 @@ public interface JsonPlaceHolderInterface {
     @FormUrlEncoded
     @POST("api/signupcode")
     Call<SendSignUpCode> signUpCode(
-            @Field("phone")String phone
+            @Field("phone")String phone,
+            @Field("appSignature")String appSignature
     );
     @FormUrlEncoded
     @POST("api/auth/login")
@@ -244,5 +246,9 @@ public interface JsonPlaceHolderInterface {
             @Field("year")String year,
             @Field("month")String month
     );
-
+    @FormUrlEncoded
+    @POST("api/images")
+    Call<List<GetItemImagesModel>> getImages(
+            @Field("item_id")String item_id
+    );
 }
