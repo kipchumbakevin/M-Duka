@@ -115,7 +115,6 @@ public class SignUpActivity extends AppCompatActivity {
                 public void onResponse(Call<SignUpMessagesModel> call, Response<SignUpMessagesModel> response) {
                     // hideProgress();
                     if (response.code() == 201) {
-                       // Toast.makeText(SignUpActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(SignUpActivity.this, CodeAfterSignUpActivity.class);
                         intent.putExtra("FIRST", firstname);
                         intent.putExtra("LAST", lastname);
@@ -126,6 +125,7 @@ public class SignUpActivity extends AppCompatActivity {
                         intent.putExtra("CONFIRM", confirmPassword);
                         startActivity(intent);
                         finish();
+                        Toast.makeText(SignUpActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(SignUpActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
                     }
