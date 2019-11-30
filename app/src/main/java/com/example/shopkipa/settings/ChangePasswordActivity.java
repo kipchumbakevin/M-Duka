@@ -24,7 +24,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ChangePasswordActivity extends AppCompatActivity {
-    EditText oldpass,newpass;
+    EditText oldpass,newpass,confirmnewpass;
     Button changePass;
     RelativeLayout progress;
     private String clientsFirstName,clientsLastName,clientsUsername,clientsPhone,clientsLocation,token;
@@ -35,10 +35,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_change_password);
         oldpass = findViewById(R.id.oldpass);
         newpass = findViewById(R.id.new_password);
+        confirmnewpass = findViewById(R.id.confirm_new_password);
         sharedPreferencesConfig = new SharedPreferencesConfig(getApplicationContext());
         changePass = findViewById(R.id.change_pass);
         progress = findViewById(R.id.progressLoad);
-
         changePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,38 +51,42 @@ public class ChangePasswordActivity extends AppCompatActivity {
         showProgress();
         String oldPass = oldpass.getText().toString();
         String newPass = newpass.getText().toString();
-        Call<ChangedForgotPassModel> call = RetrofitClient.getInstance(this)
-                .getApiConnector()
-                .changePassword(newPass,oldPass);
-        call.enqueue(new Callback<ChangedForgotPassModel>() {
-            @Override
-            public void onResponse(Call<ChangedForgotPassModel> call, Response<ChangedForgotPassModel> response) {
-                hideProgress();
-                if(response.isSuccessful()){
-                    Toast.makeText(ChangePasswordActivity.this,response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    token = response.body().getAccessToken();
-                    clientsFirstName = response.body().getUser().getFirstName();
-                    clientsLastName = response.body().getUser().getLastName();
-                    clientsLocation = response.body().getUser().getLocation();
-                    clientsUsername = response.body().getUser().getUsername();
-                    clientsPhone = response.body().getUser().getPhone();
-                    sharedPreferencesConfig.saveAuthenticationInformation(token,clientsFirstName,clientsLastName,clientsLocation,clientsUsername,clientsPhone, Constants.ACTIVE_CONSTANT);
-                    Intent intent = new Intent(ChangePasswordActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-                else{
-                    Toast.makeText(ChangePasswordActivity.this,"response:"+response.message(),Toast.LENGTH_SHORT).show();
+        String conf = confirmnewpass.getText().toString();
+        if (!newPass.equals(conf)){
+            Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+        }else {
+            Call<ChangedForgotPassModel> call = RetrofitClient.getInstance(this)
+                    .getApiConnector()
+                    .changePassword(newPass, oldPass);
+            call.enqueue(new Callback<ChangedForgotPassModel>() {
+                @Override
+                public void onResponse(Call<ChangedForgotPassModel> call, Response<ChangedForgotPassModel> response) {
+                    hideProgress();
+                    if (response.isSuccessful()) {
+                        Toast.makeText(ChangePasswordActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        token = response.body().getAccessToken();
+                        clientsFirstName = response.body().getUser().getFirstName();
+                        clientsLastName = response.body().getUser().getLastName();
+                        clientsLocation = response.body().getUser().getLocation();
+                        clientsUsername = response.body().getUser().getUsername();
+                        clientsPhone = response.body().getUser().getPhone();
+                        sharedPreferencesConfig.saveAuthenticationInformation(token, clientsFirstName, clientsLastName, clientsLocation, clientsUsername, clientsPhone, Constants.ACTIVE_CONSTANT);
+                        Intent intent = new Intent(ChangePasswordActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(ChangePasswordActivity.this, "response:" + response.message(), Toast.LENGTH_SHORT).show();
+                    }
+
                 }
 
-            }
-
-            @Override
-            public void onFailure(Call<ChangedForgotPassModel> call, Throwable t) {
-                hideProgress();
-                Toast.makeText(ChangePasswordActivity.this,"errot:"+t.getMessage(),Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<ChangedForgotPassModel> call, Throwable t) {
+                    hideProgress();
+                    Toast.makeText(ChangePasswordActivity.this, "errot:" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
     private void showProgress() {
         progress.setVisibility(View.VISIBLE);

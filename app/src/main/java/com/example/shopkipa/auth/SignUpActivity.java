@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.shopkipa.R;
 import com.example.shopkipa.models.SendCodeModel;
 import com.example.shopkipa.models.SendSignUpCode;
+import com.example.shopkipa.models.SignUpMessagesModel;
 import com.example.shopkipa.models.SignUpModel;
 import com.example.shopkipa.networking.RetrofitClient;
 
@@ -103,16 +104,42 @@ public class SignUpActivity extends AppCompatActivity {
         phone = phoneNumber.getText().toString();
         password = pass.getText().toString();
         confirmPassword = confirmPass.getText().toString();
-                    Intent intent = new Intent(SignUpActivity.this,CodeAfterSignUpActivity.class);
-                    intent.putExtra("FIRST",firstname);
-                    intent.putExtra("LAST",lastname);
-                    intent.putExtra("USER",username);
-                    intent.putExtra("LOCATION",location);
-                    intent.putExtra("NUMBER",phone);
-                    intent.putExtra("PASS",password);
-                    intent.putExtra("CONFIRM",confirmPassword);
-                    startActivity(intent);
-                    finish();
+        if (!password.equals(confirmPassword)){
+            Toast.makeText(SignUpActivity.this,"Passwords do not match",Toast.LENGTH_LONG).show();
+        }else {
+            Call<SignUpMessagesModel> call = RetrofitClient.getInstance(SignUpActivity.this)
+                    .getApiConnector()
+                    .checkIfExist(phone, username);
+            call.enqueue(new Callback<SignUpMessagesModel>() {
+                @Override
+                public void onResponse(Call<SignUpMessagesModel> call, Response<SignUpMessagesModel> response) {
+                    // hideProgress();
+                    if (response.code() == 201) {
+                       // Toast.makeText(SignUpActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(SignUpActivity.this, CodeAfterSignUpActivity.class);
+                        intent.putExtra("FIRST", firstname);
+                        intent.putExtra("LAST", lastname);
+                        intent.putExtra("USER", username);
+                        intent.putExtra("LOCATION", location);
+                        intent.putExtra("NUMBER", phone);
+                        intent.putExtra("PASS", password);
+                        intent.putExtra("CONFIRM", confirmPassword);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(SignUpActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<SignUpMessagesModel> call, Throwable t) {
+                    // hideProgress();
+                    Toast.makeText(SignUpActivity.this, t.getMessage() + "error", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
     }
 
     private void hideProgress() {

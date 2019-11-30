@@ -14,8 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.ViewPhotos"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".settings.ConfirmPhoneChangeCode"></activity>
+        <activity
+            android:name=".ui.ViewPhotos"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".auth.CodeAfterSignUpActivity"
             android:theme="@style/AppTheme.NoActionBar" />

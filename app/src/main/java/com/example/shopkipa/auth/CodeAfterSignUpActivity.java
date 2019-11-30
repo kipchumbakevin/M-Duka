@@ -16,11 +16,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.shopkipa.R;
+import com.example.shopkipa.models.ChangedForgotPassModel;
 import com.example.shopkipa.models.SendSignUpCode;
 import com.example.shopkipa.models.SignUpModel;
+import com.example.shopkipa.models.UsersModel;
 import com.example.shopkipa.networking.RetrofitClient;
 import com.example.shopkipa.receivers.AppSignatureHashHelper;
 import com.example.shopkipa.receivers.ZikySMSReceiver;
+import com.example.shopkipa.ui.MainActivity;
+import com.example.shopkipa.utils.Constants;
+import com.example.shopkipa.utils.SharedPreferencesConfig;
 import com.google.android.gms.auth.api.phone.SmsRetriever;
 import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,11 +40,14 @@ public class CodeAfterSignUpActivity extends AppCompatActivity implements
         ZikySMSReceiver.OTPReceiveListener {
     EditText enter_code;
     Button confirm;
-    String first_name,last_name,username,phone,location,code,password,confirmPassword;
+    String first_name,last_name,username,phone,location,code,password,confirmPassword,newpass,
+            clientsFirstName,clientsLastName,clientsUsername,clientsPhone,clientsLocation,token;
     private ZikySMSReceiver smsReceiver;
     private Boolean reset = false;
     public String appSignature;
     private Context context;
+    private SharedPreferencesConfig sharedPreferencesConfig;
+    private static final String RESET ="com.example.shopkipa.auth.reset" ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +55,8 @@ public class CodeAfterSignUpActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_code_after_sign_up);
         enter_code = findViewById(R.id.enter_signup_code);
         confirm = findViewById(R.id.confirm_signup_code);
-
+        sharedPreferencesConfig = new SharedPreferencesConfig(getApplicationContext());
+        newpass = getIntent().getExtras().getString("NEWPASS");
         phone = getIntent().getExtras().getString("NUMBER");
         first_name = getIntent().getExtras().getString("FIRST");
         last_name = getIntent().getExtras().getString("LAST");
@@ -55,10 +64,13 @@ public class CodeAfterSignUpActivity extends AppCompatActivity implements
         location = getIntent().getExtras().getString("LOCATION");
         password = getIntent().getExtras().getString("PASS");
         confirmPassword = getIntent().getExtras().getString("CONFIRM");
+        if(getIntent().hasExtra(RESET)) {
+            reset = getIntent().getBooleanExtra(RESET, false);
+        }
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                registerUserAfterConfirmation();
+                verification();
             }
         });
         context = getApplicationContext();
@@ -66,7 +78,7 @@ public class CodeAfterSignUpActivity extends AppCompatActivity implements
         sendSignCode();
     }
     private void sendSignCode() {
-        Toast.makeText(CodeAfterSignUpActivity.this,appSignature,Toast.LENGTH_LONG).show();
+       // Toast.makeText(CodeAfterSignUpActivity.this,phone,Toast.LENGTH_LONG).show();
         //showProgress();
         Call<SendSignUpCode> call = RetrofitClient.getInstance(CodeAfterSignUpActivity.this)
                 .getApiConnector()
@@ -96,15 +108,22 @@ public class CodeAfterSignUpActivity extends AppCompatActivity implements
 
     private void registerUserAfterConfirmation() {
             code = enter_code.getText().toString();
-            Call<SignUpModel> call = RetrofitClient.getInstance(CodeAfterSignUpActivity.this)
+            Call<UsersModel> call = RetrofitClient.getInstance(CodeAfterSignUpActivity.this)
                     .getApiConnector()
                     .signUp(first_name,last_name,username,location,phone,password,confirmPassword,code);
-            call.enqueue(new Callback<SignUpModel>() {
+            call.enqueue(new Callback<UsersModel>() {
                 @Override
-                public void onResponse(Call<SignUpModel> call, Response<SignUpModel> response) {
+                public void onResponse(Call<UsersModel> call, Response<UsersModel> response) {
                     if(response.code()==201){
-                        Toast.makeText(CodeAfterSignUpActivity.this,"Registered successfully",Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(CodeAfterSignUpActivity.this,LoginActivity.class);
+                        token = response.body().getAccessToken();
+                        clientsFirstName = response.body().getUser().getFirstName();
+                        clientsLastName = response.body().getUser().getLastName();
+                        clientsLocation = response.body().getUser().getLocation();
+                        clientsUsername = response.body().getUser().getUsername();
+                        clientsPhone = response.body().getUser().getPhone();
+                        sharedPreferencesConfig.saveAuthenticationInformation(token,clientsFirstName,clientsLastName,clientsLocation,clientsUsername,clientsPhone, Constants.ACTIVE_CONSTANT);
+                        Toast.makeText(CodeAfterSignUpActivity.this, "Successfully registered", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(CodeAfterSignUpActivity.this,MainActivity.class);
                         startActivity(intent);
                         finish();
                     }
@@ -115,7 +134,7 @@ public class CodeAfterSignUpActivity extends AppCompatActivity implements
                 }
 
                 @Override
-                public void onFailure(Call<SignUpModel> call, Throwable t) {
+                public void onFailure(Call<UsersModel> call, Throwable t) {
                     Toast.makeText(CodeAfterSignUpActivity.this,"errot:"+t.getMessage(),Toast.LENGTH_SHORT).show();
                 }
             });
@@ -170,14 +189,14 @@ public class CodeAfterSignUpActivity extends AppCompatActivity implements
     @Override
     public void onOTPReceived(String verificationSMS) {
         //success
-        Log.d("OTP-SUCCESS:", verificationSMS);
-        Toast.makeText(this, "OTP Success", Toast.LENGTH_SHORT).show();
+//        Log.d("OTP-SUCCESS:", verificationSMS);
+//        Toast.makeText(this, "OTP Success", Toast.LENGTH_SHORT).show();
 
         //EXTRACT THE 5-digit Code
         enter_code.setText(extractCodeFromSMS(verificationSMS));
 
         //Start Verification too :)
-        registerUserAfterConfirmation();
+        verification();
         if (smsReceiver != null) {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(smsReceiver);
         }
@@ -185,9 +204,11 @@ public class CodeAfterSignUpActivity extends AppCompatActivity implements
 
     private void verification() {
         if (!reset){
+            Toast.makeText(context,"bad",Toast.LENGTH_SHORT).show();
             registerUserAfterConfirmation();
         }else{
-
+            Toast.makeText(context, "good", Toast.LENGTH_SHORT).show();
+            changePassword();
         }
     }
 
@@ -217,5 +238,38 @@ public class CodeAfterSignUpActivity extends AppCompatActivity implements
     public void resendSMS() {
        // shortCodeEditText.setText(""); // Clear Code
         sendSignCode();
+    }
+    private void changePassword() {
+        String code = enter_code.getText().toString();
+        Call<ChangedForgotPassModel> call = RetrofitClient.getInstance(this)
+                .getApiConnector()
+                .newPass(code,newpass,phone);
+        call.enqueue(new Callback<ChangedForgotPassModel>() {
+            @Override
+            public void onResponse(Call<ChangedForgotPassModel> call, Response<ChangedForgotPassModel> response) {
+                if(response.isSuccessful()){
+                    Toast.makeText(CodeAfterSignUpActivity.this,response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    token = response.body().getAccessToken();
+                    clientsFirstName = response.body().getUser().getFirstName();
+                    clientsLastName = response.body().getUser().getLastName();
+                    clientsLocation = response.body().getUser().getLocation();
+                    clientsUsername = response.body().getUser().getUsername();
+                    clientsPhone = response.body().getUser().getPhone();
+                    sharedPreferencesConfig.saveAuthenticationInformation(token,clientsFirstName,clientsLastName,clientsLocation,clientsUsername,clientsPhone, Constants.ACTIVE_CONSTANT);
+                    Intent intent = new Intent(CodeAfterSignUpActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else{
+                    Toast.makeText(CodeAfterSignUpActivity.this,"response:"+response.message(),Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ChangedForgotPassModel> call, Throwable t) {
+                Toast.makeText(CodeAfterSignUpActivity.this,"errot:"+t.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

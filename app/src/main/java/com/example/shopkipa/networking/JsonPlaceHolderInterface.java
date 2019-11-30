@@ -34,6 +34,7 @@ import com.example.shopkipa.models.LogoutModel;
 import com.example.shopkipa.models.RestockModel;
 import com.example.shopkipa.models.SendCodeModel;
 import com.example.shopkipa.models.SendMessageModel;
+import com.example.shopkipa.models.SignUpMessagesModel;
 import com.example.shopkipa.models.SignUpModel;
 import com.example.shopkipa.models.SuggestedRestockModel;
 import com.example.shopkipa.models.UsersModel;
@@ -65,7 +66,7 @@ public interface JsonPlaceHolderInterface {
     );
     @FormUrlEncoded
     @POST("api/auth/signup")
-    Call<SignUpModel> signUp(
+    Call<UsersModel> signUp(
             @Field("first_name")String firstname,
             @Field("last_name")String lastname,
             @Field("username")String username,
@@ -80,6 +81,12 @@ public interface JsonPlaceHolderInterface {
     Call<SendSignUpCode> signUpCode(
             @Field("phone")String phone,
             @Field("appSignature")String appSignature
+    );
+    @FormUrlEncoded
+    @POST("api/checkifexist")
+    Call<SignUpMessagesModel> checkIfExist(
+            @Field("phone")String phone,
+            @Field("username")String username
     );
     @FormUrlEncoded
     @POST("api/auth/login")
@@ -158,12 +165,19 @@ public interface JsonPlaceHolderInterface {
     @POST("api/generatecode")
     Call<GenerateCodeModel> generateCode(
             @Field("oldphone")String oldphone,
-            @Field("passcode")String pas
+            @Field("appSignature")String appSignature
+    );
+    @FormUrlEncoded
+    @POST("api/checkphone")
+    Call<SignUpMessagesModel> checkIfNoCorrect(
+            @Field("oldphone")String oldphone,
+            @Field("pas")String pas
     );
     @FormUrlEncoded
     @POST("api/changephone")
     Call<ConfirmPhoneChangeCodeModel> changePhone(
             @Field("newphone")String newphone,
+            @Field("oldphone")String oldphone,
             @Field("code")String code
     );
     @FormUrlEncoded
@@ -189,7 +203,8 @@ public interface JsonPlaceHolderInterface {
     @POST("api/newpassword")
     Call<ChangedForgotPassModel> newPass(
             @Field("code")String code,
-            @Field("newpass")String newPass
+            @Field("newpass")String newPass,
+            @Field("phone")String phone
     );
     @FormUrlEncoded
     @POST("api/getgroup")
