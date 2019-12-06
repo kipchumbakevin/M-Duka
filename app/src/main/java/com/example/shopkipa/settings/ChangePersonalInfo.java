@@ -1,6 +1,7 @@
 package com.example.shopkipa.settings;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
@@ -8,6 +9,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,10 +17,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shopkipa.R;
 import com.example.shopkipa.models.ChangeDetailsModel;
+import com.example.shopkipa.models.SignUpMessagesModel;
 import com.example.shopkipa.networking.RetrofitClient;
 import com.example.shopkipa.utils.SharedPreferencesConfig;
 
@@ -27,11 +31,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ChangePersonalInfo extends AppCompatActivity {
-    EditText editUsername,editFirst,editLast,editLocation;
     Button submitChanges;
-    RelativeLayout progress;
+    RelativeLayout progress,username,first,last,loca;
+    TextView editUsername,editFirst,editLast,editLocation;
     SharedPreferencesConfig sharedPreferencesConfig;
     private String clientsFirstName,clientsLastName,clientsUsername,clientsLocation;
+    int dd = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +44,10 @@ public class ChangePersonalInfo extends AppCompatActivity {
         setContentView(R.layout.activity_change_personal_info);
         editUsername = findViewById(R.id.set_username);
         editFirst = findViewById(R.id.set_firstname);
+        username = findViewById(R.id.username_relative);
+        first = findViewById(R.id.firstname_relative);
+        last = findViewById(R.id.lastname_relative);
+        loca = findViewById(R.id.location_relative);
         editLast = findViewById(R.id.set_lastname);
         progress = findViewById(R.id.progressLoad);
         editLocation = findViewById(R.id.set_location);
@@ -48,7 +57,6 @@ public class ChangePersonalInfo extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
         loadDetails();
         submitChanges.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +64,61 @@ public class ChangePersonalInfo extends AppCompatActivity {
                 changeInfo();
             }
         });
+        username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dd = 1;
+                changeDetailsDialog();
+            }
+        });
+        first.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dd = 2;
+                changeDetailsDialog();
+            }
+        });
+        last.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dd = 3;
+                changeDetailsDialog();
+            }
+        });
+        loca.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dd = 4;
+                changeDetailsDialog();
+            }
+        });
+    }
+
+    private void changeDetailsDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        View view = getLayoutInflater().inflate(R.layout.change_details_edittext,null);
+        TextView title = view.findViewById(R.id.dialog_title);
+        final EditText editText = view.findViewById(R.id.edit_them_details);
+        if (dd==1) title.setText("Username:");
+        if (dd==2) title.setText("First name:");
+        if (dd==3) title.setText("Last name:");
+        if (dd==4) title.setText("Location:");
+        alertDialogBuilder
+                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String changed = editText.getText().toString();
+                        if (!editText.getText().toString().isEmpty()){
+                            if (dd==1) editUsername.setText(changed);
+                            if (dd==2) editFirst.setText(changed);
+                            if (dd==3) editLast.setText(changed);
+                            if (dd==4) editLocation.setText(changed);
+                        }
+                    }
+                });
+        alertDialogBuilder.setView(view);
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     private void loadDetails() {
@@ -71,6 +134,7 @@ public class ChangePersonalInfo extends AppCompatActivity {
         firstname = editFirst.getText().toString();
         lastname = editLast.getText().toString();
         location = editLocation.getText().toString();
+        SignUpMessagesModel signUpMessagesModel = new SignUpMessagesModel();
         showProgress();
         Call<ChangeDetailsModel> call = RetrofitClient.getInstance(this)
                 .getApiConnector()
@@ -85,13 +149,13 @@ public class ChangePersonalInfo extends AppCompatActivity {
                     clientsLocation = response.body().getUser().getLocation();
                     clientsUsername = response.body().getUser().getUsername();
                     sharedPreferencesConfig.saveChangedDetails(clientsFirstName,clientsLastName,clientsLocation,clientsUsername);
-                    Toast.makeText(ChangePersonalInfo.this,response.message(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ChangePersonalInfo.this,"Done",Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(ChangePersonalInfo.this, SettingsActivity.class);
                     startActivity(intent);
                     finish();
                 }
                 else{
-                    Toast.makeText(ChangePersonalInfo.this,"response:"+response.message(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ChangePersonalInfo.this,"The username has already been taken",Toast.LENGTH_SHORT).show();
                 }
 
             }

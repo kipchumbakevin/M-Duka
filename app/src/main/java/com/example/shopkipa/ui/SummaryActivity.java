@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shopkipa.R;
@@ -34,6 +35,7 @@ public class SummaryActivity extends AppCompatActivity {
     private ArrayAdapter<String> yearadapter;
     private List<String> yearSpinnerArray;
     RelativeLayout progress;
+    TextView no_months;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,7 @@ public class SummaryActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.months_recyclerView);
         yearSpinner = findViewById(R.id.yearSpinner);
         progress = findViewById(R.id.progressLoad);
+        no_months = findViewById(R.id.noMonths);
         getMonthsAdapter = new GetMonthsAdapter(SummaryActivity.this,mMonthsArrayList);
         recyclerView.setAdapter(getMonthsAdapter);
         recyclerView.setLayoutManager(new GridLayoutManager(SummaryActivity.this,getResources().getInteger(R.integer.product_grid_span)));
@@ -75,6 +78,10 @@ public class SummaryActivity extends AppCompatActivity {
                         if(response.code()==200){
                              mMonthsArrayList.addAll(response.body());
                             getMonthsAdapter.notifyDataSetChanged();
+                            if (mMonthsArrayList.size()<1){
+                                no_months.setVisibility(View.VISIBLE);
+                                recyclerView.setVisibility(View.GONE);
+                            }
                         }
                         else{
                             Toast.makeText(SummaryActivity.this,response.message(),Toast.LENGTH_SHORT).show();
@@ -117,6 +124,10 @@ public class SummaryActivity extends AppCompatActivity {
                         yearSpinnerArray.add(response.body().get(index).getYear());
                     }
                     yearadapter.notifyDataSetChanged();
+                    if (yearSpinnerArray.size()<1){
+                        no_months.setVisibility(View.VISIBLE);
+                        recyclerView.setVisibility(View.GONE);
+                    }
                 }
                 else{
                     Toast.makeText(SummaryActivity.this,response.message(),Toast.LENGTH_SHORT).show();

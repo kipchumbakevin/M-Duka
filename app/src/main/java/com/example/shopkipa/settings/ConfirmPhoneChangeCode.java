@@ -62,12 +62,14 @@ public class ConfirmPhoneChangeCode extends AppCompatActivity implements
     }
 
     private void generate() {
+        showProgress();
         Call<GenerateCodeModel> call = RetrofitClient.getInstance(this)
                 .getApiConnector()
                 .generateCode(oldphone,appSignature);
         call.enqueue(new Callback<GenerateCodeModel>() {
             @Override
             public void onResponse(Call<GenerateCodeModel> call, Response<GenerateCodeModel> response) {
+                hideProgress();
                 if(response.code()==201){
                     startSMSListener();
                     startCountDownTimer();
@@ -80,11 +82,13 @@ public class ConfirmPhoneChangeCode extends AppCompatActivity implements
 
             @Override
             public void onFailure(Call<GenerateCodeModel> call, Throwable t) {
+                hideProgress();
                 Toast.makeText(ConfirmPhoneChangeCode.this,"errot:"+t.getMessage(),Toast.LENGTH_SHORT).show();
             }
         });
     }
     private void confirm() {
+        showProgress();
         final String code = enterCode.getText().toString();
         Call<ConfirmPhoneChangeCodeModel> call = RetrofitClient.getInstance(ConfirmPhoneChangeCode.this)
                 .getApiConnector()
@@ -92,6 +96,7 @@ public class ConfirmPhoneChangeCode extends AppCompatActivity implements
         call.enqueue(new Callback<ConfirmPhoneChangeCodeModel>() {
             @Override
             public void onResponse(Call<ConfirmPhoneChangeCodeModel> call, Response<ConfirmPhoneChangeCodeModel> response) {
+                hideProgress();
                 if(response.code()==201){
                     Toast.makeText(ConfirmPhoneChangeCode.this,"Your number has been changed successfully",Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(ConfirmPhoneChangeCode.this,SecurityOptions.class);
@@ -106,6 +111,7 @@ public class ConfirmPhoneChangeCode extends AppCompatActivity implements
 
             @Override
             public void onFailure(Call<ConfirmPhoneChangeCodeModel> call, Throwable t) {
+                hideProgress();
                 Toast.makeText(ConfirmPhoneChangeCode.this,"errot:"+t.getMessage(),Toast.LENGTH_SHORT).show();
             }
         });
@@ -200,5 +206,11 @@ public class ConfirmPhoneChangeCode extends AppCompatActivity implements
     public void resendSMS() {
         // shortCodeEditText.setText(""); // Clear Code
         generate();
+    }
+    private void showProgress(){
+        progress.setVisibility(View.VISIBLE);
+    }
+    private void hideProgress(){
+        progress.setVisibility(View.GONE);
     }
 }

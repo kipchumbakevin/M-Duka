@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.FileUtils;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -28,11 +29,16 @@ import com.example.shopkipa.networking.RetrofitClient;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.Normalizer;
 import java.util.Random;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Multipart;
 
 public class SendMessage extends AppCompatActivity {
     private static final int GALLERY_REQUEST_CODE = 422;
@@ -105,14 +111,15 @@ public class SendMessage extends AppCompatActivity {
     }
 
     private void send() {
-        String image;
-        showProgress();
-        if (photoUri!=null){
-            image = photoUri.toString();
-        }else{
-            image = "";
-        }
-        String message = writeMessage.getText().toString();
+//        String image;
+//        showProgress();
+//        if (photoUri!=null){
+//            image = photoUri.toString();
+//        }else{
+//            image = "";
+//        }
+        RequestBody image = RequestBody.create(MediaType.parse(getContentResolver().getType(photoUri)), FileUtils.getfile)
+        RequestBody message = RequestBody.create(MultipartBody.FORM,writeMessage.getText().toString());
         Call<SendMessageModel> call = RetrofitClient.getInstance(this)
                 .getApiConnector()
                 .sendMessage(message,image);

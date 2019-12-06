@@ -60,7 +60,6 @@ public class SuggestedRestockFragment extends Fragment {
         fragment_name = getArguments().getString("fragment_name", fragment_name);
         mStockArrayList.clear();
         String category = fragment_name;
-        Toast.makeText(getActivity(),category,Toast.LENGTH_LONG).show();
         Call<List<SuggestedRestockModel>> call = RetrofitClient.getInstance(getActivity())
                 .getApiConnector()
                 .getSuggestedRestock(category);

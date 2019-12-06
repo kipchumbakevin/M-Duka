@@ -108,12 +108,4 @@ public class SettingsActivity extends AppCompatActivity {
 
         imageView.setImageDrawable(drawable);
     }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
-        startActivity(intent);
-        finish();
-    }
 }

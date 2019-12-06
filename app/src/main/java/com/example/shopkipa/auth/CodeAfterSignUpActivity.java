@@ -13,6 +13,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shopkipa.R;
@@ -40,6 +43,9 @@ public class CodeAfterSignUpActivity extends AppCompatActivity implements
         ZikySMSReceiver.OTPReceiveListener {
     EditText enter_code;
     Button confirm;
+    RelativeLayout progress;
+    TextView resend;
+    ImageView resendCodeImage;
     String first_name,last_name,username,phone,location,code,password,confirmPassword,newpass,
             clientsFirstName,clientsLastName,clientsUsername,clientsPhone,clientsLocation,token;
     private ZikySMSReceiver smsReceiver;
@@ -55,6 +61,9 @@ public class CodeAfterSignUpActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_code_after_sign_up);
         enter_code = findViewById(R.id.enter_signup_code);
         confirm = findViewById(R.id.confirm_signup_code);
+        progress = findViewById(R.id.progressLoad);
+        resend = findViewById(R.id.resendCode);
+        resendCodeImage = findViewById(R.id.resendCodeImageView);
         sharedPreferencesConfig = new SharedPreferencesConfig(getApplicationContext());
         newpass = getIntent().getExtras().getString("NEWPASS");
         phone = getIntent().getExtras().getString("NUMBER");
@@ -67,6 +76,12 @@ public class CodeAfterSignUpActivity extends AppCompatActivity implements
         if(getIntent().hasExtra(RESET)) {
             reset = getIntent().getBooleanExtra(RESET, false);
         }
+        resend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendSignCode();
+            }
+        });
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,35 +93,34 @@ public class CodeAfterSignUpActivity extends AppCompatActivity implements
         sendSignCode();
     }
     private void sendSignCode() {
-       // Toast.makeText(CodeAfterSignUpActivity.this,phone,Toast.LENGTH_LONG).show();
-        //showProgress();
+        showProgress();
         Call<SendSignUpCode> call = RetrofitClient.getInstance(CodeAfterSignUpActivity.this)
                 .getApiConnector()
                 .signUpCode(phone,appSignature);
         call.enqueue(new Callback<SendSignUpCode>() {
             @Override
             public void onResponse(Call<SendSignUpCode> call, Response<SendSignUpCode> response) {
-               // hideProgress();
+                hideProgress();
                 if(response.code()==201){
                     startSMSListener();
                     startCountDownTimer();
-                    Toast.makeText(CodeAfterSignUpActivity.this,"sent",Toast.LENGTH_LONG).show();
                 }
                 else{
-                    Toast.makeText(CodeAfterSignUpActivity.this,response.message()+"response",Toast.LENGTH_LONG).show();
+                    Toast.makeText(CodeAfterSignUpActivity.this,response.message(),Toast.LENGTH_LONG).show();
                 }
 
             }
 
             @Override
             public void onFailure(Call<SendSignUpCode> call, Throwable t) {
-               // hideProgress();
+                hideProgress();
                 Toast.makeText(CodeAfterSignUpActivity.this,t.getMessage()+"error",Toast.LENGTH_LONG).show();
             }
         });
     }
 
     private void registerUserAfterConfirmation() {
+        showProgress();
             code = enter_code.getText().toString();
             Call<UsersModel> call = RetrofitClient.getInstance(CodeAfterSignUpActivity.this)
                     .getApiConnector()
@@ -114,6 +128,7 @@ public class CodeAfterSignUpActivity extends AppCompatActivity implements
             call.enqueue(new Callback<UsersModel>() {
                 @Override
                 public void onResponse(Call<UsersModel> call, Response<UsersModel> response) {
+                    hideProgress();
                     if(response.code()==201){
                         token = response.body().getAccessToken();
                         clientsFirstName = response.body().getUser().getFirstName();
@@ -135,6 +150,7 @@ public class CodeAfterSignUpActivity extends AppCompatActivity implements
 
                 @Override
                 public void onFailure(Call<UsersModel> call, Throwable t) {
+                    hideProgress();
                     Toast.makeText(CodeAfterSignUpActivity.this,"errot:"+t.getMessage(),Toast.LENGTH_SHORT).show();
                 }
             });
@@ -175,13 +191,16 @@ public class CodeAfterSignUpActivity extends AppCompatActivity implements
 
         new CountDownTimer(60000, 1000) { // 60 seconds, in 1 second intervals
             public void onTick(long millisUntilFinished) {
-             //   textViewResendSMS.setText("Resend SMS after "+millisUntilFinished / 1000 +" Seconds");
-             //   textViewResendSMS.setVisibility(View.VISIBLE);
+                resend.setText("Resend code after "+millisUntilFinished / 1000 +" Seconds");
+                resend.setVisibility(View.VISIBLE);
+                resendCodeImage.setVisibility(View.GONE);
+                resend.setEnabled(false);
             }
 
             public void onFinish() {
-             //   textViewResendSMS.setText("Resend SMS");
-             //   resendSMS.setV
+                resend.setEnabled(true);
+                resendCodeImage.setVisibility(View.VISIBLE);
+                resend.setText("Resend Code");
 
             }
         }.start();
@@ -236,10 +255,11 @@ public class CodeAfterSignUpActivity extends AppCompatActivity implements
         return verificationSMS.split(":")[1];
     }
     public void resendSMS() {
-       // shortCodeEditText.setText(""); // Clear Code
+        enter_code.setText(""); // Clear Code
         sendSignCode();
     }
     private void changePassword() {
+        showProgress();
         String code = enter_code.getText().toString();
         Call<ChangedForgotPassModel> call = RetrofitClient.getInstance(this)
                 .getApiConnector()
@@ -247,6 +267,7 @@ public class CodeAfterSignUpActivity extends AppCompatActivity implements
         call.enqueue(new Callback<ChangedForgotPassModel>() {
             @Override
             public void onResponse(Call<ChangedForgotPassModel> call, Response<ChangedForgotPassModel> response) {
+                hideProgress();
                 if(response.isSuccessful()){
                     Toast.makeText(CodeAfterSignUpActivity.this,response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     token = response.body().getAccessToken();
@@ -268,8 +289,15 @@ public class CodeAfterSignUpActivity extends AppCompatActivity implements
 
             @Override
             public void onFailure(Call<ChangedForgotPassModel> call, Throwable t) {
+                hideProgress();
                 Toast.makeText(CodeAfterSignUpActivity.this,"errot:"+t.getMessage(),Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private void showProgress(){
+        progress.setVisibility(View.VISIBLE);
+    }
+    private void hideProgress(){
+        progress.setVisibility(View.GONE);
     }
 }

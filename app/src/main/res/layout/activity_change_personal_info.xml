@@ -12,74 +12,149 @@
     android:layout_height="wrap_content"
     android:padding="10dp"
     android:orientation="vertical">
-    <TextView
+    <RelativeLayout
+        android:id="@+id/username_relative"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorBlack"
-        android:textSize="15sp"
-        android:text="Username:"/>
-    <EditText
-        android:id="@+id/set_username"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_alignParentStart="true"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="17dp"
+            android:layout_marginStart="20dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_create"/>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="140dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:textSize="15sp"
+                android:text="Username"/>
+            <TextView
+                android:id="@+id/set_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="username"
+                android:textColor="@color/colorBlack"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/firstname_relative"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_create"
-        android:textSize="12sp"
-        android:textColor="@color/colorBlack"
-        android:drawablePadding="10dp"
-        android:layout_marginStart="10dp"
-        android:hint="username"/>
-    <TextView
+        android:layout_marginTop="7dp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_alignParentStart="true"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="17dp"
+            android:layout_marginStart="20dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_create"/>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="140dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:textSize="15sp"
+                android:text="First name"/>
+            <TextView
+                android:id="@+id/set_firstname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="first name"
+                android:textColor="@color/colorBlack"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/lastname_relative"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorBlack"
-        android:textSize="15sp"
-        android:text="First name:"/>
-    <EditText
-        android:id="@+id/set_firstname"
+        android:layout_marginTop="7dp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_alignParentStart="true"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="17dp"
+            android:layout_marginStart="20dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_create"/>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="140dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:textSize="15sp"
+                android:text="Last name"/>
+            <TextView
+                android:id="@+id/set_lastname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="first name"
+                android:textColor="@color/colorBlack"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/location_relative"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorBlack"
-        android:textSize="12sp"
-        android:drawableStart="@drawable/ic_create"
-        android:drawablePadding="10dp"
-        android:layout_marginStart="10dp"
-        android:hint="first name"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:textColor="@color/colorBlack"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:text="Last name:"/>
-    <EditText
-        android:id="@+id/set_lastname"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorBlack"
-        android:textSize="12sp"
-        android:layout_marginStart="10dp"
-        android:drawableStart="@drawable/ic_create"
-        android:drawablePadding="10dp"
-        android:hint="last name"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:textColor="@color/colorBlack"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:text="Location:"/>
-    <EditText
-        android:id="@+id/set_location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:drawableStart="@drawable/ic_create"
-        android:textColor="@color/colorBlack"
-        android:textSize="12sp"
-        android:drawablePadding="10dp"
-        android:hint="location"/>
+        android:layout_marginTop="7dp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_alignParentStart="true"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="17dp"
+            android:layout_marginStart="20dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_create"/>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="140dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:textSize="15sp"
+                android:text="Location"/>
+            <TextView
+                android:id="@+id/set_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="first name"
+                android:textColor="@color/colorBlack"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </RelativeLayout>
     <Button
         android:id="@+id/submit_changes"
         android:layout_width="match_parent"
-        android:layout_height="25dp"
+        android:layout_height="28dp"
         android:textSize="12sp"
         android:text="update"
         android:layout_marginTop="25dp"
@@ -87,9 +162,5 @@
 </LinearLayout>
 
     <include
-        layout="@layout/content_progress_bar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        layout="@layout/content_progress_bar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

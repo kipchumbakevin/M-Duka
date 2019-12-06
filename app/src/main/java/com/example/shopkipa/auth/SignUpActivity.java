@@ -107,13 +107,14 @@ public class SignUpActivity extends AppCompatActivity {
         if (!password.equals(confirmPassword)){
             Toast.makeText(SignUpActivity.this,"Passwords do not match",Toast.LENGTH_LONG).show();
         }else {
+            showProgress();
             Call<SignUpMessagesModel> call = RetrofitClient.getInstance(SignUpActivity.this)
                     .getApiConnector()
                     .checkIfExist(phone, username);
             call.enqueue(new Callback<SignUpMessagesModel>() {
                 @Override
                 public void onResponse(Call<SignUpMessagesModel> call, Response<SignUpMessagesModel> response) {
-                    // hideProgress();
+                     hideProgress();
                     if (response.code() == 201) {
                         Intent intent = new Intent(SignUpActivity.this, CodeAfterSignUpActivity.class);
                         intent.putExtra("FIRST", firstname);
@@ -134,7 +135,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<SignUpMessagesModel> call, Throwable t) {
-                    // hideProgress();
+                     hideProgress();
                     Toast.makeText(SignUpActivity.this, t.getMessage() + "error", Toast.LENGTH_LONG).show();
                 }
             });

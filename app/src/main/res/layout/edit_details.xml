@@ -141,6 +141,23 @@
             android:layout_height="50dp" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_marginStart="130dp"
+        android:layout_marginTop="120dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center_horizontal"
+        android:id="@+id/progressLoad"
+        android:layout_height="wrap_content">
+
+        <ProgressBar
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/bg_progress" />
+
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

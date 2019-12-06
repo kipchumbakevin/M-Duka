@@ -7,15 +7,15 @@ import android.os.Bundle;
 
 import com.example.shopkipa.auth.LoginActivity;
 import com.example.shopkipa.R;
-import com.example.shopkipa.models.LogoutModel;
+import com.example.shopkipa.models.SignUpMessagesModel;
 import com.example.shopkipa.settings.SettingsActivity;
 import com.example.shopkipa.models.AddExpenseModel;
 import com.example.shopkipa.models.GetCategoriesModel;
 import com.example.shopkipa.models.GetExpenseModel;
 import com.example.shopkipa.networking.RetrofitClient;
 import com.example.shopkipa.utils.SharedPreferencesConfig;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AlertDialog;
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        sharedPreferencesConfig = new SharedPreferencesConfig(getApplicationContext());
+        sharedPreferencesConfig = new SharedPreferencesConfig(MainActivity.this);
         tabLayout = findViewById(R.id.cart_tab);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -152,7 +152,6 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
             Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
             startActivity(intent);
-            finish();
         }else if (id == R.id.action_help){
             Intent intent = new Intent(MainActivity.this,HelpActivity.class);
             startActivity(intent);
@@ -210,19 +209,21 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void logOut() {
-        Call<LogoutModel> call = RetrofitClient.getInstance(mContext)
+        showProgress();
+        Call<SignUpMessagesModel> call = RetrofitClient.getInstance(MainActivity.this)
                 .getApiConnector()
                 .logOut();
-        call.enqueue(new Callback<LogoutModel>() {
+        call.enqueue(new Callback<SignUpMessagesModel>() {
             @Override
-            public void onResponse(Call<LogoutModel> call, Response<LogoutModel> response) {
+            public void onResponse(Call<SignUpMessagesModel> call, Response<SignUpMessagesModel> response) {
                 hideProgress();
                 if(response.code()==200){
                     sharedPreferencesConfig.clear();
                     Intent intent = new Intent(MainActivity.this,LoginActivity.class);
                     startActivity(intent);
                     finish();
-                    Toast.makeText(MainActivity.this,response.message()+"success logout",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this,response.body().getMessage(),Toast.LENGTH_SHORT).show();
+                    Log.d("logout", sharedPreferencesConfig.readClientsAccessToken());
 
                 }
                 else{
@@ -232,7 +233,7 @@ public class MainActivity extends AppCompatActivity
             }
 
             @Override
-            public void onFailure(Call<LogoutModel> call, Throwable t) {
+            public void onFailure(Call<SignUpMessagesModel> call, Throwable t) {
                 hideProgress();
                 Toast.makeText(MainActivity.this,"errot:"+t.getMessage(),Toast.LENGTH_SHORT).show();
             }
@@ -308,7 +309,7 @@ public class MainActivity extends AppCompatActivity
     private void getCategoryList() {
         ArrayList<GetCategoriesModel> mCategoriesArray;
         categories.clear();
-        Call<List<GetCategoriesModel>> call = RetrofitClient.getInstance(mContext)
+        Call<List<GetCategoriesModel>> call = RetrofitClient.getInstance(MainActivity.this)
                 .getApiConnector()
                 .getAllCategories();
         call.enqueue(new Callback<List<GetCategoriesModel>>() {

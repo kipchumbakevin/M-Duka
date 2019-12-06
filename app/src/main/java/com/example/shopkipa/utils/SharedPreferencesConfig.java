@@ -22,9 +22,9 @@ public class SharedPreferencesConfig {
 
         editor.commit();
     }
-        public void saveAuthenticationInformation(String acessToken,String firstname,String lastname, String location,String username, String phone,String status){
+        public void saveAuthenticationInformation(String accessToken,String firstname,String lastname, String location,String username, String phone,String status){
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(context.getResources().getString(R.string.CLIENTS_TOKEN),acessToken);
+            editor.putString(context.getResources().getString(R.string.CLIENTS_TOKEN),accessToken);
             editor.putString(context.getResources().getString(R.string.CLIENTS_PHONE),phone);
             editor.putString(context.getResources().getString(R.string.CLIENTS_STATUS),status);
             editor.putString(context.getResources().getString(R.string.CLIENTS_LOCATION),location);
@@ -33,7 +33,7 @@ public class SharedPreferencesConfig {
             editor.putString(context.getResources().getString(R.string.CLIENTS_LASTNAME),lastname);
 
             editor.commit();
-            Log.d("shared", acessToken);
+            Log.d("shared", accessToken);
         }
 
         public String readClientsPhone(){
@@ -62,17 +62,16 @@ public class SharedPreferencesConfig {
         location = sharedPreferences.getString(context.getResources().getString(R.string.CLIENTS_LOCATION),"");
         return location;
     }
-        public String readClientsAccessToken(){
-            String acessToken;
-            acessToken = sharedPreferences.getString(context.getResources().getString(R.string.CLIENTS_TOKEN),"");
-            return acessToken;
-        }
-
         public String readClientsStatus(){
             String status;
             status = sharedPreferences.getString(context.getResources().getString(R.string.CLIENTS_STATUS),"");
             return status;
         }
+    public String readClientsAccessToken(){
+        String accessToken;
+        accessToken = sharedPreferences.getString(context.getResources().getString(R.string.CLIENTS_TOKEN),"");
+        return accessToken;
+    }
         public  boolean isloggedIn(){
             return readClientsStatus().equals(Constants.ACTIVE_CONSTANT);
         }

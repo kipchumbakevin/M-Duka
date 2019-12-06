@@ -57,7 +57,7 @@ public class ChangePhoneNumber extends AppCompatActivity {
         newnumber = newPhone.getText().toString();
         Call<SignUpMessagesModel> call = RetrofitClient.getInstance(this)
                 .getApiConnector()
-                .checkIfNoCorrect(oldphone,pas);
+                .checkIfNoCorrect(oldphone,pas,newnumber);
         call.enqueue(new Callback<SignUpMessagesModel>() {
             @Override
             public void onResponse(Call<SignUpMessagesModel> call, Response<SignUpMessagesModel> response) {

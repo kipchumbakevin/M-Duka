@@ -25,5 +25,16 @@
         android:id="@+id/months_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+    <TextView
+        android:id="@+id/noMonths"
+        android:layout_marginTop="200dp"
+        android:padding="10dp"
+        android:visibility="gone"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="You have not added any expense.\n Please add an expense every month in order to get the month's summary "
+        android:textColor="@color/colorBlack"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

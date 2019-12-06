@@ -48,13 +48,13 @@ public class ChangePasswordActivity extends AppCompatActivity {
     }
 
     private void changePassword() {
-        showProgress();
         String oldPass = oldpass.getText().toString();
         String newPass = newpass.getText().toString();
         String conf = confirmnewpass.getText().toString();
         if (!newPass.equals(conf)){
             Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
         }else {
+            showProgress();
             Call<ChangedForgotPassModel> call = RetrofitClient.getInstance(this)
                     .getApiConnector()
                     .changePassword(newPass, oldPass);
@@ -62,7 +62,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<ChangedForgotPassModel> call, Response<ChangedForgotPassModel> response) {
                     hideProgress();
-                    if (response.isSuccessful()) {
+                    if (response.code()==201) {
                         Toast.makeText(ChangePasswordActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         token = response.body().getAccessToken();
                         clientsFirstName = response.body().getUser().getFirstName();
@@ -75,7 +75,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     } else {
-                        Toast.makeText(ChangePasswordActivity.this, "response:" + response.message(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ChangePasswordActivity.this, "Your old password is incorrect", Toast.LENGTH_SHORT).show();
                     }
 
                 }

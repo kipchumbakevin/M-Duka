@@ -4,7 +4,6 @@ import com.example.shopkipa.models.AddExpenseModel;
 import com.example.shopkipa.models.AddSaleModel;
 import com.example.shopkipa.models.AddStockModel;
 import com.example.shopkipa.models.ChangeDetailsModel;
-import com.example.shopkipa.models.ChangePasswordModel;
 import com.example.shopkipa.models.ChangedForgotPassModel;
 import com.example.shopkipa.models.ConfirmPhoneChangeCodeModel;
 import com.example.shopkipa.models.DeleteSaleModel;
@@ -30,22 +29,23 @@ import com.example.shopkipa.models.GetTypesInCategoryModel;
 import com.example.shopkipa.models.GetTypesInGroupModel;
 import com.example.shopkipa.models.GetTypesModel;
 import com.example.shopkipa.models.GetYearsModel;
-import com.example.shopkipa.models.LogoutModel;
 import com.example.shopkipa.models.RestockModel;
-import com.example.shopkipa.models.SendCodeModel;
 import com.example.shopkipa.models.SendMessageModel;
 import com.example.shopkipa.models.SignUpMessagesModel;
-import com.example.shopkipa.models.SignUpModel;
 import com.example.shopkipa.models.SuggestedRestockModel;
 import com.example.shopkipa.models.UsersModel;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 public interface JsonPlaceHolderInterface {
     @FormUrlEncoded
@@ -108,11 +108,11 @@ public interface JsonPlaceHolderInterface {
             @Field("buyingp")String buyingprice,
             @Field("item_id")String item_id
     );
-    @FormUrlEncoded
+    @Multipart
     @POST("api/sendmessage")
     Call<SendMessageModel> sendMessage(
-            @Field("message")String message,
-            @Field("image")String image
+            @Part("message") RequestBody message,
+            @Part MultipartBody.Part image
     );
     @FormUrlEncoded
     @POST("api/deletestock")
@@ -171,7 +171,8 @@ public interface JsonPlaceHolderInterface {
     @POST("api/checkphone")
     Call<SignUpMessagesModel> checkIfNoCorrect(
             @Field("oldphone")String oldphone,
-            @Field("pas")String pas
+            @Field("pas")String pas,
+            @Field("newphone")String newnumber
     );
     @FormUrlEncoded
     @POST("api/changephone")
@@ -238,7 +239,7 @@ public interface JsonPlaceHolderInterface {
     @GET("api/getgroups")
     Call<List<GetAllGroupsModel>> getAllGroups();
     @GET("api/auth/logout")
-    Call<LogoutModel> logOut();
+    Call<SignUpMessagesModel> logOut();
 
     @GET("api/getqa")
     Call<List<GetFaqsModel>> getFaqs();

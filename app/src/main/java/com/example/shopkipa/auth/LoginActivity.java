@@ -27,18 +27,10 @@ public class LoginActivity extends AppCompatActivity {
     Button signup,login;
     EditText userName,pass;
     TextView forgotPass;
-    private String clientsFirstName,clientsLastName,clientsUsername,clientsPhone,clientsLocation,token;
+    private String clientsFirstName,clientsLastName,clientsUsername,clientsPhone,clientsLocation,accessToken;
     private SharedPreferencesConfig sharedPreferencesConfig;
     RelativeLayout progressLyt;
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        if (sharedPreferencesConfig.isloggedIn()){
-//            welcome();
-//        }
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         forgotPass = findViewById(R.id.forgotPassword);
         userName = findViewById(R.id.user_name);
         progressLyt = findViewById(R.id.progressLoad);
-        sharedPreferencesConfig = new SharedPreferencesConfig(getApplicationContext());
+        sharedPreferencesConfig = new SharedPreferencesConfig(LoginActivity.this);
         pass = findViewById(R.id.password);
 
         signup.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +76,15 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("logged", ""+ sharedPreferencesConfig.isloggedIn());
 
+        if (sharedPreferencesConfig.isloggedIn()){
+            welcome();
+        }
+    }
     private void loginUser() {
         showProgress();
         String username = userName.getText().toString();
@@ -97,18 +97,17 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<UsersModel> call, Response<UsersModel> response) {
                 hideProgress();
                 if(response.isSuccessful()){
-                    token = response.body().getAccessToken();
-                    Log.d("token", token);
+                    accessToken = response.body().getAccessToken();
                     clientsFirstName = response.body().getUser().getFirstName();
                     clientsLastName = response.body().getUser().getLastName();
                     clientsLocation = response.body().getUser().getLocation();
                     clientsUsername = response.body().getUser().getUsername();
                     clientsPhone = response.body().getUser().getPhone();
-                    sharedPreferencesConfig.saveAuthenticationInformation(token,clientsFirstName,clientsLastName,clientsLocation,clientsUsername,clientsPhone, Constants.ACTIVE_CONSTANT);
+                    sharedPreferencesConfig.saveAuthenticationInformation(accessToken,clientsFirstName,clientsLastName,clientsLocation,clientsUsername,clientsPhone, Constants.ACTIVE_CONSTANT);
                     welcome();
                 }
                 else{
-                    Toast.makeText(LoginActivity.this,response.message()+"response",Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this,"Credentials do not match",Toast.LENGTH_LONG).show();
                 }
 
             }

@@ -390,7 +390,7 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
                     Intent intent = new Intent(AddStock.this,AddStock.class);
                     startActivity(intent);
                     finish();
-                    Toast.makeText(AddStock.this,response.message(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddStock.this,"Added successfuly",Toast.LENGTH_SHORT).show();
 
                 }
                 else{

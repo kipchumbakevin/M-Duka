@@ -9,6 +9,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.shopkipa.R;
@@ -32,6 +33,7 @@ public class ViewPhotos extends AppCompatActivity {
     GetItemImagesModel getItemImagesModel;
     private String imageURL;
     String item_id;
+    RelativeLayout progress;
     private ArrayList<GetItemImagesModel> mImagesArrayList=new ArrayList<>();
     GetImagesAdapter getImagesAdapter;
     RecyclerView recyclerView;
@@ -40,6 +42,7 @@ public class ViewPhotos extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_photos);
+        progress = findViewById(R.id.progressLoad);
         LinearLayoutManager linearLayoutManager =
                 new LinearLayoutManager(ViewPhotos.this,LinearLayoutManager.HORIZONTAL,false);
         getImagesAdapter = new GetImagesAdapter(ViewPhotos.this,mImagesArrayList);
@@ -55,6 +58,7 @@ public class ViewPhotos extends AppCompatActivity {
     }
 
     private void viewImages() {
+        showProgress();
         mImagesArrayList.clear();
         Call<List<GetItemImagesModel>> call = RetrofitClient.getInstance(ViewPhotos.this)
                 .getApiConnector()
@@ -62,6 +66,7 @@ public class ViewPhotos extends AppCompatActivity {
         call.enqueue(new Callback<List<GetItemImagesModel>>() {
             @Override
             public void onResponse(Call<List<GetItemImagesModel>> call, Response<List<GetItemImagesModel>> response) {
+                hideProgress();
                 if(response.isSuccessful()){
                     mImagesArrayList.addAll(response.body());
                     getImagesAdapter.notifyDataSetChanged();
@@ -85,9 +90,16 @@ public class ViewPhotos extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<GetItemImagesModel>> call, Throwable t) {
+                hideProgress();
                 Toast.makeText(ViewPhotos.this,"Network error",Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private void showProgress(){
+        progress.setVisibility(View.VISIBLE);
+    }
+    private void hideProgress(){
+        progress.setVisibility(View.GONE);
     }
 
 //    private void viewImages() {
