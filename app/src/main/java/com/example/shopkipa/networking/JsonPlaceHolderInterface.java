@@ -108,12 +108,16 @@ public interface JsonPlaceHolderInterface {
             @Field("buyingp")String buyingprice,
             @Field("item_id")String item_id
     );
-    @Multipart
-    @POST("api/sendmessage")
+    @FormUrlEncoded
+    @POST("api/restock")
     Call<SendMessageModel> sendMessage(
-            @Part("message") RequestBody message,
-            @Part MultipartBody.Part image
     );
+//    @Multipart
+//    @POST("api/sendmessage")
+//    Call<SendMessageModel> sendMessage(
+//            @Part("message") RequestBody message,
+//            @Part MultipartBody.Part image
+//    );
     @FormUrlEncoded
     @POST("api/deletestock")
     Call<DeleteItemModel> deleteStock(

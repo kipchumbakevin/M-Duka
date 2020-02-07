@@ -183,14 +183,14 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(MainActivity.this,AddStock.class);
             startActivity(intent);
         }else if (id == R.id.nav_logout){
-            logOut();
-        }else if (id == R.id.nav_updates){
-            Intent intent = new Intent(MainActivity.this,UpdatesActivity.class);
-            startActivity(intent);
-        }else if (id == R.id.nav_recipes){
-            Intent intent = new Intent(MainActivity.this,RecipesActivity.class);
-            startActivity(intent);
-        }else if (id == R.id.nav_restock) {
+            logOut(); }
+        //else if (id == R.id.nav_updates){
+//            Intent intent = new Intent(MainActivity.this,UpdatesActivity.class);
+//            startActivity(intent);
+//        }else if (id == R.id.nav_recipes){
+//            Intent intent = new Intent(MainActivity.this,RecipesActivity.class);
+//            startActivity(intent);}
+            else if (id == R.id.nav_restock) {
             Intent intent = new Intent(MainActivity.this, RestockActivity.class);
             startActivity(intent);
             finish();

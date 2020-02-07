@@ -118,11 +118,12 @@ public class SendMessage extends AppCompatActivity {
 //        }else{
 //            image = "";
 //        }
-        RequestBody image = RequestBody.create(MediaType.parse(getContentResolver().getType(photoUri)), FileUtils.getfile)
+       // RequestBody image = RequestBody.create(MediaType.parse(getContentResolver().getType(photoUri)), FileUtils.getfile)
         RequestBody message = RequestBody.create(MultipartBody.FORM,writeMessage.getText().toString());
         Call<SendMessageModel> call = RetrofitClient.getInstance(this)
                 .getApiConnector()
-                .sendMessage(message,image);
+                .sendMessage();
+               // .sendMessage(message,image);
         call.enqueue(new Callback<SendMessageModel>() {
             @Override
             public void onResponse(Call<SendMessageModel> call, Response<SendMessageModel> response) {

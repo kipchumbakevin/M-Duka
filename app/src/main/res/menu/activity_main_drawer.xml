@@ -21,20 +21,32 @@
             android:id="@+id/nav_restock"
             android:icon="@drawable/ic_ac_unit"
             android:title="Suggested restock"/>
+        <item
+            android:id="@+id/nav_given"
+            android:icon="@drawable/ic_ac_unit"
+            android:title="Given stock"/>
+        <item
+            android:id="@+id/nav_obscolete"
+            android:icon="@drawable/ic_ac_unit"
+            android:title="Obscolete stock"/>
+        <item
+            android:id="@+id/nav_shoppinglist"
+            android:icon="@drawable/ic_ac_unit"
+            android:title="Shopping list"/>
     </group>
-    <item android:title="Leisure">
+    <!--<item android:title="Leisure">-->
 
-        <menu>
-            <item
-                android:id="@+id/nav_recipes"
-                android:icon="@drawable/ic_ac_unit"
-                android:title="Recipes" />
-            <item
-                android:id="@+id/nav_updates"
-                android:icon="@drawable/ic_ac_unit"
-                android:title="Updates" />
-        </menu>
-    </item>
+        <!--<menu>-->
+            <!--<item-->
+                <!--android:id="@+id/nav_recipes"-->
+                <!--android:icon="@drawable/ic_ac_unit"-->
+                <!--android:title="Recipes" />-->
+            <!--<item-->
+                <!--android:id="@+id/nav_updates"-->
+                <!--android:icon="@drawable/ic_ac_unit"-->
+                <!--android:title="Updates" />-->
+        <!--</menu>-->
+    <!--</item>-->
 
     <item android:title="">
 
