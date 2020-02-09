@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    tools:context=".ui.ShoppingListActivity">
+    <RelativeLayout
+        android:id="@+id/no_shoppinglist"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textSize="15sp"
+            android:text="No shopping list in this category "/>
+
+    </RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+
+        android:id="@+id/restock_recyclerView"
+
+        android:layout_width="match_parent"
+
+        android:layout_height="match_parent" />
+    <include layout="@layout/content_progress_bar"/>
+
+</FrameLayout>

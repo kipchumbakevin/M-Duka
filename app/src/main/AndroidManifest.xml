@@ -14,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".settings.ConfirmPhoneChangeCode"></activity>
+        <activity android:name=".ui.ShoppingListActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".settings.ConfirmPhoneChangeCode" />
         <activity
             android:name=".ui.ViewPhotos"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -86,10 +88,12 @@
             android:name=".ui.MainActivity"
             android:label="My stock"
             android:theme="@style/AppTheme.NoActionBar">
-            <meta-data android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+
             <intent-filter>
-                <action android:name="android.intent.action.SEARCH"/>
+                <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
         </activity>
 

@@ -202,6 +202,10 @@ public class MainActivity extends AppCompatActivity
             intent.putExtra(Intent.EXTRA_TEXT,shareBody);
             startActivity(Intent.createChooser(intent,"Share via"));
         }
+            else if (id == R.id.nav_shoppinglist){
+                Intent intent = new Intent(MainActivity.this,ShoppingListActivity.class);
+                startActivity(intent);
+        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

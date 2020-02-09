@@ -2,6 +2,7 @@ package com.example.shopkipa.networking;
 
 import com.example.shopkipa.models.AddExpenseModel;
 import com.example.shopkipa.models.AddSaleModel;
+import com.example.shopkipa.models.AddShoppingListModel;
 import com.example.shopkipa.models.AddStockModel;
 import com.example.shopkipa.models.ChangeDetailsModel;
 import com.example.shopkipa.models.ChangedForgotPassModel;
@@ -34,6 +35,7 @@ import com.example.shopkipa.models.SendMessageModel;
 import com.example.shopkipa.models.SignUpMessagesModel;
 import com.example.shopkipa.models.SuggestedRestockModel;
 import com.example.shopkipa.models.UsersModel;
+import com.example.shopkipa.models.ViewShoppingListModel;
 
 import java.util.List;
 
@@ -269,6 +271,23 @@ public interface JsonPlaceHolderInterface {
     @FormUrlEncoded
     @POST("api/images")
     Call<List<GetItemImagesModel>> getImages(
+            @Field("item_id")String item_id
+    );
+    //shopping
+    @FormUrlEncoded
+    @POST("api/addshoppinglist")
+    Call<AddShoppingListModel> addshoppinglist(
+            @Field("item_id")String itemid,
+            @Field("quantity")String shopQ
+    );
+    @FormUrlEncoded
+    @POST("api/getshoppinglist")
+    Call<List<ViewShoppingListModel>> getShoppingList(
+            @Field("namecategory")String category
+    );
+    @FormUrlEncoded
+    @POST("api/deletefromshoppinglist")
+    Call<DeleteItemModel> deleteShopping(
             @Field("item_id")String item_id
     );
 }

@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
+import com.example.shopkipa.models.AddShoppingListModel;
 import com.example.shopkipa.ui.MainActivity;
 import com.example.shopkipa.R;
 import com.example.shopkipa.models.AddSaleModel;
@@ -90,7 +91,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
 
     public class ItemsViewHolder extends RecyclerView.ViewHolder {
         TextView itemname, itemsize, itemquantity, moreDetails, header, headerSize, headerColor;
-        ImageView deleteItem, restock, arrowUp, arrowDown,itemImage;
+        ImageView deleteItem, restock, arrowUp, arrowDown,itemImage,shoppingList;
         Button sold, edit;
         int mCurrentPosition;
         String idItem;
@@ -112,6 +113,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
             itemsize = itemView.findViewById(R.id.itemsize);
             itemquantity = itemView.findViewById(R.id.itemquantity);
             itemImage = itemView.findViewById(R.id.itemimagees);
+            shoppingList = itemView.findViewById(R.id.addToShoppingList);
             dropdown = itemView.findViewById(R.id.dropDown);
 //            viewPagerAdapter = new ViewPagerAdapter(mContext);
 //            viewPager = itemView.findViewById(R.id.viewPagerAdapterIm);
@@ -141,6 +143,67 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                 }
             });
 
+            shoppingList.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ImageView shoppingCancel,shoppingDone;
+                    AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+                    View sView = mLayoutInflator.inflate(R.layout.addtoshopping,null);
+                    final EditText squantity = sView.findViewById(R.id.shoppingAmount);
+                    shoppingCancel = sView.findViewById(R.id.shopping_dialog_close);
+                    shoppingDone = sView.findViewById(R.id.shopping_dialog_done);
+                    progressL = sView.findViewById(R.id.progressLoad);
+
+                    alert.setView(sView);
+                    final AlertDialog alertDialog = alert.create();
+                    alertDialog.show();
+                    shoppingCancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            alertDialog.dismiss();
+                        }
+                    });
+
+                    shoppingDone.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if(squantity.getText().toString().isEmpty()){
+                                squantity.setError("Required");
+                            }
+                            else{
+                                showProgress();
+                                final String shopQ = squantity.getText().toString();
+                                String itemid = Integer.toString(itemId);
+
+                                Call<AddShoppingListModel> call = RetrofitClient.getInstance(mContext)
+                                        .getApiConnector()
+                                        .addshoppinglist(itemid,shopQ);
+                                call.enqueue(new Callback<AddShoppingListModel>() {
+                                    @Override
+                                    public void onResponse(Call<AddShoppingListModel> call, Response<AddShoppingListModel> response) {
+                                        hideProgress();
+                                        if (response.code() == 201) {
+                                            Intent intent = new Intent(mContext, MainActivity.class);
+                                            mContext.startActivity(intent);
+                                            ((Activity) mContext).finish();
+                                            Toast.makeText(mContext, "Added to shopping list", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(mContext, response.message() + " " + response.code() + " found", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<AddShoppingListModel> call, Throwable t) {
+                                        hideProgress();
+                                        Toast.makeText(mContext, t.getMessage() + "failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            });
             dropdown.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
