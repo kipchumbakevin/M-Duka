@@ -24,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
+import com.example.shopkipa.models.AddGivenStockModel;
+import com.example.shopkipa.models.AddObscoleteModel;
 import com.example.shopkipa.models.AddShoppingListModel;
 import com.example.shopkipa.ui.MainActivity;
 import com.example.shopkipa.R;
@@ -92,7 +94,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
     public class ItemsViewHolder extends RecyclerView.ViewHolder {
         TextView itemname, itemsize, itemquantity, moreDetails, header, headerSize, headerColor;
         ImageView deleteItem, restock, arrowUp, arrowDown,itemImage,shoppingList;
-        Button sold, edit;
+        Button sold, edit,given,obscolete;
         int mCurrentPosition;
         String idItem;
         int itemQua;
@@ -127,6 +129,8 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
             arrowDown = itemView.findViewById(R.id.arrowDown);
             arrowUp = itemView.findViewById(R.id.arrowUp);
             header = itemView.findViewById(R.id.header);
+            given = itemView.findViewById(R.id.given);
+            obscolete = itemView.findViewById(R.id.obscolete);
             restock = itemView.findViewById(R.id.restock);
             deleteItem = itemView.findViewById(R.id.deleteProduct);
             sold = itemView.findViewById(R.id.soldproduct);
@@ -140,6 +144,128 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                     Intent intent = new Intent(mContext, ViewPhotos.class);
                     intent.putExtra("ITEMID",id);
                     mContext.startActivity(intent);
+                }
+            });
+            obscolete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ImageView obscCancel,obscDone;
+                    AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+                    View sView = mLayoutInflator.inflate(R.layout.obscoletestock,null);
+                    final EditText oquantity = sView.findViewById(R.id.shoppingAmount);
+                    obscCancel = sView.findViewById(R.id.shopping_dialog_close);
+                    obscDone = sView.findViewById(R.id.shopping_dialog_done);
+                    progressL = sView.findViewById(R.id.progressLoad);
+
+                    alert.setView(sView);
+                    final AlertDialog alertDialog = alert.create();
+                    alertDialog.show();
+                    obscCancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            alertDialog.dismiss();
+                        }
+                    });
+
+                    obscDone.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if(oquantity.getText().toString().isEmpty()){
+                                oquantity.setError("Required");
+                            }
+                            else{
+                                showProgress();
+                                final String obscQ = oquantity.getText().toString();
+                                String itemid = Integer.toString(itemId);
+
+                                Call<AddObscoleteModel> call = RetrofitClient.getInstance(mContext)
+                                        .getApiConnector()
+                                        .addobsc(itemid,obscQ);
+                                call.enqueue(new Callback<AddObscoleteModel>() {
+                                    @Override
+                                    public void onResponse(Call<AddObscoleteModel> call, Response<AddObscoleteModel> response) {
+                                        hideProgress();
+                                        if (response.code() == 201) {
+                                            Intent intent = new Intent(mContext, MainActivity.class);
+                                            mContext.startActivity(intent);
+                                            ((Activity) mContext).finish();
+                                            Toast.makeText(mContext, "Added to obscolete stock", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(mContext, response.message() + " " + response.code() + " found", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<AddObscoleteModel> call, Throwable t) {
+                                        hideProgress();
+                                        Toast.makeText(mContext, t.getMessage() + "failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+            given.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ImageView givenCancel,givenDone;
+                    AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+                    View sView = mLayoutInflator.inflate(R.layout.givenstock,null);
+                    final EditText gquantity = sView.findViewById(R.id.shoppingAmount);
+                    givenCancel = sView.findViewById(R.id.shopping_dialog_close);
+                    givenDone = sView.findViewById(R.id.shopping_dialog_done);
+                    progressL = sView.findViewById(R.id.progressLoad);
+
+                    alert.setView(sView);
+                    final AlertDialog alertDialog = alert.create();
+                    alertDialog.show();
+                    givenCancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            alertDialog.dismiss();
+                        }
+                    });
+
+                    givenDone.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if(gquantity.getText().toString().isEmpty()){
+                                gquantity.setError("Required");
+                            }
+                            else{
+                                showProgress();
+                                final String givenQ = gquantity.getText().toString();
+                                String itemid = Integer.toString(itemId);
+
+                                Call<AddGivenStockModel> call = RetrofitClient.getInstance(mContext)
+                                        .getApiConnector()
+                                        .addgiven(itemid,givenQ);
+                                call.enqueue(new Callback<AddGivenStockModel>() {
+                                    @Override
+                                    public void onResponse(Call<AddGivenStockModel> call, Response<AddGivenStockModel> response) {
+                                        hideProgress();
+                                        if (response.code() == 201) {
+                                            Intent intent = new Intent(mContext, MainActivity.class);
+                                            mContext.startActivity(intent);
+                                            ((Activity) mContext).finish();
+                                            Toast.makeText(mContext, "Added to given stock", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(mContext, response.message() + " " + response.code() + " found", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<AddGivenStockModel> call, Throwable t) {
+                                        hideProgress();
+                                        Toast.makeText(mContext, t.getMessage() + "failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }
+                    });
                 }
             });
 

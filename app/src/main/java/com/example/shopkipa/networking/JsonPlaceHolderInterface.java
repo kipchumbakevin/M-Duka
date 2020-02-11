@@ -1,6 +1,8 @@
 package com.example.shopkipa.networking;
 
 import com.example.shopkipa.models.AddExpenseModel;
+import com.example.shopkipa.models.AddGivenStockModel;
+import com.example.shopkipa.models.AddObscoleteModel;
 import com.example.shopkipa.models.AddSaleModel;
 import com.example.shopkipa.models.AddShoppingListModel;
 import com.example.shopkipa.models.AddStockModel;
@@ -290,4 +292,18 @@ public interface JsonPlaceHolderInterface {
     Call<DeleteItemModel> deleteShopping(
             @Field("id")String item_id
     );
+   // givenstock
+   @FormUrlEncoded
+   @POST("api/addtogiven")
+   Call<AddGivenStockModel> addgiven(
+           @Field("item_id")String itemid,
+           @Field("quantity")String givenQ
+   );
+   //obscolete
+   @FormUrlEncoded
+   @POST("api/addtoobscolete")
+   Call<AddObscoleteModel> addobsc(
+           @Field("item_id")String itemid,
+           @Field("quantity")String obscQ
+   );
 }
