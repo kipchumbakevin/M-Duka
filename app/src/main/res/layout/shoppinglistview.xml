@@ -163,10 +163,15 @@
                     android:gravity="center"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Already bought?"/>
 
                     <ImageButton
                         android:id="@+id/sclearshopping"
                         android:layout_width="wrap_content"
+                        android:layout_marginTop="1dp"
                         android:layout_height="35dp"
                         android:src="@drawable/ic_done"/>
                 </androidx.appcompat.widget.LinearLayoutCompat>

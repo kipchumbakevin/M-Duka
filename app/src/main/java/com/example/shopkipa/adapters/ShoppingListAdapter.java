@@ -54,7 +54,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         holder.sitemname.setText(viewShoppingListModel.getName());
         holder.qq = mShoppingListArray.get(position).getShoppingQuantity();
         holder.qqq = Integer.toString(holder.qq);
-        holder.itemId = mShoppingListArray.get(position).getId();
+        holder.itemId = mShoppingListArray.get(position).getShoppingId();
         holder.sitemquantity.setText(holder.qqq);
         Glide.with(mContext).load(Constants.BASE_URL + "images/"+viewShoppingListModel.getImage())
                 .into(holder.simage);
@@ -103,7 +103,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
                                     Call<DeleteItemModel> call = RetrofitClient.getInstance(mContext)
                                             .getApiConnector()
-                                            .deleteStock(item_id);
+                                            .deleteShopping(item_id);
                                     call.enqueue(new Callback<DeleteItemModel>() {
                                         @Override
                                         public void onResponse(Call<DeleteItemModel> call, Response<DeleteItemModel> response) {

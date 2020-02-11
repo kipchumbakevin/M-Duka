@@ -288,6 +288,6 @@ public interface JsonPlaceHolderInterface {
     @FormUrlEncoded
     @POST("api/deletefromshoppinglist")
     Call<DeleteItemModel> deleteShopping(
-            @Field("item_id")String item_id
+            @Field("id")String item_id
     );
 }

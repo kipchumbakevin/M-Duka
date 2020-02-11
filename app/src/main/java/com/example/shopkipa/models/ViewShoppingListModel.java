@@ -61,6 +61,9 @@ public class ViewShoppingListModel {
     @SerializedName("shoppingQuantity")
     @Expose
     private Integer shoppingQuantity;
+    @SerializedName("shoppingId")
+    @Expose
+    private Integer shoppingId;
 
     public Integer getId() {
         return id;
@@ -212,5 +215,12 @@ public class ViewShoppingListModel {
 
     public void setShoppingQuantity(Integer shoppingQuantity) {
         this.shoppingQuantity = shoppingQuantity;
+    }
+    public Integer getShoppingId() {
+        return shoppingId;
+    }
+
+    public void setShoppingId(Integer shoppingId) {
+        this.shoppingId = shoppingId;
     }
 }
