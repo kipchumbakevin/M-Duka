@@ -306,6 +306,11 @@ public interface JsonPlaceHolderInterface {
     Call<List<ViewGivenStockModel>> getGiven(
             @Field("namecategory")String category
     );
+    @FormUrlEncoded
+    @POST("api/deletefromgiven")
+    Call<DeleteItemModel> deleteGiven(
+            @Field("id")String item_id
+    );
 
    //obscolete
    @FormUrlEncoded
@@ -318,5 +323,10 @@ public interface JsonPlaceHolderInterface {
     @POST("api/getobscoletelist")
     Call<List<ViewObscoleteStockModel>> getObscolete(
             @Field("namecategory")String category
+    );
+    @FormUrlEncoded
+    @POST("api/deletefromobscolete")
+    Call<DeleteItemModel> deleteObsc(
+            @Field("id")String item_id
     );
 }

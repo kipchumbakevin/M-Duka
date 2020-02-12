@@ -69,8 +69,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         TextView sname,scolor,sitemsize,sitemname,sitemquantity;
         ImageView arrowdown,arrowup,simage,sclear;
         String qqq;
-        int itemId;
-        int qq;
+        int itemId,qq;
 
         public ShoppingListViewHolders(@NonNull View itemView) {
             super(itemView);

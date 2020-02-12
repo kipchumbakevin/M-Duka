@@ -1,21 +1,32 @@
 package com.example.shopkipa.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.shopkipa.R;
+import com.example.shopkipa.models.DeleteItemModel;
 import com.example.shopkipa.models.ViewObscoleteStockModel;
+import com.example.shopkipa.networking.RetrofitClient;
+import com.example.shopkipa.ui.ObscoleteStockActivity;
 import com.example.shopkipa.utils.Constants;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ObscoleteStockAdapter extends RecyclerView.Adapter<ObscoleteStockAdapter.ObscoleteViewHolders> {
     private final Context mContext;
@@ -43,6 +54,7 @@ public class ObscoleteStockAdapter extends RecyclerView.Adapter<ObscoleteStockAd
         holder.size.setText(viewObscoleteStockModel.getSize());
         holder.qq = viewObscoleteStockModel.getObscoleteQuantity();
         holder.qqq = Integer.toString(holder.qq);
+        holder.itemId = viewObscoleteStockModel.getObscoleteId();
         holder.quantity.setText(holder.qqq);
         Glide.with(mContext).load(Constants.BASE_URL + "images/"+viewObscoleteStockModel.getImage())
                 .into(holder.image);
@@ -57,7 +69,7 @@ public class ObscoleteStockAdapter extends RecyclerView.Adapter<ObscoleteStockAd
     public class ObscoleteViewHolders extends RecyclerView.ViewHolder {
         TextView headername,color,itemname,size,quantity;
         ImageView clear,image;
-        int qq;
+        int qq,itemId;
         String qqq;
         public ObscoleteViewHolders(@NonNull View itemView) {
             super(itemView);
@@ -68,6 +80,51 @@ public class ObscoleteStockAdapter extends RecyclerView.Adapter<ObscoleteStockAd
             quantity = itemView.findViewById(R.id.oitemquantity);
             clear = itemView.findViewById(R.id.clearobscolete);
             image = itemView.findViewById(R.id.oimage);
+
+            clear.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setTitle("Delete")
+                            .setMessage("Are you sure you want to remove from obscolete stock?")
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                }
+                            })
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    final String item_id = Integer.toString(itemId);
+
+                                    Call<DeleteItemModel> call = RetrofitClient.getInstance(mContext)
+                                            .getApiConnector()
+                                            .deleteObsc(item_id);
+                                    call.enqueue(new Callback<DeleteItemModel>() {
+                                        @Override
+                                        public void onResponse(Call<DeleteItemModel> call, Response<DeleteItemModel> response) {
+                                            if (response.code() == 201) {
+                                                Intent intent = new Intent(mContext, ObscoleteStockActivity.class);
+                                                mContext.startActivity(intent);
+                                                Toast.makeText(mContext, "Deleted successfully", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                Toast.makeText(mContext, "response:" + " "+ item_id+" "+response.message(), Toast.LENGTH_SHORT).show();
+                                            }
+
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<DeleteItemModel> call, Throwable t) {
+                                            Toast.makeText(mContext, "errot:" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+            });
         }
     }
 }

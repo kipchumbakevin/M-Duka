@@ -169,7 +169,7 @@
                         android:layout_marginTop="1dp"
                         android:layout_height="35dp"
                         android:tint="@color/colorRed"
-                        android:src="@drawable/ic_delete"/>
+                        android:src="@drawable/ic_delete_forever"/>
                 </androidx.appcompat.widget.LinearLayoutCompat>
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
