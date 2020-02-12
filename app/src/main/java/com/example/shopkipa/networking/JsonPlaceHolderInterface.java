@@ -37,6 +37,8 @@ import com.example.shopkipa.models.SendMessageModel;
 import com.example.shopkipa.models.SignUpMessagesModel;
 import com.example.shopkipa.models.SuggestedRestockModel;
 import com.example.shopkipa.models.UsersModel;
+import com.example.shopkipa.models.ViewGivenStockModel;
+import com.example.shopkipa.models.ViewObscoleteStockModel;
 import com.example.shopkipa.models.ViewShoppingListModel;
 
 import java.util.List;
@@ -299,6 +301,12 @@ public interface JsonPlaceHolderInterface {
            @Field("item_id")String itemid,
            @Field("quantity")String givenQ
    );
+    @FormUrlEncoded
+    @POST("api/getgivenlist")
+    Call<List<ViewGivenStockModel>> getGiven(
+            @Field("namecategory")String category
+    );
+
    //obscolete
    @FormUrlEncoded
    @POST("api/addtoobscolete")
@@ -306,4 +314,9 @@ public interface JsonPlaceHolderInterface {
            @Field("item_id")String itemid,
            @Field("quantity")String obscQ
    );
+    @FormUrlEncoded
+    @POST("api/getobscoletelist")
+    Call<List<ViewObscoleteStockModel>> getObscolete(
+            @Field("namecategory")String category
+    );
 }

@@ -14,8 +14,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.ShoppingListActivity"
+        <activity android:name=".ui.GivenStockActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".ui.ObscoleteStockActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ui.ShoppingListActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".settings.ConfirmPhoneChangeCode" />
         <activity
             android:name=".ui.ViewPhotos"

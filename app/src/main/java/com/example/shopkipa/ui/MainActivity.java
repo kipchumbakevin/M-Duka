@@ -206,6 +206,14 @@ public class MainActivity extends AppCompatActivity
                 Intent intent = new Intent(MainActivity.this,ShoppingListActivity.class);
                 startActivity(intent);
         }
+            else if (id == R.id.nav_given){
+            Intent intent = new Intent(MainActivity.this,GivenStockActivity.class);
+            startActivity(intent);
+        }
+            else if (id == R.id.nav_obscolete){
+            Intent intent = new Intent(MainActivity.this,ObscoleteStockActivity.class);
+            startActivity(intent);
+        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
