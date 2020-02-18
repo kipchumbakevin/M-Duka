@@ -10,6 +10,7 @@ import com.example.shopkipa.models.ChangeDetailsModel;
 import com.example.shopkipa.models.ChangedForgotPassModel;
 import com.example.shopkipa.models.ConfirmPhoneChangeCodeModel;
 import com.example.shopkipa.models.DeleteSaleModel;
+import com.example.shopkipa.models.EditQuantityModel;
 import com.example.shopkipa.models.GetItemImagesModel;
 import com.example.shopkipa.models.SendSignUpCode;
 import com.example.shopkipa.models.ForgotPasswordModel;
@@ -328,5 +329,24 @@ public interface JsonPlaceHolderInterface {
     @POST("api/deletefromobscolete")
     Call<DeleteItemModel> deleteObsc(
             @Field("id")String item_id
+    );
+    //edit shoppinglist,given,obscolete
+    @FormUrlEncoded
+    @POST("api/editshopping")
+    Call<EditQuantityModel> editS(
+            @Field("quantity")String qq,
+            @Field("id")String id
+    );
+    @FormUrlEncoded
+    @POST("api/editgiven")
+    Call<EditQuantityModel> editG(
+            @Field("quantity")String qq,
+            @Field("id")String id
+    );
+    @FormUrlEncoded
+    @POST("api/editobscolete")
+    Call<EditQuantityModel> editO(
+            @Field("quantity")String qq,
+            @Field("id")String id
     );
 }

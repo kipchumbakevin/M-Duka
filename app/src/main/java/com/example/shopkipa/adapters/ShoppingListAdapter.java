@@ -1,11 +1,14 @@
 package com.example.shopkipa.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.shopkipa.R;
 import com.example.shopkipa.models.DeleteItemModel;
+import com.example.shopkipa.models.EditQuantityModel;
 import com.example.shopkipa.models.ViewShoppingListModel;
 import com.example.shopkipa.networking.RetrofitClient;
 import com.example.shopkipa.ui.ShoppingListActivity;
@@ -69,6 +73,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         TextView sname,scolor,sitemsize,sitemname,sitemquantity;
         ImageView arrowdown,arrowup,simage,sclear;
         String qqq;
+        Button edit;
         int itemId,qq;
 
         public ShoppingListViewHolders(@NonNull View itemView) {
@@ -79,9 +84,68 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             sitemname = itemView.findViewById(R.id.sitemname);
             arrowdown = itemView.findViewById(R.id.arrowDown);
             arrowup = itemView.findViewById(R.id.arrowUp);
+            edit = itemView.findViewById(R.id.edit_shopping);
             simage = itemView.findViewById(R.id.simage);
             sclear = itemView.findViewById(R.id.sclearshopping);
             sitemquantity = itemView.findViewById(R.id.sitemquantity);
+
+            edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ImageView cancel,done;
+                    AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+                    View sView = mLayoutInflator.inflate(R.layout.editing_quantity,null);
+                    final EditText editquantity = sView.findViewById(R.id.edit_quantity);
+                    cancel = sView.findViewById(R.id.editing_dialog_close);
+                    done = sView.findViewById(R.id.editing_dialog_done);
+
+                    alert.setView(sView);
+                    final AlertDialog alertDialog = alert.create();
+                    alertDialog.show();
+
+                    cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            alertDialog.dismiss();
+                        }
+                    });
+                    done.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (editquantity.getText().toString().isEmpty()){
+                                editquantity.setError("Required");
+                            }
+                            else{
+                                final String qq = editquantity.getText().toString();
+                                String id = Integer.toString(itemId);
+
+                                Call<EditQuantityModel> call = RetrofitClient.getInstance(mContext)
+                                        .getApiConnector()
+                                        .editS(qq,id);
+                                call.enqueue(new Callback<EditQuantityModel>() {
+                                    @Override
+                                    public void onResponse(Call<EditQuantityModel> call, Response<EditQuantityModel> response) {
+                                        if (response.code() == 201) {
+                                            Intent intent = new Intent(mContext, ShoppingListActivity.class);
+                                            mContext.startActivity(intent);
+                                            ((Activity) mContext).finish();
+                                            Toast.makeText(mContext, "Edited successfully", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(mContext, response.message() + " " + response.code() + " found", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<EditQuantityModel> call, Throwable t) {
+                                        Toast.makeText(mContext, t.getMessage() + "failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            });
 
             sclear.setOnClickListener(new View.OnClickListener() {
                 @Override
