@@ -38,6 +38,7 @@ import com.example.shopkipa.models.SendMessageModel;
 import com.example.shopkipa.models.SignUpMessagesModel;
 import com.example.shopkipa.models.SuggestedRestockModel;
 import com.example.shopkipa.models.UsersModel;
+import com.example.shopkipa.models.ViewAdsModel;
 import com.example.shopkipa.models.ViewGivenStockModel;
 import com.example.shopkipa.models.ViewObscoleteStockModel;
 import com.example.shopkipa.models.ViewShoppingListModel;
@@ -350,4 +351,8 @@ public interface JsonPlaceHolderInterface {
             @Field("quantity")String qq,
             @Field("id")String id
     );
+
+    //ads
+    @GET("api/getads")
+    Call<List<ViewAdsModel>> getAds();
 }

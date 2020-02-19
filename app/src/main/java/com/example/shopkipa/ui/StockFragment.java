@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -24,9 +25,11 @@ import android.widget.Toast;
 
 import com.example.shopkipa.R;
 import com.example.shopkipa.adapters.ItemsInTypeAdapter;
+import com.example.shopkipa.adapters.ViewAdsAdapter;
 import com.example.shopkipa.models.GetGroupModel;
 import com.example.shopkipa.models.GetStockInTypeModel;
 import com.example.shopkipa.models.GetTypesInCategoryModel;
+import com.example.shopkipa.models.ViewAdsModel;
 import com.example.shopkipa.networking.RetrofitClient;
 import com.example.shopkipa.utils.SharedPreferencesConfig;
 
@@ -55,6 +58,9 @@ public class StockFragment extends Fragment {
     private ArrayAdapter<String>typeadapter;
     private List<String> groupSpinnerArray;
     private ArrayAdapter<String>groupadapter;
+    private ArrayList<ViewAdsModel> mAdsArray=new ArrayList<>();
+    ViewAdsAdapter viewAdsAdapter;
+    RecyclerView recyclerView2;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -72,6 +78,12 @@ public class StockFragment extends Fragment {
         typeSpinner = view.findViewById(R.id.typeSpinner);
         groupSpinner = view.findViewById(R.id.groupSpinner);
         recyclerView.hasFixedSize();
+        LinearLayoutManager linearLayoutManager =
+                new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
+        viewAdsAdapter = new ViewAdsAdapter(getActivity(),mAdsArray);
+        recyclerView2 = view.findViewById(R.id.ads_RecyclerView);
+        recyclerView2.setAdapter(viewAdsAdapter);
+        recyclerView2.setLayoutManager(linearLayoutManager);
         itemsInTypeAdapter = new ItemsInTypeAdapter(getActivity(), mStockArrayList);
         recyclerView.setAdapter(itemsInTypeAdapter);
         sharedPreferencesConfig = new SharedPreferencesConfig(getContext());
@@ -95,6 +107,7 @@ public class StockFragment extends Fragment {
 
         groupSpinner.setAdapter(groupadapter);
         viewGroup();
+        viewAds();
 
         typeSpinner.setOnTouchListener(new View.OnTouchListener() {
 
@@ -310,5 +323,30 @@ public class StockFragment extends Fragment {
         viewCustomerStockFragment.setArguments(bundle);
         return viewCustomerStockFragment;
     }
+    private void viewAds() {
+        mAdsArray.clear();
+        Call<List<ViewAdsModel>> call = RetrofitClient.getInstance(getActivity())
+                .getApiConnector()
+                .getAds();
+        call.enqueue(new Callback<List<ViewAdsModel>>() {
+            @Override
+            public void onResponse(Call<List<ViewAdsModel>> call, Response<List<ViewAdsModel>> response) {
+                hideProgress();
+                if (response.code() == 200) {
+                    mAdsArray.addAll(response.body());
+                    viewAdsAdapter.notifyDataSetChanged();
 
+                } else {
+                    Toast.makeText(getActivity(),response.message()+response.code(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ViewAdsModel>> call, Throwable t) {
+                hideProgress();
+                Toast.makeText(getActivity(), t.getMessage() + "kkk", Toast.LENGTH_LONG).show();
+            }
+
+        });
+    }
 }

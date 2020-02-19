@@ -7,9 +7,11 @@ import android.os.Bundle;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.example.shopkipa.adapters.ViewAdsAdapter;
 import com.example.shopkipa.auth.LoginActivity;
 import com.example.shopkipa.R;
 import com.example.shopkipa.models.SignUpMessagesModel;
+import com.example.shopkipa.models.ViewAdsModel;
 import com.example.shopkipa.settings.SettingsActivity;
 import com.example.shopkipa.models.AddExpenseModel;
 import com.example.shopkipa.models.GetCategoriesModel;
@@ -36,6 +38,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
 import android.widget.EditText;
