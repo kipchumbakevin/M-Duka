@@ -170,8 +170,16 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                     obscDone.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+                            int qqqq=0;
+                            if (!oquantity.getText().toString().isEmpty()){
+                                qqqq = Integer.parseInt(oquantity.getText().toString());
+                            }
                             if(oquantity.getText().toString().isEmpty()){
                                 oquantity.setError("Required");
+                            }
+                            if (qqqq>itemQua){
+                                oquantity.setError("You only have "+itemQua);
+                                Toast.makeText(mContext,"You only have "+itemQua +  " items of this product",Toast.LENGTH_LONG).show();
                             }
                             else{
                                 showProgress();
@@ -231,8 +239,16 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                     givenDone.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+                            int qqq=0;
+                            if (!gquantity.getText().toString().isEmpty()){
+                                qqq = Integer.parseInt(gquantity.getText().toString());
+                            }
                             if(gquantity.getText().toString().isEmpty()){
                                 gquantity.setError("Required");
+                            }
+                            if (qqq>itemQua){
+                                gquantity.setError("You only have "+itemQua);
+                                Toast.makeText(mContext,"You only have "+itemQua +  " items of this product",Toast.LENGTH_LONG).show();
                             }
                             else{
                                 showProgress();
@@ -464,12 +480,13 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
             edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    final EditText editName, editsp;
+                    final EditText editName, editsp,editq;
                     final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
                     View mView = mLayoutInflator.inflate(R.layout.edit_details, null);
                     editName = mView.findViewById(R.id.edit_name);
                     progressL = mView.findViewById(R.id.progressLoad);
                     editsp = mView.findViewById(R.id.edit_sp);
+                    editq = mView.findViewById(R.id.edit_q);
 
                     alertDialogBuilder.setView(mView);
                     alertDialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
@@ -477,13 +494,14 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                         public void onClick(DialogInterface dialogInterface, int i) {
                             showProgress();
                             String name = editName.getText().toString();
+                            String quant = editq.getText().toString();
                             String sellingprice = editsp.getText().toString();
                             final String item_id = Integer.toString(itemId);
 
 
                             Call<EditStockModel> call = RetrofitClient.getInstance(mContext)
                                     .getApiConnector()
-                                    .editStock(name, sellingprice, item_id);
+                                    .editStock(name, sellingprice, item_id,quant);
                             call.enqueue(new Callback<EditStockModel>() {
                                 @Override
                                 public void onResponse(Call<EditStockModel> call, Response<EditStockModel> response) {
@@ -520,6 +538,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                     GetStockInTypeModel getStockModel = mStockArrayList.get(mCurrentPosition);
                     editName.setText(getStockModel.getName());
                     editsp.setText(getStockModel.getSellingprice());
+                    editq.setText(Integer.toString(getStockModel.getQuantity()));
                 }
             });
 

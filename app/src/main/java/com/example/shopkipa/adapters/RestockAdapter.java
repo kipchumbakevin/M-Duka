@@ -24,7 +24,10 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.example.shopkipa.R;
+import com.example.shopkipa.models.AddGivenStockModel;
+import com.example.shopkipa.models.AddObscoleteModel;
 import com.example.shopkipa.models.AddSaleModel;
+import com.example.shopkipa.models.AddShoppingListModel;
 import com.example.shopkipa.models.DeleteItemModel;
 import com.example.shopkipa.models.EditStockModel;
 import com.example.shopkipa.models.GetBuyingPricesModel;
@@ -81,6 +84,8 @@ public class RestockAdapter extends RecyclerView.Adapter<RestockAdapter.RestockV
         holder.itemquantity.setText(holder.qq);
         if (holder.itemQua<=0){
             holder.sold.setVisibility(View.GONE);
+            holder.given.setVisibility(View.GONE);
+            holder.obscolete.setVisibility(View.GONE);
         }
     }
 
@@ -91,8 +96,8 @@ public class RestockAdapter extends RecyclerView.Adapter<RestockAdapter.RestockV
 
     public class RestockViewHolders extends RecyclerView.ViewHolder {
         TextView itemname, itemsize, itemquantity, moreDetails, header, headerSize, headerColor;
-        ImageView itemImage, deleteItem, restock, arrowUp, arrowDown;
-        Button sold, edit;
+        ImageView itemImage, deleteItem, restock, arrowUp, arrowDown,shoppingList;
+        Button sold, edit,given,obscolete;
         int mCurrentPosition;
         String idItem;
         int itemQua;
@@ -114,6 +119,7 @@ public class RestockAdapter extends RecyclerView.Adapter<RestockAdapter.RestockV
             //viewPager = itemView.findViewById(R.id.itemimageviewpager);
             itemImage = itemView.findViewById(R.id.itemimagees);
             dropdown = itemView.findViewById(R.id.dropDown);
+            shoppingList = itemView.findViewById(R.id.addToShoppingList);
             headerColor = itemView.findViewById(R.id.header_color);
             linearSale = itemView.findViewById(R.id.linearSale);
             costUnitPrice = itemView.findViewById(R.id.cost_unit_price);
@@ -123,6 +129,8 @@ public class RestockAdapter extends RecyclerView.Adapter<RestockAdapter.RestockV
             quantitySold = itemView.findViewById(R.id.quantity_sold);
             arrowDown = itemView.findViewById(R.id.arrowDown);
             arrowUp = itemView.findViewById(R.id.arrowUp);
+            given = itemView.findViewById(R.id.given);
+            obscolete = itemView.findViewById(R.id.obscolete);
             header = itemView.findViewById(R.id.header);
             restock = itemView.findViewById(R.id.restock);
             deleteItem = itemView.findViewById(R.id.deleteProduct);
@@ -137,6 +145,205 @@ public class RestockAdapter extends RecyclerView.Adapter<RestockAdapter.RestockV
                     Intent intent = new Intent(mContext, ViewPhotos.class);
                     intent.putExtra("ITEMID",id);
                     mContext.startActivity(intent);
+                }
+            });
+            shoppingList.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ImageView shoppingCancel,shoppingDone;
+                    AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+                    View sView = mLayoutInflator.inflate(R.layout.addtoshopping,null);
+                    final EditText squantity = sView.findViewById(R.id.shoppingAmount);
+                    shoppingCancel = sView.findViewById(R.id.shopping_dialog_close);
+                    shoppingDone = sView.findViewById(R.id.shopping_dialog_done);
+                    progressL = sView.findViewById(R.id.progressLoad);
+
+                    alert.setView(sView);
+                    final AlertDialog alertDialog = alert.create();
+                    alertDialog.show();
+                    shoppingCancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            alertDialog.dismiss();
+                        }
+                    });
+
+                    shoppingDone.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if(squantity.getText().toString().isEmpty()){
+                                squantity.setError("Required");
+                            }
+                            else{
+                                showProgress();
+                                final String shopQ = squantity.getText().toString();
+                                String itemid = Integer.toString(itemId);
+
+                                Call<AddShoppingListModel> call = RetrofitClient.getInstance(mContext)
+                                        .getApiConnector()
+                                        .addshoppinglist(itemid,shopQ);
+                                call.enqueue(new Callback<AddShoppingListModel>() {
+                                    @Override
+                                    public void onResponse(Call<AddShoppingListModel> call, Response<AddShoppingListModel> response) {
+                                        hideProgress();
+                                        if (response.code() == 201) {
+                                            Intent intent = new Intent(mContext, MainActivity.class);
+                                            mContext.startActivity(intent);
+                                            ((Activity) mContext).finish();
+                                            Toast.makeText(mContext, "Added to shopping list", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(mContext, response.message() + " " + response.code() + " found", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<AddShoppingListModel> call, Throwable t) {
+                                        hideProgress();
+                                        Toast.makeText(mContext, t.getMessage() + "failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+            obscolete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ImageView obscCancel,obscDone;
+                    AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+                    View sView = mLayoutInflator.inflate(R.layout.obscoletestock,null);
+                    final EditText oquantity = sView.findViewById(R.id.shoppingAmount);
+                    obscCancel = sView.findViewById(R.id.shopping_dialog_close);
+                    obscDone = sView.findViewById(R.id.shopping_dialog_done);
+                    progressL = sView.findViewById(R.id.progressLoad);
+
+                    alert.setView(sView);
+                    final AlertDialog alertDialog = alert.create();
+                    alertDialog.show();
+                    obscCancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            alertDialog.dismiss();
+                        }
+                    });
+
+                    obscDone.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            int qqqq=0;
+                            if (!oquantity.getText().toString().isEmpty()){
+                                qqqq = Integer.parseInt(oquantity.getText().toString());
+                            }
+                            if(oquantity.getText().toString().isEmpty()){
+                                oquantity.setError("Required");
+                            }
+                            if (qqqq>itemQua){
+                                oquantity.setError("You only have "+itemQua);
+                                Toast.makeText(mContext,"You only have "+itemQua +  " items of this product",Toast.LENGTH_LONG).show();
+                            }
+                            else{
+                                showProgress();
+                                final String obscQ = oquantity.getText().toString();
+                                String itemid = Integer.toString(itemId);
+
+                                Call<AddObscoleteModel> call = RetrofitClient.getInstance(mContext)
+                                        .getApiConnector()
+                                        .addobsc(itemid,obscQ);
+                                call.enqueue(new Callback<AddObscoleteModel>() {
+                                    @Override
+                                    public void onResponse(Call<AddObscoleteModel> call, Response<AddObscoleteModel> response) {
+                                        hideProgress();
+                                        if (response.code() == 201) {
+                                            Intent intent = new Intent(mContext, MainActivity.class);
+                                            mContext.startActivity(intent);
+                                            ((Activity) mContext).finish();
+                                            Toast.makeText(mContext, "Added to obscolete stock", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(mContext, response.message() + " " + response.code() + " found", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<AddObscoleteModel> call, Throwable t) {
+                                        hideProgress();
+                                        Toast.makeText(mContext, t.getMessage() + "failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+            given.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ImageView givenCancel,givenDone;
+                    AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+                    View sView = mLayoutInflator.inflate(R.layout.givenstock,null);
+                    final EditText gquantity = sView.findViewById(R.id.shoppingAmount);
+                    givenCancel = sView.findViewById(R.id.shopping_dialog_close);
+                    givenDone = sView.findViewById(R.id.shopping_dialog_done);
+                    progressL = sView.findViewById(R.id.progressLoad);
+
+                    alert.setView(sView);
+                    final AlertDialog alertDialog = alert.create();
+                    alertDialog.show();
+                    givenCancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            alertDialog.dismiss();
+                        }
+                    });
+
+                    givenDone.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            int qqq=0;
+                            if (!gquantity.getText().toString().isEmpty()){
+                                qqq = Integer.parseInt(gquantity.getText().toString());
+                            }
+                            if(gquantity.getText().toString().isEmpty()){
+                                gquantity.setError("Required");
+                            }
+                            if (qqq>itemQua){
+                                gquantity.setError("You only have "+itemQua);
+                                Toast.makeText(mContext,"You only have "+itemQua +  " items of this product",Toast.LENGTH_LONG).show();
+                            }
+                            else{
+                                showProgress();
+                                final String givenQ = gquantity.getText().toString();
+                                String itemid = Integer.toString(itemId);
+
+                                Call<AddGivenStockModel> call = RetrofitClient.getInstance(mContext)
+                                        .getApiConnector()
+                                        .addgiven(itemid,givenQ);
+                                call.enqueue(new Callback<AddGivenStockModel>() {
+                                    @Override
+                                    public void onResponse(Call<AddGivenStockModel> call, Response<AddGivenStockModel> response) {
+                                        hideProgress();
+                                        if (response.code() == 201) {
+                                            Intent intent = new Intent(mContext, MainActivity.class);
+                                            mContext.startActivity(intent);
+                                            ((Activity) mContext).finish();
+                                            Toast.makeText(mContext, "Added to given stock", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(mContext, response.message() + " " + response.code() + " found", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<AddGivenStockModel> call, Throwable t) {
+                                        hideProgress();
+                                        Toast.makeText(mContext, t.getMessage() + "failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }
+                    });
                 }
             });
 
@@ -275,11 +482,12 @@ public class RestockAdapter extends RecyclerView.Adapter<RestockAdapter.RestockV
             edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    final EditText editName, editsp;
+                    final EditText editName, editsp,edit_q;
                     final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
                     View mView = mLayoutInflator.inflate(R.layout.edit_details, null);
                     editName = mView.findViewById(R.id.edit_name);
                     editsp = mView.findViewById(R.id.edit_sp);
+                    edit_q = mView.findViewById(R.id.edit_q);
                     progressL = mView.findViewById(R.id.progressLoad);
                     alertDialogBuilder.setView(mView);
                     alertDialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
@@ -288,11 +496,12 @@ public class RestockAdapter extends RecyclerView.Adapter<RestockAdapter.RestockV
                             showProgress();
                             String name = editName.getText().toString();
                             String sellingprice = editsp.getText().toString();
+                            String quantity = edit_q.getText().toString();
                             final String item_id = Integer.toString(itemId);
 
                             Call<EditStockModel> call = RetrofitClient.getInstance(mContext)
                                     .getApiConnector()
-                                    .editStock(name, sellingprice, item_id);
+                                    .editStock(name, sellingprice, item_id,quantity);
                             call.enqueue(new Callback<EditStockModel>() {
                                 @Override
                                 public void onResponse(Call<EditStockModel> call, Response<EditStockModel> response) {
@@ -329,6 +538,7 @@ public class RestockAdapter extends RecyclerView.Adapter<RestockAdapter.RestockV
                     SuggestedRestockModel suggestedRestockModel = mStockArrayList.get(mCurrentPosition);
                     editName.setText(suggestedRestockModel.getName());
                     editsp.setText(suggestedRestockModel.getSellingprice());
+                    edit_q.setText(suggestedRestockModel.getQuantity());
                 }
             });
 
@@ -354,7 +564,7 @@ public class RestockAdapter extends RecyclerView.Adapter<RestockAdapter.RestockV
                     SuggestedRestockModel suggestedRestockModel = mStockArrayList.get(mCurrentPosition);
                     itemcolor.setText(suggestedRestockModel.getColor());
                     itemdesign.setText(suggestedRestockModel.getDesign());
-                    itemcompany.setText(suggestedRestockModel.getCompany());
+                    itemcompany.setText(Integer.toString(suggestedRestockModel.getQuantity()));
 
                 }
             });

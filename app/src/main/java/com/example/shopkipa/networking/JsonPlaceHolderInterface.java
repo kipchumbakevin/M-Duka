@@ -106,7 +106,8 @@ public interface JsonPlaceHolderInterface {
     Call<EditStockModel> editStock(
             @Field("name")String name,
             @Field("sellingprice")String sellingprice,
-            @Field("item_id")String item_id
+            @Field("item_id")String item_id,
+            @Field("quantity")String quantity
     );
     @FormUrlEncoded
     @POST("api/restock")

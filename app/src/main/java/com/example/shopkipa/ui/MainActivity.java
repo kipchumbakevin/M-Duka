@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.example.shopkipa.auth.LoginActivity;
 import com.example.shopkipa.R;
 import com.example.shopkipa.models.SignUpMessagesModel;
@@ -13,6 +15,7 @@ import com.example.shopkipa.models.AddExpenseModel;
 import com.example.shopkipa.models.GetCategoriesModel;
 import com.example.shopkipa.models.GetExpenseModel;
 import com.example.shopkipa.networking.RetrofitClient;
+import com.example.shopkipa.utils.Constants;
 import com.example.shopkipa.utils.SharedPreferencesConfig;
 
 import android.util.Log;
@@ -39,6 +42,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -53,6 +57,8 @@ public class MainActivity extends AppCompatActivity
     private static final String DIALOG_EXPENSES = "My Expenses";
     TabLayout tabLayout;
     RelativeLayout progressLyt;
+//    ImageView imageView;
+//    TextView user;
     private ArrayList<GetExpenseModel> mExpensesArrayList;
     private List<GetCategoriesModel> categories = new ArrayList<>();
     private Context mContext;
@@ -64,7 +70,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+      //  imageView = findViewById(R.id.imageView);
+      //  user = findViewById(R.id.user);
         sharedPreferencesConfig = new SharedPreferencesConfig(MainActivity.this);
         tabLayout = findViewById(R.id.cart_tab);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -98,9 +105,20 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+//        String status = sharedPreferencesConfig.readClientsStatus();
+//        if(status.contentEquals(Constants.ACTIVE_CONSTANT)) {
+//            String username = sharedPreferencesConfig.readClientsUsername();
+//          //  user.setText(username);
+//
+//            getFirstLetterInCircularBackground(imageView, username);
+//        }
+//        else {
+//            String username = user.getText().toString();
+//            getFirstLetterInCircularBackground(imageView, username);
+//
+//        }
 
     }
-
 
     @Override
     protected void onResume() {
@@ -221,6 +239,19 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    public void getFirstLetterInCircularBackground(ImageView imageView, String username){
+        ColorGenerator generator = ColorGenerator.MATERIAL; // or use DEFAULT
+//        generate random color
+//        int color = generator.getColor(getItem());
+
+        int color = generator.getRandomColor();
+        String firstLetter = String.valueOf(username.charAt(0));
+
+        TextDrawable drawable = TextDrawable.builder()
+                .buildRound(firstLetter, color); // radius in px
+
+        imageView.setImageDrawable(drawable);
     }
 
     private void logOut() {
