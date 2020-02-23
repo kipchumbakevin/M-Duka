@@ -5,44 +5,45 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.StockFragment">
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:id="@+id/products_view"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorGray"
-            android:paddingStart="10dp"
-            android:paddingEnd="30dp">
+            android:background="@color/colorGray">
 
             <Spinner
+                android:layout_marginStart="10dp"
                 android:id="@+id/groupSpinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <Spinner
+                android:layout_marginEnd="30dp"
                 android:id="@+id/typeSpinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true" />
+            <View
+                android:layout_marginTop="25dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorPrimary" />
 
         </RelativeLayout>
-
-        <View
+    <ScrollView
+        android:layout_marginTop="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorPrimary" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:id="@+id/products_view"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ads_RecyclerView"
             android:layout_width="match_parent"

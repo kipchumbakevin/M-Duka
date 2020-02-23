@@ -55,7 +55,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     public void onBindViewHolder(@NonNull ShoppingListViewHolders holder, int position) {
         ViewShoppingListModel viewShoppingListModel = mShoppingListArray.get(position);
         holder.header.setText(viewShoppingListModel.getName());
-        holder.headerColor.setText(viewShoppingListModel.getColor());
+        holder.headerColor.setText("("+viewShoppingListModel.getColor()+")");
         holder.sitemsize.setText(viewShoppingListModel.getSize());
         holder.sitemname.setText(viewShoppingListModel.getName());
         holder.qq = mShoppingListArray.get(position).getShoppingQuantity();

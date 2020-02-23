@@ -56,7 +56,7 @@ public class GivenStockAdapter extends RecyclerView.Adapter<GivenStockAdapter.Gi
     public void onBindViewHolder(@NonNull GivenViewHolders holder, int position) {
         ViewGivenStockModel viewGivenStockModel = mGivenArrayList.get(position);
         holder.header.setText(viewGivenStockModel.getName());
-        holder.headerColor.setText(viewGivenStockModel.getColor());
+        holder.headerColor.setText("("+viewGivenStockModel.getColor()+")");
         holder.itemname.setText(viewGivenStockModel.getName());
         holder.size.setText(viewGivenStockModel.getSize());
         holder.qq = viewGivenStockModel.getGivenQuantity();
@@ -103,14 +103,12 @@ public class GivenStockAdapter extends RecyclerView.Adapter<GivenStockAdapter.Gi
                     if (!fulldetails.isShown()) {
                         header.setVisibility(View.GONE);
                         headerColor.setVisibility(View.GONE);
-                        headerSize.setVisibility(View.GONE);
                         fulldetails.setVisibility(View.VISIBLE);
                         arrowUp.setVisibility(View.VISIBLE);
                         arrowDown.setVisibility(View.GONE);
                     } else {
                         fulldetails.setVisibility(View.GONE);
                         header.setVisibility(View.VISIBLE);
-                        headerSize.setVisibility(View.VISIBLE);
                         headerColor.setVisibility(View.VISIBLE);
                         arrowDown.setVisibility(View.VISIBLE);
                         arrowUp.setVisibility(View.GONE);

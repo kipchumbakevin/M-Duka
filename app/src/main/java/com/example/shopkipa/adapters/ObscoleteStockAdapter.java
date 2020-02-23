@@ -56,7 +56,7 @@ public class ObscoleteStockAdapter extends RecyclerView.Adapter<ObscoleteStockAd
     public void onBindViewHolder(@NonNull ObscoleteViewHolders holder, int position) {
         ViewObscoleteStockModel viewObscoleteStockModel = mObscoleteArrayList.get(position);
         holder.header.setText(viewObscoleteStockModel.getName());
-        holder.headerColor.setText(viewObscoleteStockModel.getColor());
+        holder.headerColor.setText("("+viewObscoleteStockModel.getColor()+")");
         holder.itemname.setText(viewObscoleteStockModel.getName());
         holder.size.setText(viewObscoleteStockModel.getSize());
         holder.qq = viewObscoleteStockModel.getObscoleteQuantity();
@@ -103,14 +103,12 @@ public class ObscoleteStockAdapter extends RecyclerView.Adapter<ObscoleteStockAd
                     if (!fulldetails.isShown()) {
                         header.setVisibility(View.GONE);
                         headerColor.setVisibility(View.GONE);
-                        headerSize.setVisibility(View.GONE);
                         fulldetails.setVisibility(View.VISIBLE);
                         arrowUp.setVisibility(View.VISIBLE);
                         arrowDown.setVisibility(View.GONE);
                     } else {
                         fulldetails.setVisibility(View.GONE);
                         header.setVisibility(View.VISIBLE);
-                        headerSize.setVisibility(View.VISIBLE);
                         headerColor.setVisibility(View.VISIBLE);
                         arrowDown.setVisibility(View.VISIBLE);
                         arrowUp.setVisibility(View.GONE);
