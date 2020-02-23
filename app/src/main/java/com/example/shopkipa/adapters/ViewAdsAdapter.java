@@ -39,7 +39,7 @@ public class ViewAdsAdapter extends RecyclerView.Adapter<ViewAdsAdapter.ViewAdsV
         ViewAdsModel viewAdsModel = mAdsArray.get(position);
         Glide.with(mContext).load(Constants.BASE_URL + "images/"+viewAdsModel.getImageurl())
                 .into(holder.adimage);
-        holder.mcurrentposion = position;
+        holder.mcurrentposion = viewAdsModel.getId();
 
     }
 

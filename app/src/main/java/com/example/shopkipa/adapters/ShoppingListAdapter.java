@@ -10,11 +10,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -52,8 +54,8 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     @Override
     public void onBindViewHolder(@NonNull ShoppingListViewHolders holder, int position) {
         ViewShoppingListModel viewShoppingListModel = mShoppingListArray.get(position);
-        holder.sname.setText(viewShoppingListModel.getName());
-        holder.scolor.setText(viewShoppingListModel.getColor());
+        holder.header.setText(viewShoppingListModel.getName());
+        holder.headerColor.setText(viewShoppingListModel.getColor());
         holder.sitemsize.setText(viewShoppingListModel.getSize());
         holder.sitemname.setText(viewShoppingListModel.getName());
         holder.qq = mShoppingListArray.get(position).getShoppingQuantity();
@@ -70,24 +72,50 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     }
 
     public class ShoppingListViewHolders extends RecyclerView.ViewHolder {
-        TextView sname,scolor,sitemsize,sitemname,sitemquantity;
-        ImageView arrowdown,arrowup,simage,sclear;
+        TextView scolor,sitemsize,sitemname,sitemquantity,headerSize,headerColor,header;
+        ImageView arrowDown,arrowUp,simage,sclear;
         String qqq;
         Button edit;
         int itemId,qq;
+        LinearLayoutCompat fulldetails;
+        RelativeLayout dropdown;
 
         public ShoppingListViewHolders(@NonNull View itemView) {
             super(itemView);
-            sname = itemView.findViewById(R.id.sheader);
-            scolor = itemView.findViewById(R.id.sheader_color);
             sitemsize =  itemView.findViewById(R.id.sitemsize);
             sitemname = itemView.findViewById(R.id.sitemname);
-            arrowdown = itemView.findViewById(R.id.arrowDown);
-            arrowup = itemView.findViewById(R.id.arrowUp);
             edit = itemView.findViewById(R.id.edit_shopping);
             simage = itemView.findViewById(R.id.simage);
             sclear = itemView.findViewById(R.id.sclearshopping);
             sitemquantity = itemView.findViewById(R.id.sitemquantity);
+            arrowDown = itemView.findViewById(R.id.arrowDown);
+            arrowUp = itemView.findViewById(R.id.arrowUp);
+            headerSize = itemView.findViewById(R.id.header_size);
+            headerColor = itemView.findViewById(R.id.sheader_color);
+            header = itemView.findViewById(R.id.sheader);
+            fulldetails = itemView.findViewById(R.id.fulldetails);
+            dropdown = itemView.findViewById(R.id.dropDown);
+
+            dropdown.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (!fulldetails.isShown()) {
+                        header.setVisibility(View.GONE);
+                        headerColor.setVisibility(View.GONE);
+                       // headerSize.setVisibility(View.GONE);
+                        fulldetails.setVisibility(View.VISIBLE);
+                        arrowUp.setVisibility(View.VISIBLE);
+                        arrowDown.setVisibility(View.GONE);
+                    } else {
+                        fulldetails.setVisibility(View.GONE);
+                        header.setVisibility(View.VISIBLE);
+                       // headerSize.setVisibility(View.VISIBLE);
+                        headerColor.setVisibility(View.VISIBLE);
+                        arrowDown.setVisibility(View.VISIBLE);
+                        arrowUp.setVisibility(View.GONE);
+                    }
+                }
+            });
 
             edit.setOnClickListener(new View.OnClickListener() {
                 @Override

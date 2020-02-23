@@ -10,11 +10,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -53,8 +55,8 @@ public class ObscoleteStockAdapter extends RecyclerView.Adapter<ObscoleteStockAd
     @Override
     public void onBindViewHolder(@NonNull ObscoleteViewHolders holder, int position) {
         ViewObscoleteStockModel viewObscoleteStockModel = mObscoleteArrayList.get(position);
-        holder.headername.setText(viewObscoleteStockModel.getName());
-        holder.color.setText(viewObscoleteStockModel.getColor());
+        holder.header.setText(viewObscoleteStockModel.getName());
+        holder.headerColor.setText(viewObscoleteStockModel.getColor());
         holder.itemname.setText(viewObscoleteStockModel.getName());
         holder.size.setText(viewObscoleteStockModel.getSize());
         holder.qq = viewObscoleteStockModel.getObscoleteQuantity();
@@ -72,22 +74,49 @@ public class ObscoleteStockAdapter extends RecyclerView.Adapter<ObscoleteStockAd
     }
 
     public class ObscoleteViewHolders extends RecyclerView.ViewHolder {
-        TextView headername,color,itemname,size,quantity;
-        ImageView clear,image;
+        TextView color,itemname,size,quantity,headerSize,headerColor,header;
+        ImageView clear,image,arrowUp,arrowDown;
         Button edit;
+        LinearLayoutCompat fulldetails;
         int qq,itemId;
+        RelativeLayout dropdown;
         String qqq;
         public ObscoleteViewHolders(@NonNull View itemView) {
             super(itemView);
-            headername = itemView.findViewById(R.id.oheader);
-            color = itemView.findViewById(R.id.oheader_color);
             itemname = itemView.findViewById(R.id.oitemname);
             size = itemView.findViewById(R.id.oitemsize);
             edit = itemView.findViewById(R.id.edit_obscolete);
             quantity = itemView.findViewById(R.id.oitemquantity);
             clear = itemView.findViewById(R.id.clearobscolete);
             image = itemView.findViewById(R.id.oimage);
+            arrowDown = itemView.findViewById(R.id.arrowDown);
+            arrowUp = itemView.findViewById(R.id.arrowUp);
+            headerSize = itemView.findViewById(R.id.header_size);
+            headerColor = itemView.findViewById(R.id.oheader_color);
+            header = itemView.findViewById(R.id.oheader);
+            fulldetails = itemView.findViewById(R.id.fulldetails);
+            dropdown = itemView.findViewById(R.id.dropDown);
 
+            dropdown.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (!fulldetails.isShown()) {
+                        header.setVisibility(View.GONE);
+                        headerColor.setVisibility(View.GONE);
+                        headerSize.setVisibility(View.GONE);
+                        fulldetails.setVisibility(View.VISIBLE);
+                        arrowUp.setVisibility(View.VISIBLE);
+                        arrowDown.setVisibility(View.GONE);
+                    } else {
+                        fulldetails.setVisibility(View.GONE);
+                        header.setVisibility(View.VISIBLE);
+                        headerSize.setVisibility(View.VISIBLE);
+                        headerColor.setVisibility(View.VISIBLE);
+                        arrowDown.setVisibility(View.VISIBLE);
+                        arrowUp.setVisibility(View.GONE);
+                    }
+                }
+            });
             edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

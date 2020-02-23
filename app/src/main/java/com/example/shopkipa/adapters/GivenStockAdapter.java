@@ -10,11 +10,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -53,8 +55,8 @@ public class GivenStockAdapter extends RecyclerView.Adapter<GivenStockAdapter.Gi
     @Override
     public void onBindViewHolder(@NonNull GivenViewHolders holder, int position) {
         ViewGivenStockModel viewGivenStockModel = mGivenArrayList.get(position);
-        holder.headername.setText(viewGivenStockModel.getName());
-        holder.color.setText(viewGivenStockModel.getColor());
+        holder.header.setText(viewGivenStockModel.getName());
+        holder.headerColor.setText(viewGivenStockModel.getColor());
         holder.itemname.setText(viewGivenStockModel.getName());
         holder.size.setText(viewGivenStockModel.getSize());
         holder.qq = viewGivenStockModel.getGivenQuantity();
@@ -72,21 +74,49 @@ public class GivenStockAdapter extends RecyclerView.Adapter<GivenStockAdapter.Gi
     }
 
     public class GivenViewHolders extends RecyclerView.ViewHolder {
-        TextView headername,color,itemname,size,quantity;
-        ImageView clear,image;
+        TextView itemname,size,quantity,headerSize,headerColor,header;
+        ImageView clear,image,arrowDown,arrowUp;
         Button edit;
         int qq,itemId;
+        RelativeLayout dropdown;
+        LinearLayoutCompat fulldetails;
         String qqq;
         public GivenViewHolders(@NonNull View itemView) {
             super(itemView);
-            headername = itemView.findViewById(R.id.gheader);
-            color = itemView.findViewById(R.id.gheader_color);
             itemname = itemView.findViewById(R.id.gitemname);
             size = itemView.findViewById(R.id.gitemsize);
             quantity = itemView.findViewById(R.id.gitemquantity);
             clear = itemView.findViewById(R.id.cleargiven);
             image = itemView.findViewById(R.id.gimage);
             edit = itemView.findViewById(R.id.edit_given);
+            arrowDown = itemView.findViewById(R.id.arrowDown);
+            arrowUp = itemView.findViewById(R.id.arrowUp);
+            headerSize = itemView.findViewById(R.id.header_size);
+            headerColor = itemView.findViewById(R.id.gheader_color);
+            header = itemView.findViewById(R.id.gheader);
+            fulldetails = itemView.findViewById(R.id.fulldetails);
+            dropdown = itemView.findViewById(R.id.dropDown);
+
+            dropdown.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (!fulldetails.isShown()) {
+                        header.setVisibility(View.GONE);
+                        headerColor.setVisibility(View.GONE);
+                        headerSize.setVisibility(View.GONE);
+                        fulldetails.setVisibility(View.VISIBLE);
+                        arrowUp.setVisibility(View.VISIBLE);
+                        arrowDown.setVisibility(View.GONE);
+                    } else {
+                        fulldetails.setVisibility(View.GONE);
+                        header.setVisibility(View.VISIBLE);
+                        headerSize.setVisibility(View.VISIBLE);
+                        headerColor.setVisibility(View.VISIBLE);
+                        arrowDown.setVisibility(View.VISIBLE);
+                        arrowUp.setVisibility(View.GONE);
+                    }
+                }
+            });
 
             edit.setOnClickListener(new View.OnClickListener() {
                 @Override

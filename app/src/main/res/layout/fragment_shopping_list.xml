@@ -20,13 +20,22 @@
             android:text="No shopping list in this category "/>
 
     </RelativeLayout>
-    <androidx.recyclerview.widget.RecyclerView
-
-        android:id="@+id/restock_recyclerView"
-
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ads_RecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <androidx.recyclerview.widget.RecyclerView
 
-        android:layout_height="match_parent" />
+            android:id="@+id/restock_recyclerView"
+
+            android:layout_width="match_parent"
+
+            android:layout_height="match_parent" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
     <include layout="@layout/content_progress_bar"/>
 
 </FrameLayout>

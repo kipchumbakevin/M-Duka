@@ -19,11 +19,11 @@
                 android:layout_width="200dp"
                 android:layout_height="150dp"
                 android:src="@drawable/placeholder"/>
-            <ImageButton
+            <ImageView
                 android:id="@+id/cancelad"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@drawable/ic_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_cancel"
                 android:layout_marginEnd="10dp"
                 android:layout_alignParentEnd="true"/>
         </RelativeLayout>

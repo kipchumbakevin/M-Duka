@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -15,6 +16,8 @@ import android.widget.Toast;
 
 import com.example.shopkipa.R;
 import com.example.shopkipa.adapters.ShoppingListAdapter;
+import com.example.shopkipa.adapters.ViewAdsAdapter;
+import com.example.shopkipa.models.ViewAdsModel;
 import com.example.shopkipa.models.ViewShoppingListModel;
 import com.example.shopkipa.networking.RetrofitClient;
 
@@ -34,6 +37,9 @@ public class ShoppingListFragment extends Fragment {
     RelativeLayout progressLyt, noshopping;
     String fragment_name;
     ShoppingListAdapter shoppingListAdapter;
+    private ArrayList<ViewAdsModel> mAdsArray=new ArrayList<>();
+    ViewAdsAdapter viewAdsAdapter;
+    RecyclerView recyclerView2;
 
     public ShoppingListFragment() {
         // Required empty public constructor
@@ -52,7 +58,14 @@ public class ShoppingListFragment extends Fragment {
         shoppingListAdapter = new ShoppingListAdapter(getContext(), mShopping);
         recyclerView.setAdapter(shoppingListAdapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), getResources().getInteger(R.integer.product_grid_span)));
+        LinearLayoutManager linearLayoutManager =
+                new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
+        viewAdsAdapter = new ViewAdsAdapter(getActivity(),mAdsArray);
+        recyclerView2 = view.findViewById(R.id.ads_RecyclerView);
+        recyclerView2.setAdapter(viewAdsAdapter);
+        recyclerView2.setLayoutManager(linearLayoutManager);
         viewShoppingList();
+        viewAds();
         return view;
     }
 
@@ -97,6 +110,32 @@ public class ShoppingListFragment extends Fragment {
         bundle.putString("fragment_name",fragmentname);
         shoppingListFragment.setArguments(bundle);
         return shoppingListFragment;
+    }
+    private void viewAds() {
+        mAdsArray.clear();
+        Call<List<ViewAdsModel>> call = RetrofitClient.getInstance(getActivity())
+                .getApiConnector()
+                .getAds();
+        call.enqueue(new Callback<List<ViewAdsModel>>() {
+            @Override
+            public void onResponse(Call<List<ViewAdsModel>> call, Response<List<ViewAdsModel>> response) {
+                hideProgress();
+                if (response.code() == 200) {
+                    mAdsArray.addAll(response.body());
+                    viewAdsAdapter.notifyDataSetChanged();
+
+                } else {
+                    Toast.makeText(getActivity(),response.message()+response.code(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ViewAdsModel>> call, Throwable t) {
+                hideProgress();
+                Toast.makeText(getActivity(), t.getMessage() + "kkk", Toast.LENGTH_LONG).show();
+            }
+
+        });
     }
 
     private void hideProgress() {
