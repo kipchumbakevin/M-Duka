@@ -47,6 +47,7 @@ import java.util.List;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -121,12 +122,8 @@ public interface JsonPlaceHolderInterface {
     @POST("api/restock")
     Call<SendMessageModel> sendMessage(
     );
-//    @Multipart
-//    @POST("api/sendmessage")
-//    Call<SendMessageModel> sendMessage(
-//            @Part("message") RequestBody message,
-//            @Part MultipartBody.Part image
-//    );
+
+
     @FormUrlEncoded
     @POST("api/deletestock")
     Call<DeleteItemModel> deleteStock(
@@ -355,4 +352,9 @@ public interface JsonPlaceHolderInterface {
     //ads
     @GET("api/getads")
     Call<List<ViewAdsModel>> getAds();
+
+    //testing
+    @Multipart
+    @POST("api/sendmessage")
+    Call<ResponseBody>upload(@Part MultipartBody.Part file,@Part("image")RequestBody requestBody);
 }

@@ -7,17 +7,14 @@ import android.os.Bundle;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
-import com.example.shopkipa.adapters.ViewAdsAdapter;
 import com.example.shopkipa.auth.LoginActivity;
 import com.example.shopkipa.R;
 import com.example.shopkipa.models.SignUpMessagesModel;
-import com.example.shopkipa.models.ViewAdsModel;
 import com.example.shopkipa.settings.SettingsActivity;
 import com.example.shopkipa.models.AddExpenseModel;
 import com.example.shopkipa.models.GetCategoriesModel;
 import com.example.shopkipa.models.GetExpenseModel;
 import com.example.shopkipa.networking.RetrofitClient;
-import com.example.shopkipa.utils.Constants;
 import com.example.shopkipa.utils.SharedPreferencesConfig;
 
 import android.util.Log;
@@ -29,6 +26,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 
 import android.view.MenuItem;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 
@@ -38,15 +36,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -74,6 +69,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        FloatingActionButton fab = findViewById(R.id.fab);
       //  imageView = findViewById(R.id.imageView);
       //  user = findViewById(R.id.user);
         sharedPreferencesConfig = new SharedPreferencesConfig(MainActivity.this);
@@ -107,6 +103,13 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
+            }
+        });
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,AddStock.class);
+                startActivity(intent);
             }
         });
 //        String status = sharedPreferencesConfig.readClientsStatus();
@@ -196,7 +199,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_summary) {
-            Intent intent = new Intent(MainActivity.this,SummaryActivity.class);
+            Intent intent = new Intent(MainActivity.this, SummaryActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_addexpense) {
             addexpense();

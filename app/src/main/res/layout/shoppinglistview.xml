@@ -178,7 +178,9 @@
                     <Button
                         android:id="@+id/edit_shopping"
                         android:layout_width="wrap_content"
-                        android:layout_height="35dp"
+                        android:layout_height="22dp"
+                        android:textColor="@color/colorWhite"
+                        android:background="@drawable/buttoncolor"
                         android:textSize="10sp"
                         android:text="edit"/>
                 </androidx.appcompat.widget.LinearLayoutCompat>

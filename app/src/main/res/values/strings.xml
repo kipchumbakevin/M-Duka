@@ -25,5 +25,6 @@
     <string name="CLIENTS_PHONE">com.example.shopkipa.sharedpref.phone</string>
     <string name="CLIENTS_LOCATION">com.example.shopkipa.sharedpref.location</string>
     <string name="CLIENTS_STATUS">com.example.shopkipa.sharedpref.status</string>
+    <string name="title_activity_main2">Main2Activity</string>
 
 </resources>

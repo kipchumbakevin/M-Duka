@@ -38,6 +38,7 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 import retrofit2.http.Multipart;
 
 public class SendMessage extends AppCompatActivity {
@@ -111,14 +112,7 @@ public class SendMessage extends AppCompatActivity {
     }
 
     private void send() {
-//        String image;
-//        showProgress();
-//        if (photoUri!=null){
-//            image = photoUri.toString();
-//        }else{
-//            image = "";
-//        }
-       // RequestBody image = RequestBody.create(MediaType.parse(getContentResolver().getType(photoUri)), FileUtils.getfile)
+
         RequestBody message = RequestBody.create(MultipartBody.FORM,writeMessage.getText().toString());
         Call<SendMessageModel> call = RetrofitClient.getInstance(this)
                 .getApiConnector()

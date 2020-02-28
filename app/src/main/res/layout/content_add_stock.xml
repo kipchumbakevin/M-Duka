@@ -9,8 +9,7 @@
         android:layout_height="30dp"
         android:text="add"
         android:textColor="@color/colorWhite"
-        android:background="@drawable/addstock"
+        android:background="@drawable/buttoncolor"
         android:layout_gravity="bottom"/>
-    <include layout="@layout/content_progress_bar"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

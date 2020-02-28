@@ -175,7 +175,9 @@
                         android:id="@+id/edit_given"
                         android:layout_width="wrap_content"
                         android:textSize="10sp"
-                        android:layout_height="35dp"
+                        android:textColor="@color/colorWhite"
+                        android:layout_height="22dp"
+                        android:background="@drawable/buttoncolor"
                         android:text="edit"/>
                 </androidx.appcompat.widget.LinearLayoutCompat>
             </androidx.appcompat.widget.LinearLayoutCompat>
