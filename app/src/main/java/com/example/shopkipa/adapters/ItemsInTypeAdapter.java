@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,11 +52,13 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
 
     private final Context mContext;
     private final ArrayList<GetStockInTypeModel> mStockArrayList;
+    private Drawable trans;
     private final LayoutInflater mLayoutInflator;
     public ItemsInTypeAdapter(Context context, ArrayList<GetStockInTypeModel>stockArrayList){
         mContext = context;
         mStockArrayList = stockArrayList;
         mLayoutInflator = LayoutInflater.from(mContext);
+        trans = mContext.getDrawable(R.color.colorPop);
     }
     @NonNull
     @Override
@@ -160,6 +164,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                     alert.setView(sView);
                     final AlertDialog alertDialog = alert.create();
                     alertDialog.show();
+                    alertDialog.getWindow().setBackgroundDrawable(trans);
                     obscCancel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -229,6 +234,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                     alert.setView(sView);
                     final AlertDialog alertDialog = alert.create();
                     alertDialog.show();
+                    alertDialog.getWindow().setBackgroundDrawable(trans);
                     givenCancel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -299,6 +305,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                     alert.setView(sView);
                     final AlertDialog alertDialog = alert.create();
                     alertDialog.show();
+                    alertDialog.getWindow().setBackgroundDrawable(trans);
                     shoppingCancel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -354,10 +361,12 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                         headerColor.setVisibility(View.GONE);
                         headerSize.setVisibility(View.GONE);
                         fulldetails.setVisibility(View.VISIBLE);
+                        itemImage.setVisibility(View.VISIBLE);
                         arrowUp.setVisibility(View.VISIBLE);
                         arrowDown.setVisibility(View.GONE);
                     } else {
                         fulldetails.setVisibility(View.GONE);
+                        itemImage.setVisibility(View.GONE);
                         header.setVisibility(View.VISIBLE);
                         headerSize.setVisibility(View.VISIBLE);
                         headerColor.setVisibility(View.VISIBLE);
@@ -382,6 +391,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                     alert.setView(viewView);
                     final AlertDialog alertDialog = alert.create();
                     alertDialog.show();
+                    alertDialog.getWindow().setBackgroundDrawable(trans);
                     cancel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -474,6 +484,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                             });
                     AlertDialog alert = builder.create();
                     alert.show();
+                    alert.getWindow().setBackgroundDrawable(trans);
                 }
             });
 
@@ -535,6 +546,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                     });
                     final AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
+                    alertDialog.getWindow().setBackgroundDrawable(trans);
                     GetStockInTypeModel getStockModel = mStockArrayList.get(mCurrentPosition);
                     editName.setText(getStockModel.getName());
                     editsp.setText(getStockModel.getSellingprice());
@@ -561,6 +573,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                     });
                     final AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
+                    alertDialog.getWindow().setBackgroundDrawable(trans);
                     GetStockInTypeModel getStockModel = mStockArrayList.get(mCurrentPosition);
                     itemcolor.setText(getStockModel.getColor());
                     itemdesign.setText(getStockModel.getDesign());
@@ -622,6 +635,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                     alertDialog.setView(view1);
                     final AlertDialog alertDialog1 = alertDialog.create();
                     alertDialog1.show();
+                    alertDialog1.getWindow().setBackgroundDrawable(trans);
                     cancel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {

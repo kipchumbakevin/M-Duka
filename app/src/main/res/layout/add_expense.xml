@@ -13,7 +13,6 @@
     android:id="@+id/title"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorGray"
     android:gravity="center"
     android:text="Add expense"
     android:textColor="@color/colorBlack"

@@ -5,6 +5,9 @@
     <color name="colorAccent">#00574B</color>
     <color name="colorBlack">#000000</color>
     <color name="colorTrans">#CECECE</color>
+    <color name="colorTranspp">#66ffffff</color>
+    <color name="colorPop">#ccffffff</color>
+    <color name="colorTransp">#59ffffff</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorGray">#FF9E9E9E</color>
     <color name="colorGreen">#084D01</color>

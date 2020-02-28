@@ -2,6 +2,7 @@ package com.example.shopkipa.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity
     private List<GetCategoriesModel> categories = new ArrayList<>();
     private Context mContext;
     private SharedPreferencesConfig sharedPreferencesConfig;
+    private Drawable trans;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,7 @@ public class MainActivity extends AppCompatActivity
       //  user = findViewById(R.id.user);
         sharedPreferencesConfig = new SharedPreferencesConfig(MainActivity.this);
         tabLayout = findViewById(R.id.cart_tab);
+        trans = getDrawable(R.color.colorPop);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -305,6 +308,7 @@ public class MainActivity extends AppCompatActivity
         alertDialogBuilder.setView(view);
         final AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+        alertDialog.getWindow().setBackgroundDrawable(trans);
         closedialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

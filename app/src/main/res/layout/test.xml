@@ -1,82 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <androidx.cardview.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/ooo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        app:cardCornerRadius="6dp"
-        app:cardElevation="@dimen/card_elevation">
-        <ImageView
-            android:id="@+id/itemimagees"
-            android:scaleType="fitXY"
-            android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:src="@drawable/placeholder"/>
-        <RelativeLayout
-            android:id="@+id/dropDown"
-            android:background="@color/colorTransp"
-            android:layout_width="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_height="30dp">
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="2dp"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_marginStart="5dp"
-                    android:id="@+id/header"
-                    android:textSize="15sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorBlack"
-                    android:text="name"/>
-                <TextView
-                    android:id="@+id/header_size"
-                    android:layout_marginStart="1dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorBlack"
-                    android:text="size"/>
-                <TextView
-                    android:id="@+id/header_color"
-                    android:layout_width="wrap_content"
-                    android:layout_marginStart="1dp"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorBlack"
-                    android:text="color"/>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
-            <ImageView
-                android:id="@+id/arrowDown"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="2dp"
-                android:src="@drawable/ic_arrow_drop_down"
-                android:layout_alignParentEnd="true"/>
-            <ImageView
-                android:id="@+id/arrowUp"
-                android:layout_marginEnd="2dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:src="@drawable/ic_arrow_drop_up"
-                android:layout_alignParentEnd="true"/>
-        </RelativeLayout>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+
+    android:layout_height="wrap_content"
+
+    app:cardUseCompatPadding="true"
+
+    app:contentPadding="@dimen/activity_half_margin"
+
+    app:cardBackgroundColor="@android:color/white"
+
+    app:cardCornerRadius="@dimen/card_radius"
+
+    app:cardElevation="@dimen/card_elevation">
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_gravity="bottom"
-        android:background="@color/colorTranspp"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+        <!--<RelativeLayout-->
+            <!--android:id="@+id/dropDown"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:paddingStart="10dp"-->
+            <!--android:paddingEnd="10dp"-->
+            <!--android:layout_height="wrap_content">-->
+            <!--<androidx.appcompat.widget.LinearLayoutCompat-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="horizontal">-->
+                <!--<TextView-->
+                    <!--android:id="@+id/header"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textColor="@color/colorBlack"-->
+                    <!--android:text="name"/>-->
+                <!--<TextView-->
+                    <!--android:id="@+id/header_size"-->
+                    <!--android:layout_marginStart="1dp"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textColor="@color/colorGreen"-->
+                    <!--android:text="size"/>-->
+                <!--<TextView-->
+                    <!--android:id="@+id/header_color"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_marginStart="1dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textColor="@color/colorGreen"-->
+                    <!--android:text="color"/>-->
+
+            <!--</androidx.appcompat.widget.LinearLayoutCompat>-->
+            <!--<ImageView-->
+                <!--android:id="@+id/arrowDown"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:src="@drawable/ic_arrow_drop_down"-->
+                <!--android:layout_alignParentEnd="true"/>-->
+            <!--<ImageView-->
+                <!--android:id="@+id/arrowUp"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:visibility="gone"-->
+                <!--android:src="@drawable/ic_arrow_drop_up"-->
+                <!--android:layout_alignParentEnd="true"/>-->
+        <!--</RelativeLayout>-->
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/fulldetails"
-            android:paddingBottom="2dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <!--<androidx.viewpager.widget.ViewPager-->
             <!--android:id="@+id/viewPagerAdapterIm"-->
             <!--android:layout_gravity="center"-->
@@ -108,7 +103,7 @@
                         <TextView
                             android:id="@+id/itemname"
                             android:layout_width="wrap_content"
-                            android:textColor="@color/colorBlack"
+                            android:textColor="@color/colorOrange"
                             app:layout_constraintStart_toEndOf="@+id/name"
                             android:layout_marginStart="2dp"
                             app:layout_constraintTop_toTopOf="parent"
@@ -132,7 +127,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginStart="11dp"
                             android:text="xxx"
-                            android:textColor="@color/colorBlack"
+                            android:textColor="@color/colorOrange"
                             app:layout_constraintStart_toEndOf="@id/size"
                             app:layout_constraintTop_toBottomOf="@id/itemname" />
 
@@ -152,7 +147,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
                             android:text="xxxx"
-                            android:textColor="@color/colorBlack"
+                            android:textColor="@color/colorOrange"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -176,22 +171,20 @@
                     <Button
                         android:id="@+id/soldproduct"
                         android:layout_width="wrap_content"
-                        android:layout_height="21dp"
-                        android:textColor="@color/colorBlack"
-                        android:background="@drawable/bb"
+                        android:layout_height="35dp"
+                        android:textColor="@color/colorWhite"
+                        android:backgroundTint="@color/colorGreen"
                         android:textSize="10sp"
                         android:text="Sold" />
-                    <ImageView
+                    <ImageButton
                         android:id="@+id/addToShoppingList"
-                        android:layout_width="35dp"
-                        android:layout_height="23dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
                         android:src="@drawable/ic_shopping_cart"/>
                     <Button
                         android:id="@+id/editProduct"
                         android:layout_width="wrap_content"
-                        android:layout_height="21dp"
-                        android:textColor="@color/colorBlack"
-                        android:background="@drawable/bb"
+                        android:layout_height="35dp"
                         android:textSize="10sp"
                         android:text="Edit" />
                     <ImageView
@@ -214,7 +207,7 @@
                     android:layout_marginStart="35dp"
                     android:orientation="horizontal">
                     <Button
-                        android:layout_marginStart="30dp"
+                        android:layout_marginStart="40dp"
                         android:id="@+id/given"
                         android:layout_width="wrap_content"
                         android:layout_height="22dp"
@@ -224,7 +217,7 @@
                         android:text="Given" />
                     <Button
                         android:id="@+id/obscolete"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginStart="2dp"
                         android:layout_width="wrap_content"
                         android:layout_height="22dp"
                         android:background="@drawable/buttoncolor"
