@@ -18,7 +18,9 @@ import com.example.shopkipa.models.GetExpenseModel;
 import com.example.shopkipa.networking.RetrofitClient;
 import com.example.shopkipa.utils.SharedPreferencesConfig;
 
+import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.View;
 
 import androidx.appcompat.app.AlertDialog;
@@ -40,6 +42,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Menu;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -56,6 +59,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private static final String DIALOG_EXPENSES = "My Expenses";
     TabLayout tabLayout;
+    FrameLayout frameLayout;
     RelativeLayout progressLyt;
 //    ImageView imageView;
 //    TextView user;
@@ -71,7 +75,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
+        final FloatingActionButton fab = findViewById(R.id.fab);
+        frameLayout = findViewById(R.id.fragment);
       //  imageView = findViewById(R.id.imageView);
       //  user = findViewById(R.id.user);
         sharedPreferencesConfig = new SharedPreferencesConfig(MainActivity.this);
@@ -108,6 +113,16 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+        new CountDownTimer(4000, 1000) { // 60 seconds, in 1 second intervals
+            public void onTick(long millisUntilFinished) {
+                fab.setVisibility(View.VISIBLE);
+            }
+
+            public void onFinish() {
+                fab.setVisibility(View.GONE);
+
+            }
+        }.start();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -308,7 +323,6 @@ public class MainActivity extends AppCompatActivity
         alertDialogBuilder.setView(view);
         final AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-        alertDialog.getWindow().setBackgroundDrawable(trans);
         closedialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

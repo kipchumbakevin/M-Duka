@@ -167,6 +167,7 @@
                         android:textSize="10sp"
                         android:textColor="@color/colorWhite"
                         android:layout_height="22dp"
+                        android:visibility="gone"
                         android:background="@drawable/buttoncolor"
                         android:text="edit"/>
                 </androidx.appcompat.widget.LinearLayoutCompat>

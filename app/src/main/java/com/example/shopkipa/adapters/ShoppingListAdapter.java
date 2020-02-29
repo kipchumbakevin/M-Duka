@@ -103,11 +103,13 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                         header.setVisibility(View.GONE);
                         headerColor.setVisibility(View.GONE);
                        // headerSize.setVisibility(View.GONE);
+                        simage.setVisibility(View.VISIBLE);
                         fulldetails.setVisibility(View.VISIBLE);
                         arrowUp.setVisibility(View.VISIBLE);
                         arrowDown.setVisibility(View.GONE);
                     } else {
                         fulldetails.setVisibility(View.GONE);
+                        simage.setVisibility(View.GONE);
                         header.setVisibility(View.VISIBLE);
                        // headerSize.setVisibility(View.VISIBLE);
                         headerColor.setVisibility(View.VISIBLE);

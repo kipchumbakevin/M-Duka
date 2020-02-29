@@ -340,13 +340,15 @@ public interface JsonPlaceHolderInterface {
     @POST("api/editgiven")
     Call<EditQuantityModel> editG(
             @Field("quantity")String qq,
-            @Field("id")String id
+            @Field("id")String id,
+            @Field("item_id")String item_id
     );
     @FormUrlEncoded
     @POST("api/editobscolete")
     Call<EditQuantityModel> editO(
             @Field("quantity")String qq,
-            @Field("id")String id
+            @Field("id")String id,
+            @Field("item_id")String item_id
     );
 
     //ads

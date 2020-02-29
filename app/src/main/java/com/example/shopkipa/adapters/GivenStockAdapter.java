@@ -62,6 +62,8 @@ public class GivenStockAdapter extends RecyclerView.Adapter<GivenStockAdapter.Gi
         holder.qq = viewGivenStockModel.getGivenQuantity();
         holder.qqq = Integer.toString(holder.qq);
         holder.itemId = viewGivenStockModel.getGivenId();
+        holder.iditem = viewGivenStockModel.getId();
+        holder.quantityqq = viewGivenStockModel.getQuantity();
         holder.quantity.setText(holder.qqq);
         Glide.with(mContext).load(Constants.BASE_URL + "images/"+viewGivenStockModel.getImage())
                 .into(holder.image);
@@ -77,7 +79,7 @@ public class GivenStockAdapter extends RecyclerView.Adapter<GivenStockAdapter.Gi
         TextView itemname,size,quantity,headerSize,headerColor,header;
         ImageView clear,image,arrowDown,arrowUp;
         Button edit;
-        int qq,itemId;
+        int qq,itemId,quantityqq,iditem;
         RelativeLayout dropdown;
         LinearLayoutCompat fulldetails;
         String qqq;
@@ -103,10 +105,12 @@ public class GivenStockAdapter extends RecyclerView.Adapter<GivenStockAdapter.Gi
                     if (!fulldetails.isShown()) {
                         header.setVisibility(View.GONE);
                         headerColor.setVisibility(View.GONE);
+                        image.setVisibility(View.VISIBLE);
                         fulldetails.setVisibility(View.VISIBLE);
                         arrowUp.setVisibility(View.VISIBLE);
                         arrowDown.setVisibility(View.GONE);
                     } else {
+                        image.setVisibility(View.GONE);
                         fulldetails.setVisibility(View.GONE);
                         header.setVisibility(View.VISIBLE);
                         headerColor.setVisibility(View.VISIBLE);
@@ -116,63 +120,68 @@ public class GivenStockAdapter extends RecyclerView.Adapter<GivenStockAdapter.Gi
                 }
             });
 
-            edit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ImageView cancel,done;
-                    AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
-                    View sView = mLayoutInflator.inflate(R.layout.editing_quantity,null);
-                    final EditText editquantity = sView.findViewById(R.id.edit_quantity);
-                    cancel = sView.findViewById(R.id.editing_dialog_close);
-                    done = sView.findViewById(R.id.editing_dialog_done);
-
-                    alert.setView(sView);
-                    final AlertDialog alertDialog = alert.create();
-                    alertDialog.show();
-
-                    cancel.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            alertDialog.dismiss();
-                        }
-                    });
-                    done.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            if (editquantity.getText().toString().isEmpty()){
-                                editquantity.setError("Required");
-                            }
-                            else{
-                                final String qq = editquantity.getText().toString();
-                                String id = Integer.toString(itemId);
-
-                                Call<EditQuantityModel> call = RetrofitClient.getInstance(mContext)
-                                        .getApiConnector()
-                                        .editG(qq,id);
-                                call.enqueue(new Callback<EditQuantityModel>() {
-                                    @Override
-                                    public void onResponse(Call<EditQuantityModel> call, Response<EditQuantityModel> response) {
-                                        if (response.code() == 201) {
-                                            Intent intent = new Intent(mContext, GivenStockActivity.class);
-                                            mContext.startActivity(intent);
-                                            ((Activity) mContext).finish();
-                                            Toast.makeText(mContext, "Edited successfully", Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            Toast.makeText(mContext, response.message() + " " + response.code() + " found", Toast.LENGTH_SHORT).show();
-                                        }
-
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<EditQuantityModel> call, Throwable t) {
-                                        Toast.makeText(mContext, t.getMessage() + "failed", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
-                        }
-                    });
-                }
-            });
+//            edit.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    ImageView cancel,done;
+//                    AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+//                    View sView = mLayoutInflator.inflate(R.layout.editing_quantity,null);
+//                    final EditText editquantity = sView.findViewById(R.id.edit_quantity);
+//                    cancel = sView.findViewById(R.id.editing_dialog_close);
+//                    done = sView.findViewById(R.id.editing_dialog_done);
+//
+//                    alert.setView(sView);
+//                    final AlertDialog alertDialog = alert.create();
+//                    alertDialog.show();
+//
+//                    cancel.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//                            alertDialog.dismiss();
+//                        }
+//                    });
+//                    done.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//                            if (editquantity.getText().toString().isEmpty()){
+//                                editquantity.setError("Required");
+//                            }
+//                            int cq=Integer.parseInt(editquantity.getText().toString());
+//                            if (cq>quantityqq){
+//                                Toast.makeText(mContext,"You only have "+ quantityqq +" items of this product",Toast.LENGTH_SHORT).show();
+//                            }
+//                            else{
+//                                final String qq = editquantity.getText().toString();
+//                                String id = Integer.toString(itemId);
+//                                String item_id = Integer.toString(iditem);
+//
+//                                Call<EditQuantityModel> call = RetrofitClient.getInstance(mContext)
+//                                        .getApiConnector()
+//                                        .editG(qq,id);
+//                                call.enqueue(new Callback<EditQuantityModel>() {
+//                                    @Override
+//                                    public void onResponse(Call<EditQuantityModel> call, Response<EditQuantityModel> response) {
+//                                        if (response.code() == 201) {
+//                                            Intent intent = new Intent(mContext, GivenStockActivity.class);
+//                                            mContext.startActivity(intent);
+//                                            ((Activity) mContext).finish();
+//                                            Toast.makeText(mContext, "Edited successfully", Toast.LENGTH_SHORT).show();
+//                                        } else {
+//                                            Toast.makeText(mContext, response.message() + " " + response.code() + " found", Toast.LENGTH_SHORT).show();
+//                                        }
+//
+//                                    }
+//
+//                                    @Override
+//                                    public void onFailure(Call<EditQuantityModel> call, Throwable t) {
+//                                        Toast.makeText(mContext, t.getMessage() + "failed", Toast.LENGTH_SHORT).show();
+//                                    }
+//                                });
+//                            }
+//                        }
+//                    });
+//                }
+//            });
 
             clear.setOnClickListener(new View.OnClickListener() {
                 @Override

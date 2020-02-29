@@ -20,6 +20,9 @@
             android:text="No shopping list in this category "/>
 
     </RelativeLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,6 +39,7 @@
 
             android:layout_height="match_parent" />
     </androidx.appcompat.widget.LinearLayoutCompat>
+    </ScrollView>
     <include layout="@layout/content_progress_bar"/>
 
 </FrameLayout>
