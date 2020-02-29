@@ -5,7 +5,9 @@
         android:id="@+id/ooo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
+    android:layout_marginBottom="20dp"
         app:cardCornerRadius="6dp"
         app:cardElevation="@dimen/card_elevation">
         <ImageView
