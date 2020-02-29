@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,11 +52,13 @@ public class RestockAdapter extends RecyclerView.Adapter<RestockAdapter.RestockV
     private final Context mContext;
     private final ArrayList<SuggestedRestockModel> mStockArrayList;
     private final LayoutInflater mLayoutInflator;
+    private Drawable trans;
 
     public RestockAdapter(Context context, ArrayList<SuggestedRestockModel>stockArrayList){
         mContext = context;
         mStockArrayList = stockArrayList;
         mLayoutInflator = LayoutInflater.from(mContext);
+        trans = mContext.getDrawable(R.color.colorPop);
     }
     @NonNull
     @Override
@@ -161,6 +164,7 @@ public class RestockAdapter extends RecyclerView.Adapter<RestockAdapter.RestockV
                     alert.setView(sView);
                     final AlertDialog alertDialog = alert.create();
                     alertDialog.show();
+                    alertDialog.getWindow().setBackgroundDrawable(trans);
                     shoppingCancel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -222,6 +226,7 @@ public class RestockAdapter extends RecyclerView.Adapter<RestockAdapter.RestockV
                     alert.setView(sView);
                     final AlertDialog alertDialog = alert.create();
                     alertDialog.show();
+                    alertDialog.getWindow().setBackgroundDrawable(trans);
                     obscCancel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -291,6 +296,7 @@ public class RestockAdapter extends RecyclerView.Adapter<RestockAdapter.RestockV
                     alert.setView(sView);
                     final AlertDialog alertDialog = alert.create();
                     alertDialog.show();
+                    alertDialog.getWindow().setBackgroundDrawable(trans);
                     givenCancel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -355,10 +361,12 @@ public class RestockAdapter extends RecyclerView.Adapter<RestockAdapter.RestockV
                         headerColor.setVisibility(View.GONE);
                         headerSize.setVisibility(View.GONE);
                         fulldetails.setVisibility(View.VISIBLE);
+                        itemImage.setVisibility(View.VISIBLE);
                         arrowUp.setVisibility(View.VISIBLE);
                         arrowDown.setVisibility(View.GONE);
                     } else {
                         fulldetails.setVisibility(View.GONE);
+                        itemImage.setVisibility(View.GONE);
                         header.setVisibility(View.VISIBLE);
                         headerSize.setVisibility(View.VISIBLE);
                         headerColor.setVisibility(View.VISIBLE);
@@ -384,6 +392,7 @@ public class RestockAdapter extends RecyclerView.Adapter<RestockAdapter.RestockV
 
                     final AlertDialog alertDialog = alert.create();
                     alertDialog.show();
+                    alertDialog.getWindow().setBackgroundDrawable(trans);
                     cancel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -476,6 +485,7 @@ public class RestockAdapter extends RecyclerView.Adapter<RestockAdapter.RestockV
                             });
                     AlertDialog alert = builder.create();
                     alert.show();
+                    alert.getWindow().setBackgroundDrawable(trans);
                 }
             });
 
@@ -535,10 +545,11 @@ public class RestockAdapter extends RecyclerView.Adapter<RestockAdapter.RestockV
                     });
                     final AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
+                    alertDialog.getWindow().setBackgroundDrawable(trans);
                     SuggestedRestockModel suggestedRestockModel = mStockArrayList.get(mCurrentPosition);
                     editName.setText(suggestedRestockModel.getName());
                     editsp.setText(suggestedRestockModel.getSellingprice());
-                    edit_q.setText(suggestedRestockModel.getQuantity());
+                    edit_q.setText(Integer.toString(suggestedRestockModel.getQuantity()));
                 }
             });
 
@@ -561,6 +572,7 @@ public class RestockAdapter extends RecyclerView.Adapter<RestockAdapter.RestockV
                     });
                     final AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
+                    alertDialog.getWindow().setBackgroundDrawable(trans);
                     SuggestedRestockModel suggestedRestockModel = mStockArrayList.get(mCurrentPosition);
                     itemcolor.setText(suggestedRestockModel.getColor());
                     itemdesign.setText(suggestedRestockModel.getDesign());
@@ -622,6 +634,7 @@ public class RestockAdapter extends RecyclerView.Adapter<RestockAdapter.RestockV
                     alertDialog.setView(view1);
                     final AlertDialog alertDialog1 = alertDialog.create();
                     alertDialog1.show();
+                    alertDialog1.getWindow().setBackgroundDrawable(trans);
                     cancel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -660,7 +673,7 @@ public class RestockAdapter extends RecyclerView.Adapter<RestockAdapter.RestockV
                                     public void onResponse(Call<AddSaleModel> call, Response<AddSaleModel> response) {
                                         hideProgress();
                                         if (response.code() == 201) {
-                                            Intent intent = new Intent(mContext, MainActivity.class);
+                                            Intent intent = new Intent(mContext, RestockActivity.class);
                                             mContext.startActivity(intent);
                                             ((Activity) mContext).finish();
                                             Toast.makeText(mContext, "Sale added", Toast.LENGTH_SHORT).show();
