@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -29,7 +30,8 @@ public class HelpActivity extends AppCompatActivity {
     GetFaqsAdapter getFaqsAdapter;
     ArrayList<GetFaqsModel>mFaqsArrayList = new ArrayList<>();
     TextView sendMessage;
-    RelativeLayout progress;
+    String phone="0706459189";
+    RelativeLayout progress,call;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +39,7 @@ public class HelpActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.faqs_recyclerView);
         progress = findViewById(R.id.progressLoad);
         sendMessage = findViewById(R.id.send_message);
+        call = findViewById(R.id.call);
         getFaqsAdapter = new GetFaqsAdapter(HelpActivity.this,mFaqsArrayList);
         recyclerView.setAdapter(getFaqsAdapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this,getResources().getInteger(R.integer.product_grid_span)));
@@ -45,6 +48,14 @@ public class HelpActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HelpActivity.this,SendMessage.class);
+                startActivity(intent);
+            }
+        });
+        call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:"+ phone));
                 startActivity(intent);
             }
         });

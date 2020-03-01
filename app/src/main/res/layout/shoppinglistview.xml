@@ -32,6 +32,8 @@
                     android:id="@+id/sheader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:textSize="15sp"
                     android:textColor="@color/colorBlack"
                     android:text="name"/>
                 <TextView
@@ -45,12 +47,16 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
             <ImageView
                 android:id="@+id/arrowDown"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="1dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_arrow_drop_down"
                 android:layout_alignParentEnd="true"/>
             <ImageView
                 android:id="@+id/arrowUp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="1dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"

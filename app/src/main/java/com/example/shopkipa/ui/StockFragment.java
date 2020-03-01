@@ -157,7 +157,7 @@ public class StockFragment extends Fragment {
                                             itemsInTypeAdapter.notifyDataSetChanged();
                                             if (mStockArrayList.size()<1){
                                                 noProducts.setVisibility(View.VISIBLE);
-                                                productView.setVisibility(View.GONE);
+                                                recyclerView.setVisibility(View.GONE);
                                             }
                                         } else {
 
@@ -173,7 +173,7 @@ public class StockFragment extends Fragment {
                                 });
                             if (mStockArrayList.size()<1 && typeSpinnerArray.size()<1) {
                                 noProducts.setVisibility(View.VISIBLE);
-                                productView.setVisibility(View.GONE);
+                                recyclerView.setVisibility(View.GONE);
                             }
 
                             typeadapter.notifyDataSetChanged();
@@ -242,7 +242,7 @@ public class StockFragment extends Fragment {
                     }
                     if (mStockArrayList.size()<1 && typeSpinnerArray.size()<1 && groupSpinnerArray.size()<1) {
                         noProducts.setVisibility(View.VISIBLE);
-                        productView.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.GONE);
                     }
                     groupadapter.notifyDataSetChanged();
                     Log.d("check", ""+sharedPreferencesConfig.readClientsAccessToken());
@@ -290,7 +290,7 @@ public class StockFragment extends Fragment {
                         itemsInTypeAdapter.notifyDataSetChanged();
                         if (mStockArrayList.size() < 1) {
                             noProducts.setVisibility(View.VISIBLE);
-                            productView.setVisibility(View.GONE);
+                            recyclerView.setVisibility(View.GONE);
                         }
                     } else {
 

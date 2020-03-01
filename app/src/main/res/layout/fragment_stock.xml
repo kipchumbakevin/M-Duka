@@ -49,11 +49,17 @@
             android:id="@+id/ads_RecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="3dp"
+                    android:background="@color/colorBlack"/>
         <androidx.recyclerview.widget.RecyclerView
 
             android:id="@+id/stock_recyclerView"
 
             android:layout_width="match_parent"
+            android:layout_marginBottom="40dp"
 
             android:layout_height="match_parent" />
 
@@ -71,7 +77,7 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:textSize="15sp"
-            android:text="You currently have no products in this category."/>
+            android:text="You currently have no stock in this category."/>
 
     </RelativeLayout>
     <include layout="@layout/content_progress_bar"/>

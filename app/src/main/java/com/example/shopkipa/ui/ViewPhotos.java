@@ -7,8 +7,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -16,6 +19,7 @@ import com.example.shopkipa.R;
 import com.example.shopkipa.adapters.GetImagesAdapter;
 import com.example.shopkipa.adapters.ViewPagerAdapter;
 import com.example.shopkipa.models.GetItemImagesModel;
+import com.example.shopkipa.models.ViewAdsModel;
 import com.example.shopkipa.networking.RetrofitClient;
 import com.example.shopkipa.utils.Constants;
 
@@ -33,7 +37,8 @@ public class ViewPhotos extends AppCompatActivity {
     GetItemImagesModel getItemImagesModel;
     private String imageURL;
     String item_id;
-    RelativeLayout progress;
+    RelativeLayout progress,ph;
+    ImageView arrowback;
     private ArrayList<GetItemImagesModel> mImagesArrayList=new ArrayList<>();
     GetImagesAdapter getImagesAdapter;
     RecyclerView recyclerView;
@@ -49,11 +54,21 @@ public class ViewPhotos extends AppCompatActivity {
         recyclerView = findViewById(R.id.imagesRecyclerView);
         recyclerView.setAdapter(getImagesAdapter);
         recyclerView.setLayoutManager(linearLayoutManager);
+        ph = findViewById(R.id.ph);
+        arrowback = findViewById(R.id.arrowback);
        // viewPager = findViewById(R.id.viewPagerImages);
        // getItemImagesModel = new GetItemImagesModel();
 //        viewPagerAdapter = new ViewPagerAdapter(this);
 //        viewPager.setAdapter(viewPagerAdapter);
         item_id = getIntent().getExtras().getString("ITEMID");
+        arrowback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ViewPhotos.this,MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
         viewImages();
     }
 

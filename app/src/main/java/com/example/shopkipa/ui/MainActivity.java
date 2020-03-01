@@ -3,6 +3,7 @@ package com.example.shopkipa.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 
@@ -21,6 +22,7 @@ import com.example.shopkipa.utils.SharedPreferencesConfig;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.DragEvent;
+import android.view.GestureDetector;
 import android.view.View;
 
 import androidx.appcompat.app.AlertDialog;
@@ -90,6 +92,7 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         progressLyt = findViewById(R.id.progressLoad);
         navigationView.setNavigationItemSelectedListener(this);
+
         getCategoryList();
 
         if (!categories.isEmpty()){
@@ -113,16 +116,16 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
-        new CountDownTimer(4000, 1000) { // 60 seconds, in 1 second intervals
-            public void onTick(long millisUntilFinished) {
-                fab.setVisibility(View.VISIBLE);
-            }
-
-            public void onFinish() {
-                fab.setVisibility(View.GONE);
-
-            }
-        }.start();
+//        new CountDownTimer(4000, 1000) { // 4 seconds, in 1 second intervals
+//            public void onTick(long millisUntilFinished) {
+//                fab.setVisibility(View.VISIBLE);
+//            }
+//
+//            public void onFinish() {
+//                fab.setVisibility(View.GONE);
+//
+//            }
+//        }.start();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

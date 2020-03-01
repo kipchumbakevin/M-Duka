@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:textSize="15sp"
-            android:text="You have enough stock (products) in this category "/>
+            android:text="You have enough stock in this category "/>
 
     </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
