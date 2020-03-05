@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -48,7 +50,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.ItemsViewHolder> {
+public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.ItemsViewHolder>{
 
     private final Context mContext;
     private final ArrayList<GetStockInTypeModel> mStockArrayList;
@@ -94,6 +96,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
     public int getItemCount() {
         return mStockArrayList.size();
     }
+
 
     public class ItemsViewHolder extends RecyclerView.ViewHolder {
         TextView itemname, itemsize, itemquantity, moreDetails, header, headerSize, headerColor;

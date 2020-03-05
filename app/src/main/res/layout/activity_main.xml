@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
     <include layout="@layout/floating_action_button"/>
+    <include layout="@layout/pop_up_ads"/>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"

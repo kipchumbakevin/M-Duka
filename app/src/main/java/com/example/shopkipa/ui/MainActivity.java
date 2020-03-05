@@ -48,6 +48,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity
     TabLayout tabLayout;
     FrameLayout frameLayout;
     RelativeLayout progressLyt;
-//    ImageView imageView;
+    ImageView top,cancelTop,center,cancelCenter;
 //    TextView user;
     private ArrayList<GetExpenseModel> mExpensesArrayList;
     private List<GetCategoriesModel> categories = new ArrayList<>();
@@ -78,6 +79,10 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         final FloatingActionButton fab = findViewById(R.id.fab);
+        top = findViewById(R.id.imageviewtop);
+        cancelTop = findViewById(R.id.cancelimageviewtop);
+        center = findViewById(R.id.imageviewcenter);
+        cancelCenter = findViewById(R.id.cancelimageviewcenter);
         frameLayout = findViewById(R.id.fragment);
       //  imageView = findViewById(R.id.imageView);
       //  user = findViewById(R.id.user);
@@ -116,16 +121,39 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
-//        new CountDownTimer(4000, 1000) { // 4 seconds, in 1 second intervals
-//            public void onTick(long millisUntilFinished) {
-//                fab.setVisibility(View.VISIBLE);
-//            }
-//
-//            public void onFinish() {
-//                fab.setVisibility(View.GONE);
-//
-//            }
-//        }.start();
+        new CountDownTimer(5000, 1000) { // 4 seconds, in 1 second intervals
+            public void onTick(long millisUntilFinished) {
+            }
+
+            public void onFinish() {
+                top.setVisibility(View.VISIBLE);
+                cancelTop.setVisibility(View.VISIBLE);
+                new CountDownTimer(5000, 1000) { // 4 seconds, in 1 second intervals
+                    public void onTick(long millisUntilFinished) {
+                    }
+
+                    public void onFinish() {
+                        cancelCenter.setVisibility(View.VISIBLE);
+                        center.setVisibility(View.VISIBLE);
+
+                    }
+                }.start();
+            }
+        }.start();
+        cancelCenter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cancelCenter.setVisibility(View.GONE);
+                center.setVisibility(View.GONE);
+            }
+        });
+        cancelTop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cancelTop.setVisibility(View.GONE);
+                top.setVisibility(View.GONE);
+            }
+        });
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
