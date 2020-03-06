@@ -59,7 +59,9 @@ public class ViewAdsAdapter extends RecyclerView.Adapter<ViewAdsAdapter.ViewAdsV
             cancelad.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(mContext,"Removed",Toast.LENGTH_SHORT).show();
+                    mAdsArray.remove(getAdapterPosition());
+                    notifyItemRemoved(getAdapterPosition());
+                    notifyItemRangeChanged(getAdapterPosition(),mAdsArray.size());
                 }
             });
         }

@@ -121,14 +121,14 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
-        new CountDownTimer(5000, 1000) { // 4 seconds, in 1 second intervals
+        new CountDownTimer(10000, 1000) { // 10 seconds, in 1 second intervals
             public void onTick(long millisUntilFinished) {
             }
 
             public void onFinish() {
                 top.setVisibility(View.VISIBLE);
                 cancelTop.setVisibility(View.VISIBLE);
-                new CountDownTimer(5000, 1000) { // 4 seconds, in 1 second intervals
+                new CountDownTimer(10000, 1000) { // 10 seconds, in 1 second intervals
                     public void onTick(long millisUntilFinished) {
                     }
 

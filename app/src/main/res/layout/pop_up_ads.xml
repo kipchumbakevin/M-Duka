@@ -9,13 +9,13 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_cancel"
         android:layout_marginStart="73dp"
-        android:layout_marginTop="247dp"/>
+        android:layout_marginTop="307dp"/>
     <ImageView
         android:visibility="gone"
         android:id="@+id/imageviewtop"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="310dp"
         android:layout_marginStart="5dp"
         android:src="@mipmap/ic_launcher_round"
         android:layout_alignParentStart="true"/>
