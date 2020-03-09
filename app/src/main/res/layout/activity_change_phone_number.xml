@@ -63,17 +63,18 @@
                 app:layout_constraintTop_toBottomOf="@id/enter_new_phone"
                 app:layout_constraintStart_toStartOf="parent"
                 android:hint="enter your password"/>
-            <Button
-                android:id="@+id/submit"
-                android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:textSize="12sp"
-                android:text="done"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/enter_password"
-                android:layout_marginTop="25dp"
-                android:background="@drawable/button"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:textSize="12sp"
+        android:text="done"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/button"/>
     <include layout="@layout/content_progress_bar"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

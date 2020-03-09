@@ -45,7 +45,11 @@ public class ChangePhoneNumber extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                generate();
+                if (isErrors()){
+                    Toast.makeText(ChangePhoneNumber.this,"Ensure you fill all fields",Toast.LENGTH_SHORT).show();
+                }else {
+                    generate();
+                }
             }
         });
     }
@@ -82,6 +86,16 @@ public class ChangePhoneNumber extends AppCompatActivity {
                 Toast.makeText(ChangePhoneNumber.this,"errot:"+t.getMessage(),Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private boolean isErrors(){
+        if (oldPhone.getText().toString().isEmpty()){
+            return true;
+        }if (newPhone.getText().toString().isEmpty()){
+            return true;
+        }if (enterPass.getText().toString().isEmpty()){
+            return true;
+        }
+        return false;
     }
     private void showProgress() {
         progress.setVisibility(View.VISIBLE);

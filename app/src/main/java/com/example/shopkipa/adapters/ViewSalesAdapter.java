@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ public class ViewSalesAdapter extends RecyclerView.Adapter<ViewSalesAdapter.View
     private final Context mContext;
     private final ArrayList<GetSalesInMonthModel> mSalesArrayList;
     private final LayoutInflater mLayoutInflator;
+    RelativeLayout progress;
 
     public ViewSalesAdapter(Context context, ArrayList<GetSalesInMonthModel>salesArrayList){
         mContext = context;
@@ -77,6 +79,7 @@ public class ViewSalesAdapter extends RecyclerView.Adapter<ViewSalesAdapter.View
             colorC = itemView.findViewById(R.id.color);
             moreInfo = itemView.findViewById(R.id.moreInfo);
             salesInfo = itemView.findViewById(R.id.salesDetails);
+            progress = itemView.findViewById(R.id.progressLoad);
             select.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -119,6 +122,7 @@ public class ViewSalesAdapter extends RecyclerView.Adapter<ViewSalesAdapter.View
         }
 
         private void delete() {
+            showProgress();
             String iD = Integer.toString(id);
             Call<DeleteSaleModel> call = RetrofitClient.getInstance(mContext)
                     .getApiConnector()
@@ -126,6 +130,7 @@ public class ViewSalesAdapter extends RecyclerView.Adapter<ViewSalesAdapter.View
             call.enqueue(new Callback<DeleteSaleModel>() {
                 @Override
                 public void onResponse(Call<DeleteSaleModel> call, Response<DeleteSaleModel> response) {
+                    hideProgress();
                     if(response.code()==201){
                         Intent intent = new Intent(mContext, SummaryActivity.class);
                         mContext.startActivity(intent);
@@ -140,9 +145,16 @@ public class ViewSalesAdapter extends RecyclerView.Adapter<ViewSalesAdapter.View
 
                 @Override
                 public void onFailure(Call<DeleteSaleModel> call, Throwable t) {
+                    hideProgress();
                     Toast.makeText(mContext,"errot:"+t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
+        }
+        private void showProgress() {
+            progress.setVisibility(View.VISIBLE);
+        }
+        private void hideProgress() {
+            progress.setVisibility(View.GONE);
         }
     }
 }

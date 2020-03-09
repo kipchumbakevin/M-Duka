@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity
     TabLayout tabLayout;
     FrameLayout frameLayout;
     RelativeLayout progressLyt;
-    ImageView top,cancelTop,center,cancelCenter;
+    ImageView top,cancelTop,bottom,cancelBottom;
 //    TextView user;
     private ArrayList<GetExpenseModel> mExpensesArrayList;
     private List<GetCategoriesModel> categories = new ArrayList<>();
@@ -81,8 +81,8 @@ public class MainActivity extends AppCompatActivity
         final FloatingActionButton fab = findViewById(R.id.fab);
         top = findViewById(R.id.imageviewtop);
         cancelTop = findViewById(R.id.cancelimageviewtop);
-        center = findViewById(R.id.imageviewcenter);
-        cancelCenter = findViewById(R.id.cancelimageviewcenter);
+        cancelBottom = findViewById(R.id.cancelbottomad);
+        bottom = findViewById(R.id.bottomad);
         frameLayout = findViewById(R.id.fragment);
       //  imageView = findViewById(R.id.imageView);
       //  user = findViewById(R.id.user);
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
-        new CountDownTimer(10000, 1000) { // 10 seconds, in 1 second intervals
+        new CountDownTimer(13000, 1000) { // 10 seconds, in 1 second intervals
             public void onTick(long millisUntilFinished) {
             }
 
@@ -133,18 +133,17 @@ public class MainActivity extends AppCompatActivity
                     }
 
                     public void onFinish() {
-                        cancelCenter.setVisibility(View.VISIBLE);
-                        center.setVisibility(View.VISIBLE);
-
+                        cancelBottom.setVisibility(View.VISIBLE);
+                        bottom.setVisibility(View.VISIBLE);
                     }
                 }.start();
             }
         }.start();
-        cancelCenter.setOnClickListener(new View.OnClickListener() {
+        cancelBottom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cancelCenter.setVisibility(View.GONE);
-                center.setVisibility(View.GONE);
+                cancelBottom.setVisibility(View.GONE);
+                bottom.setVisibility(View.GONE);
             }
         });
         cancelTop.setOnClickListener(new View.OnClickListener() {
@@ -154,6 +153,18 @@ public class MainActivity extends AppCompatActivity
                 top.setVisibility(View.GONE);
             }
         });
+        bottom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this,"Goes to company website",Toast.LENGTH_SHORT).show();
+            }
+        });
+        top.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this,"Goes to company website",Toast.LENGTH_SHORT).show();
+            }
+        });
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -161,31 +172,14 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
-//        String status = sharedPreferencesConfig.readClientsStatus();
-//        if(status.contentEquals(Constants.ACTIVE_CONSTANT)) {
-//            String username = sharedPreferencesConfig.readClientsUsername();
-//          //  user.setText(username);
-//
-//            getFirstLetterInCircularBackground(imageView, username);
-//        }
-//        else {
-//            String username = user.getText().toString();
-//            getFirstLetterInCircularBackground(imageView, username);
-//
-//        }
-
     }
-
     @Override
     protected void onResume() {
         super.onResume();
-
     }
     public void getTabContent(String tabIndex){
             StockFragment tabContentFragment = StockFragment.newInstance(tabIndex);
-
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-
             ft.replace(R.id.fragment, tabContentFragment);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.commit();
@@ -207,21 +201,18 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
@@ -230,10 +221,8 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(MainActivity.this,HelpActivity.class);
             startActivity(intent);
         }
-
         return super.onOptionsItemSelected(item);
     }
-
 //    public void startDialog(){
 //        ViewExpensesDialogFragment dialog = new
 //                ViewExpensesDialogFragment(mContext);

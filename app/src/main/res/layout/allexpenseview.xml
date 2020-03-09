@@ -11,7 +11,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Expense type"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="10dp"
             android:textColor="@color/colorBlack"
             app:layout_constraintStart_toEndOf="@id/deleteExpense"
             app:layout_constraintTop_toTopOf="parent" />
@@ -35,5 +35,6 @@
             android:layout_height="20dp"
             app:layout_constraintEnd_toStartOf="@id/expenseType"
             app:layout_constraintTop_toTopOf="parent" />
+        <include layout="@layout/content_progress_bar"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

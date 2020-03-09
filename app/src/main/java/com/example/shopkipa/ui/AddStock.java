@@ -181,11 +181,13 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
         buttonAddStock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (photoUri!=null){
-                    //Toast.makeText(AddStock.this,photoUri.toString(),Toast.LENGTH_LONG).show();
-                    newStock();
-                }else {
+                if (isErrors()){
+                    Toast.makeText(AddStock.this,"Ensure you fill all fields",Toast.LENGTH_SHORT).show();
+                }
+                if (photoUri == null ){
                     Toast.makeText(AddStock.this,"Add photo",Toast.LENGTH_SHORT).show();
+                }else {
+                    newStock();
                 }
             }
         });
@@ -304,37 +306,20 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
     @Override
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
         switch (requestCode) {
-
             case REQUEST_CAMERA_PERMISSIONS: {
-
                 if (isPermissionGranted()){
-
                     startStockImageDialog();
-
                 }
                 else{
-
                     return;
-
                 }
-
             }
-
             default:
-
                 super.onRequestPermissionsResult(requestCode,
-
                         permissions, grantResults);
-
         }
-
-
-
     }
-
-
     private void sellingPriceInfo() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AddStock.this);
         alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -347,6 +332,21 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+    private boolean isErrors(){
+        if (itemName.getText().toString().isEmpty()){
+            return true;
+        }if (itemColor.getText().toString().isEmpty()){
+            return true;
+        }if (itemDesign.getText().toString().isEmpty()){
+            return true;
+        }if (itemBP.getText().toString().isEmpty()){
+            return true;
+        }if (itemSP.getText().toString().isEmpty()){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     private void newStock() {

@@ -42,7 +42,11 @@ public class ChangePasswordActivity extends AppCompatActivity {
         changePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                changePassword();
+                if (isErrors()){
+                    Toast.makeText(ChangePasswordActivity.this,"Ensure you fill all fields",Toast.LENGTH_SHORT).show();
+                }else {
+                    changePassword();
+                }
             }
         });
     }
@@ -87,6 +91,19 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+    private boolean isErrors(){
+        oldpass = findViewById(R.id.oldpass);
+        newpass = findViewById(R.id.new_password);
+        confirmnewpass = findViewById(R.id.confirm_new_password);
+        if (oldpass.getText().toString().isEmpty()){
+            return true;
+        }if (newpass.getText().toString().isEmpty()){
+            return true;
+        }if (confirmnewpass.getText().toString().isEmpty()){
+            return true;
+        }
+        return false;
     }
     private void showProgress() {
         progress.setVisibility(View.VISIBLE);

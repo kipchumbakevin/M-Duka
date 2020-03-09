@@ -84,6 +84,7 @@ public class RestockAdapter extends RecyclerView.Adapter<RestockAdapter.RestockV
         holder.idItem = Integer.toString(mStockArrayList.get(position).getId());
         holder.itemQua = mStockArrayList.get(position).getQuantity();
         holder.qq = Integer.toString(holder.itemQua);
+        holder.name = mStockArrayList.get(position).getName();
         holder.itemquantity.setText(holder.qq);
         if (holder.itemQua<=0){
             holder.sold.setVisibility(View.GONE);
@@ -104,7 +105,7 @@ public class RestockAdapter extends RecyclerView.Adapter<RestockAdapter.RestockV
         int mCurrentPosition;
         String idItem;
         int itemQua;
-        String qq;
+        String qq,name;
         LinearLayoutCompat fulldetails, linearSale;
         RelativeLayout dropdown,noProducts,progressL;
         EditText quantitySold, costUnitPrice;
@@ -147,6 +148,7 @@ public class RestockAdapter extends RecyclerView.Adapter<RestockAdapter.RestockV
                     String id = Integer.toString(itemId);
                     Intent intent = new Intent(mContext, ViewPhotos.class);
                     intent.putExtra("ITEMID",id);
+                    intent.putExtra("NAME",name);
                     mContext.startActivity(intent);
                 }
             });

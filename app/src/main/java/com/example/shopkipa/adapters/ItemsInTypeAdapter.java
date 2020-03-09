@@ -89,6 +89,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
         holder.itemQua = mStockArrayList.get(position).getQuantity();
         holder.qq = Integer.toString(holder.itemQua);
         holder.itemquantity.setText(holder.qq);
+        holder.name = mStockArrayList.get(position).getName();
 
     }
 
@@ -105,7 +106,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
         int mCurrentPosition;
         String idItem;
         int itemQua;
-        String qq;
+        String qq,name;
         LinearLayoutCompat fulldetails, linearSale;
         RelativeLayout dropdown,noProducts,progressL;
         EditText quantitySold, costUnitPrice;
@@ -150,6 +151,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                     String id = Integer.toString(itemId);
                     Intent intent = new Intent(mContext, ViewPhotos.class);
                     intent.putExtra("ITEMID",id);
+                    intent.putExtra("NAME",name);
                     mContext.startActivity(intent);
                 }
             });

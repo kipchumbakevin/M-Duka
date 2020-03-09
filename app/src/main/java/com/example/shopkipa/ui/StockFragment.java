@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -107,7 +108,16 @@ public class StockFragment extends Fragment {
 
         groupSpinner.setAdapter(groupadapter);
         viewGroup();
-        viewAds();
+        new CountDownTimer(10000, 1000) { // 10 seconds, in 1 second intervals
+            public void onTick(long millisUntilFinished) {
+            }
+
+            public void onFinish() {
+                viewAds();
+
+            }
+        }.start();
+
 
         typeSpinner.setOnTouchListener(new View.OnTouchListener() {
 

@@ -13,10 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.shopkipa.R;
 import com.example.shopkipa.models.ViewAdsModel;
+import com.example.shopkipa.ui.MainActivity;
 import com.example.shopkipa.utils.Constants;
 
 import java.util.ArrayList;
-
 public class ViewAdsAdapter extends RecyclerView.Adapter<ViewAdsAdapter.ViewAdsViewHolder> {
     private final Context mContext;
     private final ArrayList<ViewAdsModel> mAdsArray;
@@ -39,8 +39,7 @@ public class ViewAdsAdapter extends RecyclerView.Adapter<ViewAdsAdapter.ViewAdsV
         ViewAdsModel viewAdsModel = mAdsArray.get(position);
         Glide.with(mContext).load(Constants.BASE_URL + "images/"+viewAdsModel.getImageurl())
                 .into(holder.adimage);
-        holder.mcurrentposion = viewAdsModel.getId();
-
+        holder.mcurrentposition = viewAdsModel.getId();
     }
 
     @Override
@@ -50,7 +49,7 @@ public class ViewAdsAdapter extends RecyclerView.Adapter<ViewAdsAdapter.ViewAdsV
 
     public class ViewAdsViewHolder extends RecyclerView.ViewHolder {
         ImageView adimage,cancelad;
-        int mcurrentposion;
+        int mcurrentposition;
         public ViewAdsViewHolder(@NonNull View itemView) {
             super(itemView);
             adimage = itemView.findViewById(R.id.adimage);
@@ -62,6 +61,12 @@ public class ViewAdsAdapter extends RecyclerView.Adapter<ViewAdsAdapter.ViewAdsV
                     mAdsArray.remove(getAdapterPosition());
                     notifyItemRemoved(getAdapterPosition());
                     notifyItemRangeChanged(getAdapterPosition(),mAdsArray.size());
+                }
+            });
+            adimage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(mContext,"Goes to company website",Toast.LENGTH_SHORT).show();
                 }
             });
         }

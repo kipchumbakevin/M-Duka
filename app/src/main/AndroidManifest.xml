@@ -27,7 +27,7 @@
         <activity android:name=".settings.ConfirmPhoneChangeCode" />
         <activity
             android:name=".ui.ViewPhotos"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".auth.CodeAfterSignUpActivity"
             android:theme="@style/AppTheme.NoActionBar" />

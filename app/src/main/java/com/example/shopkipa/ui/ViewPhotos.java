@@ -13,6 +13,7 @@ import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shopkipa.R;
@@ -36,8 +37,9 @@ public class ViewPhotos extends AppCompatActivity {
     ViewPager viewPager;
     GetItemImagesModel getItemImagesModel;
     private String imageURL;
-    String item_id;
+    String item_id,namee;
     RelativeLayout progress,ph;
+    TextView name;
     ImageView arrowback;
     private ArrayList<GetItemImagesModel> mImagesArrayList=new ArrayList<>();
     GetImagesAdapter getImagesAdapter;
@@ -53,6 +55,7 @@ public class ViewPhotos extends AppCompatActivity {
         getImagesAdapter = new GetImagesAdapter(ViewPhotos.this,mImagesArrayList);
         recyclerView = findViewById(R.id.imagesRecyclerView);
         recyclerView.setAdapter(getImagesAdapter);
+        name = findViewById(R.id.photoName);
         recyclerView.setLayoutManager(linearLayoutManager);
         ph = findViewById(R.id.ph);
         arrowback = findViewById(R.id.arrowback);
@@ -61,6 +64,8 @@ public class ViewPhotos extends AppCompatActivity {
 //        viewPagerAdapter = new ViewPagerAdapter(this);
 //        viewPager.setAdapter(viewPagerAdapter);
         item_id = getIntent().getExtras().getString("ITEMID");
+        namee = getIntent().getExtras().getString("NAME");
+        name.setText(namee);
         arrowback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

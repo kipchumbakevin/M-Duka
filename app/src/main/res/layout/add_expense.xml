@@ -165,6 +165,7 @@
             android:layout_height="50dp" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
+    <include layout="@layout/content_progress_bar"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

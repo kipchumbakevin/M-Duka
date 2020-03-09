@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ public class ViewExpensesAdapter extends RecyclerView.Adapter<ViewExpensesAdapte
     private final Context mContext;
     private final ArrayList<GetExpenseModel> mExpensesArrayList;
     private final LayoutInflater mLayoutInflator;
+    RelativeLayout progress;
 
     public ViewExpensesAdapter(Context context, ArrayList<GetExpenseModel>expenseArrayList){
         mContext = context;
@@ -70,6 +72,7 @@ public class ViewExpensesAdapter extends RecyclerView.Adapter<ViewExpensesAdapte
             expenseType = itemView.findViewById(R.id.expenseType);
             select = itemView.findViewById(R.id.selectItemsToDelete);
             deleteExpense = itemView.findViewById(R.id.deleteExpense);
+            progress = itemView.findViewById(R.id.progressLoad);
             select.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -83,6 +86,7 @@ public class ViewExpensesAdapter extends RecyclerView.Adapter<ViewExpensesAdapte
             deleteExpense.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View view) {
+                    showProgress();
                         String iD = Integer.toString(id);
                         Call<DeleteExpenseModel> call = RetrofitClient.getInstance(mContext)
                                 .getApiConnector()
@@ -90,6 +94,7 @@ public class ViewExpensesAdapter extends RecyclerView.Adapter<ViewExpensesAdapte
                         call.enqueue(new Callback<DeleteExpenseModel>() {
                             @Override
                             public void onResponse(Call<DeleteExpenseModel> call, Response<DeleteExpenseModel> response) {
+                                hideProgress();
                                 if(response.code()==201){
                                     Intent intent = new Intent(mContext, SummaryActivity.class);
                                     mContext.startActivity(intent);
@@ -104,11 +109,18 @@ public class ViewExpensesAdapter extends RecyclerView.Adapter<ViewExpensesAdapte
 
                             @Override
                             public void onFailure(Call<DeleteExpenseModel> call, Throwable t) {
+                                hideProgress();
                                 Toast.makeText(mContext,"errot:"+t.getMessage(),Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
             });
+        }
+        private void showProgress() {
+            progress.setVisibility(View.VISIBLE);
+        }
+        private void hideProgress() {
+            progress.setVisibility(View.GONE);
         }
     }
 }

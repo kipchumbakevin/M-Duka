@@ -151,16 +151,19 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </RelativeLayout>
+</LinearLayout>
     <Button
         android:id="@+id/submit_changes"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="28dp"
         android:textSize="12sp"
         android:text="update"
+        android:layout_margin="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginTop="25dp"
         android:background="@drawable/button"/>
-</LinearLayout>
-
     <include
         layout="@layout/content_progress_bar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

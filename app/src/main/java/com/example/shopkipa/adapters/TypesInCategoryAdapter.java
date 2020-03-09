@@ -28,11 +28,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class TypesInCategoryAdapter extends RecyclerView.Adapter<TypesInCategoryAdapter.TypesViewHolder> {
-
     private final Context mContext;
     private final ArrayList<GetTypesInCategoryModel> mTypesArrayList;
     private final ArrayList<GetStockInTypeModel> mStockArrayList = new ArrayList<>();
-   private ItemsInTypeAdapter itemsInTypeAdapter;
+    private ItemsInTypeAdapter itemsInTypeAdapter;
     private final LayoutInflater mLayoutInflator;
 
     public TypesInCategoryAdapter(Context context, ArrayList<GetTypesInCategoryModel>typesArrayList){

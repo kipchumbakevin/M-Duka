@@ -84,23 +84,22 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorWhite"
             android:text="Forgot password?"/>
-        <Button
-            android:layout_below="@id/forgotPassword"
-            android:id="@+id/login"
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:textSize="12sp"
-            android:background="@drawable/signup"
-            android:textColor="@color/colorWhite"
-            android:layout_marginTop="50dp"
-            android:text="login"/>
 
     </RelativeLayout>
     </ScrollView>
-    <include layout="@layout/content_progress_bar"
+    <Button
+        android:layout_below="@id/forgotPassword"
+        android:id="@+id/login"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="12sp"
+        android:layout_margin="8dp"
+        android:background="@drawable/signup"
+        android:textColor="@color/colorWhite"
+        android:text="login"/>
+    <include layout="@layout/content_progress_bar"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
