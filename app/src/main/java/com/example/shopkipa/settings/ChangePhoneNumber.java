@@ -4,7 +4,10 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -47,7 +50,10 @@ public class ChangePhoneNumber extends AppCompatActivity {
             public void onClick(View view) {
                 if (isErrors()){
                     Toast.makeText(ChangePhoneNumber.this,"Ensure you fill all fields",Toast.LENGTH_SHORT).show();
-                }else {
+                }if (!isNetworkAvailable()){
+                    Toast.makeText(ChangePhoneNumber.this,"Check your network connection",Toast.LENGTH_SHORT).show();
+                }
+                else {
                     generate();
                 }
             }
@@ -86,6 +92,12 @@ public class ChangePhoneNumber extends AppCompatActivity {
                 Toast.makeText(ChangePhoneNumber.this,"errot:"+t.getMessage(),Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
     private boolean isErrors(){
         if (oldPhone.getText().toString().isEmpty()){

@@ -83,7 +83,7 @@ public class ConfirmPhoneChangeCode extends AppCompatActivity implements
             @Override
             public void onFailure(Call<GenerateCodeModel> call, Throwable t) {
                 hideProgress();
-                Toast.makeText(ConfirmPhoneChangeCode.this,"errot:"+t.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(ConfirmPhoneChangeCode.this,"Network error",Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -112,7 +112,7 @@ public class ConfirmPhoneChangeCode extends AppCompatActivity implements
             @Override
             public void onFailure(Call<ConfirmPhoneChangeCodeModel> call, Throwable t) {
                 hideProgress();
-                Toast.makeText(ConfirmPhoneChangeCode.this,"errot:"+t.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(ConfirmPhoneChangeCode.this,"Network error",Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -5,10 +5,13 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.example.shopkipa.R;
 import com.example.shopkipa.models.GetCategoriesModel;
@@ -35,6 +38,9 @@ public class ObscoleteStockActivity extends AppCompatActivity {
         setContentView(R.layout.activity_obscolete_stock);
         tabLayout = findViewById(R.id.cart_tab);
         go_back = findViewById(R.id.goBack);
+        if (!isNetworkAvailable()){
+            Toast.makeText(ObscoleteStockActivity.this,"Check your network connection",Toast.LENGTH_SHORT).show();
+        }
         getCategoryList();
 
         if (!categories.isEmpty()){
@@ -117,5 +123,11 @@ public class ObscoleteStockActivity extends AppCompatActivity {
         Intent intent = new Intent(ObscoleteStockActivity.this,MainActivity.class);
         startActivity(intent);
         finish();
+    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

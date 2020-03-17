@@ -1,4 +1,5 @@
 package com.example.shopkipa.adapters;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -34,15 +35,16 @@ public class ViewSalesAdapter extends RecyclerView.Adapter<ViewSalesAdapter.View
     private final LayoutInflater mLayoutInflator;
     RelativeLayout progress;
 
-    public ViewSalesAdapter(Context context, ArrayList<GetSalesInMonthModel>salesArrayList){
+    public ViewSalesAdapter(Context context, ArrayList<GetSalesInMonthModel> salesArrayList) {
         mContext = context;
         mSalesArrayList = salesArrayList;
         mLayoutInflator = LayoutInflater.from(mContext);
     }
+
     @NonNull
     @Override
     public ViewSalesHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = mLayoutInflator.inflate(R.layout.allsalesview,parent,false);
+        View view = mLayoutInflator.inflate(R.layout.allsalesview, parent, false);
         return new ViewSalesHolder(view);
     }
 
@@ -50,7 +52,7 @@ public class ViewSalesAdapter extends RecyclerView.Adapter<ViewSalesAdapter.View
     public void onBindViewHolder(@NonNull ViewSalesHolder holder, int position) {
         GetSalesInMonthModel getSalesInMonthModel = mSalesArrayList.get(position);
         holder.itemName.setText(getSalesInMonthModel.getName());
-        holder.totalAmount.setText("Kshs."+ getSalesInMonthModel.getTotal());
+        holder.totalAmount.setText("Kshs." + getSalesInMonthModel.getTotal());
         holder.quantitySold.setText(getSalesInMonthModel.getQuantity());
         holder.colorC.setText(getSalesInMonthModel.getColor());
         holder.sizeS.setText(getSalesInMonthModel.getSize());
@@ -63,11 +65,12 @@ public class ViewSalesAdapter extends RecyclerView.Adapter<ViewSalesAdapter.View
     }
 
     public class ViewSalesHolder extends RecyclerView.ViewHolder {
-        TextView itemName,quantitySold,totalAmount,sizeS,colorC;
+        TextView itemName, quantitySold, totalAmount, sizeS, colorC;
         ConstraintLayout select;
         LinearLayoutCompat salesInfo;
         int id;
-        ImageView deleteSale,moreInfo;
+        ImageView deleteSale, moreInfo;
+
         public ViewSalesHolder(@NonNull View itemView) {
             super(itemView);
             itemName = itemView.findViewById(R.id.itemName);
@@ -83,9 +86,9 @@ public class ViewSalesAdapter extends RecyclerView.Adapter<ViewSalesAdapter.View
             select.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(!deleteSale.isShown()){
+                    if (!deleteSale.isShown()) {
                         deleteSale.setVisibility(View.VISIBLE);
-                    }else{
+                    } else {
                         deleteSale.setVisibility(View.GONE);
                     }
                 }
@@ -106,14 +109,14 @@ public class ViewSalesAdapter extends RecyclerView.Adapter<ViewSalesAdapter.View
         }
 
         private void info() {
-            if (itemName.isShown()){
+            if (itemName.isShown()) {
                 salesInfo.setVisibility(View.VISIBLE);
                 itemName.setVisibility(View.GONE);
                 quantitySold.setVisibility(View.GONE);
                 totalAmount.setVisibility(View.GONE);
 
 
-            }else{
+            } else {
                 salesInfo.setVisibility(View.GONE);
                 itemName.setVisibility(View.VISIBLE);
                 quantitySold.setVisibility(View.VISIBLE);
@@ -131,14 +134,13 @@ public class ViewSalesAdapter extends RecyclerView.Adapter<ViewSalesAdapter.View
                 @Override
                 public void onResponse(Call<DeleteSaleModel> call, Response<DeleteSaleModel> response) {
                     hideProgress();
-                    if(response.code()==201){
+                    if (response.code() == 201) {
                         Intent intent = new Intent(mContext, SummaryActivity.class);
                         mContext.startActivity(intent);
-                        ((Activity)mContext).finish();
-                        Toast.makeText(mContext,"Deleted successfully",Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        Toast.makeText(mContext,"response:"+response.message(),Toast.LENGTH_SHORT).show();
+                        ((Activity) mContext).finish();
+                        Toast.makeText(mContext, "Deleted successfully", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(mContext, "response:" + response.message(), Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -146,13 +148,15 @@ public class ViewSalesAdapter extends RecyclerView.Adapter<ViewSalesAdapter.View
                 @Override
                 public void onFailure(Call<DeleteSaleModel> call, Throwable t) {
                     hideProgress();
-                    Toast.makeText(mContext,"errot:"+t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "errot:" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         }
+
         private void showProgress() {
             progress.setVisibility(View.VISIBLE);
         }
+
         private void hideProgress() {
             progress.setVisibility(View.GONE);
         }

@@ -31,7 +31,7 @@ import retrofit2.Response;
  * A simple {@link Fragment} subclass.
  */
 public class SuggestedRestockFragment extends Fragment {
-    private static ArrayList<SuggestedRestockModel> mStockArrayList=new ArrayList<>();
+    private static ArrayList<SuggestedRestockModel> mStockArrayList = new ArrayList<>();
     RecyclerView recyclerView;
     RelativeLayout progressLyt, noProducts;
     String fragment_name;
@@ -47,9 +47,9 @@ public class SuggestedRestockFragment extends Fragment {
         progressLyt = view.findViewById(R.id.progressLoad);
         noProducts = view.findViewById(R.id.no_suggested_products_view);
         recyclerView.hasFixedSize();
-        restockAdapter = new RestockAdapter(getContext(),mStockArrayList);
+        restockAdapter = new RestockAdapter(getContext(), mStockArrayList);
         recyclerView.setAdapter(restockAdapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),getResources().getInteger(R.integer.product_grid_span)));
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), getResources().getInteger(R.integer.product_grid_span)));
 
         getRestock();
         return view;
@@ -70,13 +70,13 @@ public class SuggestedRestockFragment extends Fragment {
                 if (response.code() == 200) {
                     mStockArrayList.addAll(response.body());
                     restockAdapter.notifyDataSetChanged();
-                    if (mStockArrayList.size()<1) {
+                    if (mStockArrayList.size() < 1) {
                         noProducts.setVisibility(View.VISIBLE);
                         recyclerView.setVisibility(View.GONE);
                     }
 
                 } else {
-                    Toast.makeText(getActivity(),response.message()+response.code(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), response.message() + response.code(), Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -89,10 +89,11 @@ public class SuggestedRestockFragment extends Fragment {
         });
 
     }
-    public static SuggestedRestockFragment newInstance(String fragmentname){
-        SuggestedRestockFragment suggestedRestockFragment =new SuggestedRestockFragment();
-        Bundle bundle=new Bundle();
-        bundle.putString("fragment_name",fragmentname);
+
+    public static SuggestedRestockFragment newInstance(String fragmentname) {
+        SuggestedRestockFragment suggestedRestockFragment = new SuggestedRestockFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("fragment_name", fragmentname);
         suggestedRestockFragment.setArguments(bundle);
         return suggestedRestockFragment;
     }

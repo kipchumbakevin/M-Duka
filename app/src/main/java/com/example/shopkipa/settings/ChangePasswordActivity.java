@@ -2,7 +2,10 @@ package com.example.shopkipa.settings;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -44,7 +47,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (isErrors()){
                     Toast.makeText(ChangePasswordActivity.this,"Ensure you fill all fields",Toast.LENGTH_SHORT).show();
-                }else {
+                }if (!isNetworkAvailable()){
+                    Toast.makeText(ChangePasswordActivity.this,"Check your network connection",Toast.LENGTH_SHORT).show();
+                }
+                else {
                     changePassword();
                 }
             }
@@ -112,6 +118,12 @@ public class ChangePasswordActivity extends AppCompatActivity {
         progress.setVisibility(View.GONE);
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
     @Override
     public void onBackPressed() {
         super.onBackPressed();

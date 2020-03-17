@@ -5,10 +5,13 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.example.shopkipa.R;
 import com.example.shopkipa.models.GetCategoriesModel;
@@ -35,6 +38,9 @@ public class ShoppingListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_shopping_list);
         tabLayout = findViewById(R.id.cart_tab);
         go_back = findViewById(R.id.goBack);
+        if (!isNetworkAvailable()){
+            Toast.makeText(ShoppingListActivity.this,"Check your network connectivity",Toast.LENGTH_SHORT).show();
+        }
         getCategoryList();
 
         if (!categories.isEmpty()){
@@ -117,5 +123,11 @@ public class ShoppingListActivity extends AppCompatActivity {
         Intent intent = new Intent(ShoppingListActivity.this,MainActivity.class);
         startActivity(intent);
         finish();
+    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

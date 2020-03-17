@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -51,6 +54,9 @@ public class SummaryActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar!=null){
             actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        if (!isNetworkAvailable()){
+            Toast.makeText(SummaryActivity.this,"Check your nectwork connection",Toast.LENGTH_SHORT).show();
         }
         yearSpinnerArray = new ArrayList<>();
 
@@ -140,6 +146,12 @@ public class SummaryActivity extends AppCompatActivity {
                 Toast.makeText(SummaryActivity.this,t.getMessage() + "hhhhhd",Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
     private void showProgress(){
         progress.setVisibility(View.VISIBLE);

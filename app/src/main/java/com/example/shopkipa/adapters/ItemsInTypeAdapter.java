@@ -50,22 +50,23 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.ItemsViewHolder>{
+public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.ItemsViewHolder> {
 
     private final Context mContext;
     private final ArrayList<GetStockInTypeModel> mStockArrayList;
     private Drawable trans;
     private final LayoutInflater mLayoutInflator;
-    public ItemsInTypeAdapter(Context context, ArrayList<GetStockInTypeModel>stockArrayList){
+    public ItemsInTypeAdapter(Context context, ArrayList<GetStockInTypeModel> stockArrayList) {
         mContext = context;
         mStockArrayList = stockArrayList;
         mLayoutInflator = LayoutInflater.from(mContext);
         trans = mContext.getDrawable(R.color.colorPop);
     }
+
     @NonNull
     @Override
     public ItemsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = mLayoutInflator.inflate(R.layout.items_layout,parent,false);
+        View view = mLayoutInflator.inflate(R.layout.items_layout, parent, false);
 
         return new ItemsViewHolder(view);
     }
@@ -74,17 +75,15 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
     public void onBindViewHolder(@NonNull ItemsViewHolder holder, int position) {
         GetStockInTypeModel getStockInTypeModel = mStockArrayList.get(position);
         holder.itemname.setText(getStockInTypeModel.getName());
-        Glide.with(mContext).load(Constants.BASE_URL + "images/"+getStockInTypeModel.getImage())
+        Glide.with(mContext).load(Constants.BASE_URL + "images/" + getStockInTypeModel.getImage())
                 .into(holder.itemImage);
-//        ViewPagerAdapter.images = new String[]{Constants.BASE_URL + "images/"+getStockInTypeModel.getImage()};
-//        holder.viewPager.setAdapter(holder.viewPagerAdapter);
         holder.itemsize.setText(getStockInTypeModel.getSize());
         holder.mCurrentPosition = position;
         holder.itemId = mStockArrayList.get(position).getId();
         holder.purchaseid = mStockArrayList.get(position).getPurchaseId();
         holder.header.setText(getStockInTypeModel.getName());
-        holder.headerSize.setText("("+getStockInTypeModel.getSize()+")");
-        holder.headerColor.setText("("+getStockInTypeModel.getColor()+")");
+        holder.headerSize.setText("(" + getStockInTypeModel.getSize() + ")");
+        holder.headerColor.setText("(" + getStockInTypeModel.getColor() + ")");
         holder.idItem = Integer.toString(mStockArrayList.get(position).getId());
         holder.itemQua = mStockArrayList.get(position).getQuantity();
         holder.qq = Integer.toString(holder.itemQua);
@@ -101,19 +100,19 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
 
     public class ItemsViewHolder extends RecyclerView.ViewHolder {
         TextView itemname, itemsize, itemquantity, moreDetails, header, headerSize, headerColor;
-        ImageView deleteItem, restock, arrowUp, arrowDown,itemImage,shoppingList;
-        Button sold, edit,given,obscolete;
+        ImageView deleteItem, restock, arrowUp, arrowDown, itemImage, shoppingList;
+        Button sold, edit, given, obscolete;
         int mCurrentPosition;
         String idItem;
         int itemQua;
-        String qq,name;
+        String qq, name;
         LinearLayoutCompat fulldetails, linearSale;
-        RelativeLayout dropdown,noProducts,progressL;
+        RelativeLayout dropdown, noProducts, progressL;
         EditText quantitySold, costUnitPrice;
         ViewPager viewPager;
         int itemId;
         int purchaseid;
-        private ArrayAdapter<String>bpadapter;
+        private ArrayAdapter<String> bpadapter;
         private List<String> bpSpinnerArray;
         private ViewPagerAdapter viewPagerAdapter;
 
@@ -150,17 +149,17 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                 public void onClick(View view) {
                     String id = Integer.toString(itemId);
                     Intent intent = new Intent(mContext, ViewPhotos.class);
-                    intent.putExtra("ITEMID",id);
-                    intent.putExtra("NAME",name);
+                    intent.putExtra("ITEMID", id);
+                    intent.putExtra("NAME", name);
                     mContext.startActivity(intent);
                 }
             });
             obscolete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ImageView obscCancel,obscDone;
+                    ImageView obscCancel, obscDone;
                     AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
-                    View sView = mLayoutInflator.inflate(R.layout.obscoletestock,null);
+                    View sView = mLayoutInflator.inflate(R.layout.obscoletestock, null);
                     final EditText oquantity = sView.findViewById(R.id.shoppingAmount);
                     obscCancel = sView.findViewById(R.id.shopping_dialog_close);
                     obscDone = sView.findViewById(R.id.shopping_dialog_done);
@@ -180,25 +179,24 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                     obscDone.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            int qqqq=0;
-                            if (!oquantity.getText().toString().isEmpty()){
+                            int qqqq = 0;
+                            if (!oquantity.getText().toString().isEmpty()) {
                                 qqqq = Integer.parseInt(oquantity.getText().toString());
                             }
-                            if(oquantity.getText().toString().isEmpty()){
+                            if (oquantity.getText().toString().isEmpty()) {
                                 oquantity.setError("Required");
                             }
-                            if (qqqq>itemQua){
-                                oquantity.setError("You only have "+itemQua);
-                                Toast.makeText(mContext,"You only have "+itemQua +  " items of this product",Toast.LENGTH_LONG).show();
-                            }
-                            else{
+                            if (qqqq > itemQua) {
+                                oquantity.setError("You only have " + itemQua);
+                                Toast.makeText(mContext, "You only have " + itemQua + " items of this product", Toast.LENGTH_LONG).show();
+                            } else {
                                 showProgress();
                                 final String obscQ = oquantity.getText().toString();
                                 String itemid = Integer.toString(itemId);
 
                                 Call<AddObscoleteModel> call = RetrofitClient.getInstance(mContext)
                                         .getApiConnector()
-                                        .addobsc(itemid,obscQ);
+                                        .addobsc(itemid, obscQ);
                                 call.enqueue(new Callback<AddObscoleteModel>() {
                                     @Override
                                     public void onResponse(Call<AddObscoleteModel> call, Response<AddObscoleteModel> response) {
@@ -228,9 +226,9 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
             given.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ImageView givenCancel,givenDone;
+                    ImageView givenCancel, givenDone;
                     AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
-                    View sView = mLayoutInflator.inflate(R.layout.givenstock,null);
+                    View sView = mLayoutInflator.inflate(R.layout.givenstock, null);
                     final EditText gquantity = sView.findViewById(R.id.shoppingAmount);
                     givenCancel = sView.findViewById(R.id.shopping_dialog_close);
                     givenDone = sView.findViewById(R.id.shopping_dialog_done);
@@ -250,25 +248,24 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                     givenDone.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            int qqq=0;
-                            if (!gquantity.getText().toString().isEmpty()){
+                            int qqq = 0;
+                            if (!gquantity.getText().toString().isEmpty()) {
                                 qqq = Integer.parseInt(gquantity.getText().toString());
                             }
-                            if(gquantity.getText().toString().isEmpty()){
+                            if (gquantity.getText().toString().isEmpty()) {
                                 gquantity.setError("Required");
                             }
-                            if (qqq>itemQua){
-                                gquantity.setError("You only have "+itemQua);
-                                Toast.makeText(mContext,"You only have "+itemQua +  " items of this product",Toast.LENGTH_LONG).show();
-                            }
-                            else{
+                            if (qqq > itemQua) {
+                                gquantity.setError("You only have " + itemQua);
+                                Toast.makeText(mContext, "You only have " + itemQua + " items of this product", Toast.LENGTH_LONG).show();
+                            } else {
                                 showProgress();
                                 final String givenQ = gquantity.getText().toString();
                                 String itemid = Integer.toString(itemId);
 
                                 Call<AddGivenStockModel> call = RetrofitClient.getInstance(mContext)
                                         .getApiConnector()
-                                        .addgiven(itemid,givenQ);
+                                        .addgiven(itemid, givenQ);
                                 call.enqueue(new Callback<AddGivenStockModel>() {
                                     @Override
                                     public void onResponse(Call<AddGivenStockModel> call, Response<AddGivenStockModel> response) {
@@ -299,9 +296,9 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
             shoppingList.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ImageView shoppingCancel,shoppingDone;
+                    ImageView shoppingCancel, shoppingDone;
                     AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
-                    View sView = mLayoutInflator.inflate(R.layout.addtoshopping,null);
+                    View sView = mLayoutInflator.inflate(R.layout.addtoshopping, null);
                     final EditText squantity = sView.findViewById(R.id.shoppingAmount);
                     shoppingCancel = sView.findViewById(R.id.shopping_dialog_close);
                     shoppingDone = sView.findViewById(R.id.shopping_dialog_done);
@@ -321,17 +318,16 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                     shoppingDone.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            if(squantity.getText().toString().isEmpty()){
+                            if (squantity.getText().toString().isEmpty()) {
                                 squantity.setError("Required");
-                            }
-                            else{
+                            } else {
                                 showProgress();
                                 final String shopQ = squantity.getText().toString();
                                 String itemid = Integer.toString(itemId);
 
                                 Call<AddShoppingListModel> call = RetrofitClient.getInstance(mContext)
                                         .getApiConnector()
-                                        .addshoppinglist(itemid,shopQ);
+                                        .addshoppinglist(itemid, shopQ);
                                 call.enqueue(new Callback<AddShoppingListModel>() {
                                     @Override
                                     public void onResponse(Call<AddShoppingListModel> call, Response<AddShoppingListModel> response) {
@@ -384,7 +380,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                 @Override
                 public void onClick(View view) {
                     final EditText quantityBought, buyingPrice;
-                    ImageView cancel,done;
+                    ImageView cancel, done;
                     AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
                     View viewView = mLayoutInflator.inflate(R.layout.restock, null);
                     quantityBought = viewView.findViewById(R.id.quantity_bought);
@@ -469,7 +465,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                                                 mContext.startActivity(intent);
                                                 Toast.makeText(mContext, "Deleted successfully", Toast.LENGTH_SHORT).show();
                                             } else {
-                                                Toast.makeText(mContext, "response:" + " "+ item_id+" "+response.message(), Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(mContext, "response:" + " " + item_id + " " + response.message(), Toast.LENGTH_SHORT).show();
                                             }
 
                                         }
@@ -496,7 +492,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
             edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    final EditText editName, editsp,editq;
+                    final EditText editName, editsp, editq;
                     final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
                     View mView = mLayoutInflator.inflate(R.layout.edit_details, null);
                     editName = mView.findViewById(R.id.edit_name);
@@ -517,7 +513,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
 
                             Call<EditStockModel> call = RetrofitClient.getInstance(mContext)
                                     .getApiConnector()
-                                    .editStock(name, sellingprice, item_id,quant);
+                                    .editStock(name, sellingprice, item_id, quant);
                             call.enqueue(new Callback<EditStockModel>() {
                                 @Override
                                 public void onResponse(Call<EditStockModel> call, Response<EditStockModel> response) {
@@ -589,11 +585,11 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
             sold.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    final EditText quantity,perQuantity;
+                    final EditText quantity, perQuantity;
                     final Spinner bpSpinner;
-                    ImageView cancel,done;
+                    ImageView cancel, done;
                     final AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
-                    View view1 = mLayoutInflator.inflate(R.layout.soldstock,null);
+                    View view1 = mLayoutInflator.inflate(R.layout.soldstock, null);
                     quantity = view1.findViewById(R.id.quantity_sold);
                     perQuantity = view1.findViewById(R.id.cost_unit_price);
                     bpSpinner = view1.findViewById(R.id.bpspinner);
@@ -618,15 +614,14 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                         @Override
                         public void onResponse(Call<List<GetBuyingPricesModel>> call, Response<List<GetBuyingPricesModel>> response) {
                             hideProgress();
-                            if(response.code()==200){
+                            if (response.code() == 200) {
 
-                                for(int index= 0;index<response.body().size();index++){
+                                for (int index = 0; index < response.body().size(); index++) {
                                     bpSpinnerArray.add(response.body().get(index).getAmount());
                                 }
                                 bpadapter.notifyDataSetChanged();
-                            }
-                            else{
-                                Toast.makeText(mContext,"response: " +response.message()+response.code(),Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(mContext, "response: " + response.message() + response.code(), Toast.LENGTH_SHORT).show();
                             }
 
                         }
@@ -634,7 +629,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                         @Override
                         public void onFailure(Call<List<GetBuyingPricesModel>> call, Throwable t) {
                             hideProgress();
-                            Toast.makeText(mContext,"Error: "+t.getMessage(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
                     alertDialog.setView(view1);
@@ -650,8 +645,8 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                     done.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            int iii=0;
-                            if (!quantity.getText().toString().isEmpty()){
+                            int iii = 0;
+                            if (!quantity.getText().toString().isEmpty()) {
                                 iii = Integer.parseInt(quantity.getText().toString());
                             }
                             if (quantity.getText().toString().isEmpty()) {
@@ -661,11 +656,10 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
                                 perQuantity.setError("Required");
                             }
 
-                            if(iii>itemQua){
-                                quantity.setError("You only have "+itemQua);
-                                Toast.makeText(mContext,"You only have "+itemQua +  " items of this product",Toast.LENGTH_LONG).show();
-                            }
-                            else {
+                            if (iii > itemQua) {
+                                quantity.setError("You only have " + itemQua);
+                                Toast.makeText(mContext, "You only have " + itemQua + " items of this product", Toast.LENGTH_LONG).show();
+                            } else {
                                 showProgress();
                                 final String quantitysold = quantity.getText().toString();
                                 String costprice = perQuantity.getText().toString();
@@ -675,7 +669,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
 
                                 Call<AddSaleModel> call = RetrofitClient.getInstance(mContext)
                                         .getApiConnector()
-                                        .addnewsale(purchaseId, quantitysold, costprice,bp,itemid);
+                                        .addnewsale(purchaseId, quantitysold, costprice, bp, itemid);
                                 call.enqueue(new Callback<AddSaleModel>() {
                                     @Override
                                     public void onResponse(Call<AddSaleModel> call, Response<AddSaleModel> response) {
@@ -707,6 +701,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
         private void showProgress() {
             progressL.setVisibility(View.VISIBLE);
         }
+
         private void hideProgress() {
             progressL.setVisibility(View.GONE);
         }

@@ -19,7 +19,7 @@ public class RecipesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recipes);
         webView = findViewById(R.id.webView);
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar!=null){
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
@@ -35,9 +35,9 @@ public class RecipesActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (webView.canGoBack()){
+        if (webView.canGoBack()) {
             webView.goBack();
-        }else{
+        } else {
             super.onBackPressed();
         }
 

@@ -4,9 +4,12 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.FileUtils;
@@ -98,6 +101,9 @@ public class SendMessage extends AppCompatActivity {
                     vieew.setBackgroundColor(getResources().getColor(R.color.colorRed));
                     describe.setVisibility(View.VISIBLE);
                 }
+                if (!isNetworkAvailable()){
+                    Toast.makeText(SendMessage.this,"Check your network connection",Toast.LENGTH_SHORT).show();
+                }
                 else{
                     send();
                 }
@@ -112,7 +118,7 @@ public class SendMessage extends AppCompatActivity {
     }
 
     private void send() {
-
+        showProgress();
         RequestBody message = RequestBody.create(MultipartBody.FORM,writeMessage.getText().toString());
         Call<SendMessageModel> call = RetrofitClient.getInstance(this)
                 .getApiConnector()
@@ -189,5 +195,11 @@ public class SendMessage extends AppCompatActivity {
 
     private void showProgress() {
         progressLyt.setVisibility(View.VISIBLE);
+    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
