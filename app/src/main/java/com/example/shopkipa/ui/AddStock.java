@@ -13,6 +13,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -103,6 +105,9 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
         productImage2 = findViewById(R.id.productImage2);
         numberPickerQuantity = findViewById(R.id.numberPickerQuantity);
         numberPickerSize = findViewById(R.id.numberPickerSize);
+        if (!isNetworkAvailable()){
+            Toast.makeText(AddStock.this,"Check your internet connection",Toast.LENGTH_SHORT).show();
+        }
         categorySpinnerArray = new ArrayList<>();
 
         categoryadapter = new ArrayAdapter<>(
@@ -186,7 +191,10 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
                 }
                 if (photoUri == null ){
                     Toast.makeText(AddStock.this,"Add photo",Toast.LENGTH_SHORT).show();
-                }else {
+                }if (!isNetworkAvailable()){
+                    Toast.makeText(AddStock.this,"Check your internet connection",Toast.LENGTH_SHORT).show();
+                }
+                else {
                     newStock();
                 }
             }
@@ -216,8 +224,8 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
         selectItemGroupSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getApplicationContext(), "This is " +
-                        adapterView.getItemAtPosition(i).toString(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(), "This is " +
+//                        adapterView.getItemAtPosition(i).toString(), Toast.LENGTH_LONG).show();
                 gg = adapterView.getItemAtPosition(i).toString();
                 String groupname = gg;
                 typeSpinnerArray.clear();
@@ -620,6 +628,12 @@ public class AddStock extends AppCompatActivity implements NumberPicker.OnValueC
                 hideProgress();
             }
         });
+    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
     public void pickSizeFormat() {
         TextView pickWord, pickNumber;

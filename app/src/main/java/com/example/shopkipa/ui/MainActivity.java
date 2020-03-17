@@ -126,50 +126,50 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
-        new CountDownTimer(13000, 1000) { // 10 seconds, in 1 second intervals
-            public void onTick(long millisUntilFinished) {
-            }
-
-            public void onFinish() {
-                top.setVisibility(View.VISIBLE);
-                cancelTop.setVisibility(View.VISIBLE);
-                new CountDownTimer(10000, 1000) { // 10 seconds, in 1 second intervals
-                    public void onTick(long millisUntilFinished) {
-                    }
-
-                    public void onFinish() {
-                        cancelBottom.setVisibility(View.VISIBLE);
-                        bottom.setVisibility(View.VISIBLE);
-                    }
-                }.start();
-            }
-        }.start();
-        cancelBottom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                cancelBottom.setVisibility(View.GONE);
-                bottom.setVisibility(View.GONE);
-            }
-        });
-        cancelTop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                cancelTop.setVisibility(View.GONE);
-                top.setVisibility(View.GONE);
-            }
-        });
-        bottom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "Goes to company website", Toast.LENGTH_SHORT).show();
-            }
-        });
-        top.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "Goes to company website", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        new CountDownTimer(13000, 1000) { // 10 seconds, in 1 second intervals
+//            public void onTick(long millisUntilFinished) {
+//            }
+//
+//            public void onFinish() {
+//                top.setVisibility(View.VISIBLE);
+//                cancelTop.setVisibility(View.VISIBLE);
+//                new CountDownTimer(10000, 1000) { // 10 seconds, in 1 second intervals
+//                    public void onTick(long millisUntilFinished) {
+//                    }
+//
+//                    public void onFinish() {
+//                        cancelBottom.setVisibility(View.VISIBLE);
+//                        bottom.setVisibility(View.VISIBLE);
+//                    }
+//                }.start();
+//            }
+//        }.start();
+//        cancelBottom.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                cancelBottom.setVisibility(View.GONE);
+//                bottom.setVisibility(View.GONE);
+//            }
+//        });
+//        cancelTop.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                cancelTop.setVisibility(View.GONE);
+//                top.setVisibility(View.GONE);
+//            }
+//        });
+//        bottom.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(MainActivity.this, "Goes to company website", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        top.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(MainActivity.this, "Goes to company website", Toast.LENGTH_SHORT).show();
+//            }
+//        });
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
