@@ -44,16 +44,18 @@ import com.example.shopkipa.ui.ViewPhotos;
 import com.example.shopkipa.utils.Constants;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.ItemsViewHolder> {
+public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.ItemsViewHolder> implements Filterable {
 
     private final Context mContext;
     private final ArrayList<GetStockInTypeModel> mStockArrayList;
+    ArrayList<GetStockInTypeModel> listAll;
     private Drawable trans;
     private final LayoutInflater mLayoutInflator;
     public ItemsInTypeAdapter(Context context, ArrayList<GetStockInTypeModel> stockArrayList) {
@@ -61,6 +63,7 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
         mStockArrayList = stockArrayList;
         mLayoutInflator = LayoutInflater.from(mContext);
         trans = mContext.getDrawable(R.color.colorPop);
+        listAll = mStockArrayList;
     }
 
     @NonNull
@@ -96,6 +99,37 @@ public class ItemsInTypeAdapter extends RecyclerView.Adapter<ItemsInTypeAdapter.
     public int getItemCount() {
         return mStockArrayList.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+    Filter filter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            ArrayList<GetStockInTypeModel> filteredList = new ArrayList<>();
+
+            if (charSequence.toString().isEmpty()){
+                filteredList.addAll(listAll);
+            }else {
+                for (GetStockInTypeModel movie: listAll){
+                    if (movie.toString().toLowerCase().contains(charSequence.toString().toLowerCase())){
+                        filteredList.add(movie);
+                    }
+                }
+            }
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = filteredList;
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            mStockArrayList.clear();
+            mStockArrayList.addAll((Collection<? extends GetStockInTypeModel>) filterResults);
+            notifyDataSetChanged();
+        }
+    };
 
 
     public class ItemsViewHolder extends RecyclerView.ViewHolder {

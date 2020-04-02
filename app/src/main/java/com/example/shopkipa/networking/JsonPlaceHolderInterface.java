@@ -12,6 +12,7 @@ import com.example.shopkipa.models.ConfirmPhoneChangeCodeModel;
 import com.example.shopkipa.models.DeleteSaleModel;
 import com.example.shopkipa.models.EditQuantityModel;
 import com.example.shopkipa.models.GetItemImagesModel;
+import com.example.shopkipa.models.GetNamesModel;
 import com.example.shopkipa.models.SendSignUpCode;
 import com.example.shopkipa.models.ForgotPasswordModel;
 import com.example.shopkipa.models.GenerateCodeModel;
@@ -359,4 +360,18 @@ public interface JsonPlaceHolderInterface {
     @Multipart
     @POST("api/sendmessage")
     Call<ResponseBody>upload(@Part MultipartBody.Part file,@Part("image")RequestBody requestBody);
+
+    //names
+    @FormUrlEncoded
+    @POST("api/getnames")
+    Call<List<GetNamesModel>> getN(
+            @Field("namemm")String name
+    );
+
+    //search results
+    @FormUrlEncoded
+    @POST("api/getsearcheditem")
+    Call<List<GetStockInTypeModel>> getSearchResults(
+            @Field("name")String name
+    );
 }

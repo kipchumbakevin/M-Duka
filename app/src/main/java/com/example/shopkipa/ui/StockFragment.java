@@ -1,6 +1,8 @@
 package com.example.shopkipa.ui;
 
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +26,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -43,23 +49,23 @@ import retrofit2.Response;
 
 
 public class StockFragment extends Fragment {
-    private  static final String REQUEST_TYPE = "com.example.shopkipa.REQUEST_TYPE" ;
-    private static ArrayList<GetTypesInCategoryModel>mTypesArrayList=new ArrayList<>();
-    private static ArrayList<GetGroupModel>mGroupArrayList=new ArrayList<>();
-    private static ArrayList<GetStockInTypeModel>mStockArrayList=new ArrayList<>();
+    private static final String REQUEST_TYPE = "com.example.shopkipa.REQUEST_TYPE";
+    private static ArrayList<GetTypesInCategoryModel> mTypesArrayList = new ArrayList<>();
+    private static ArrayList<GetGroupModel> mGroupArrayList = new ArrayList<>();
+    private static ArrayList<GetStockInTypeModel> mStockArrayList = new ArrayList<>();
     RecyclerView recyclerView;
-    RelativeLayout progressLyt,noProducts;
+    RelativeLayout progressLyt, noProducts;
     ItemsInTypeAdapter itemsInTypeAdapter;
     LinearLayoutCompat productView;
     String fragment_name;
     SharedPreferencesConfig sharedPreferencesConfig;
     public Boolean done;
-    public Spinner typeSpinner,groupSpinner;
+    public Spinner typeSpinner, groupSpinner;
     private List<String> typeSpinnerArray;
-    private ArrayAdapter<String>typeadapter;
+    private ArrayAdapter<String> typeadapter;
     private List<String> groupSpinnerArray;
-    private ArrayAdapter<String>groupadapter;
-    private ArrayList<ViewAdsModel> mAdsArray=new ArrayList<>();
+    private ArrayAdapter<String> groupadapter;
+    private ArrayList<ViewAdsModel> mAdsArray = new ArrayList<>();
     ViewAdsAdapter viewAdsAdapter;
     RecyclerView recyclerView2;
 
@@ -80,8 +86,8 @@ public class StockFragment extends Fragment {
         groupSpinner = view.findViewById(R.id.groupSpinner);
         recyclerView.hasFixedSize();
         LinearLayoutManager linearLayoutManager =
-                new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
-        viewAdsAdapter = new ViewAdsAdapter(getActivity(),mAdsArray);
+                new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        viewAdsAdapter = new ViewAdsAdapter(getActivity(), mAdsArray);
         recyclerView2 = view.findViewById(R.id.ads_RecyclerView);
         recyclerView2.setAdapter(viewAdsAdapter);
         recyclerView2.setLayoutManager(linearLayoutManager);
@@ -124,7 +130,7 @@ public class StockFragment extends Fragment {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    done=true;
+                    done = true;
                 }
                 return false;
             }
@@ -151,37 +157,37 @@ public class StockFragment extends Fragment {
                                 mStockArrayList.clear();
                                 typeSpinnerArray.add(response.body().get(index).getTypeName());
                             }
-                                done=false;
-                                String typename = typeSpinnerArray.get(0);
-                                String category = categoryname;
-                                mStockArrayList.clear();
-                                Call<List<GetStockInTypeModel>> call2 = RetrofitClient.getInstance(getActivity())
-                                        .getApiConnector()
-                                        .getAllStock(typename, category);
-                                call2.enqueue(new Callback<List<GetStockInTypeModel>>() {
-                                    @Override
-                                    public void onResponse(Call<List<GetStockInTypeModel>> call2, Response<List<GetStockInTypeModel>> response) {
-                                        hideProgress();
-                                        if (response.code() == 200) {
-                                            mStockArrayList.addAll(response.body());
-                                            itemsInTypeAdapter.notifyDataSetChanged();
-                                            if (mStockArrayList.size()<1){
-                                                noProducts.setVisibility(View.VISIBLE);
-                                                recyclerView.setVisibility(View.GONE);
-                                            }
-                                        } else {
-
+                            done = false;
+                            String typename = typeSpinnerArray.get(0);
+                            String category = categoryname;
+                            mStockArrayList.clear();
+                            Call<List<GetStockInTypeModel>> call2 = RetrofitClient.getInstance(getActivity())
+                                    .getApiConnector()
+                                    .getAllStock(typename, category);
+                            call2.enqueue(new Callback<List<GetStockInTypeModel>>() {
+                                @Override
+                                public void onResponse(Call<List<GetStockInTypeModel>> call2, Response<List<GetStockInTypeModel>> response) {
+                                    hideProgress();
+                                    if (response.code() == 200) {
+                                        mStockArrayList.addAll(response.body());
+                                        itemsInTypeAdapter.notifyDataSetChanged();
+                                        if (mStockArrayList.size() < 1) {
+                                            noProducts.setVisibility(View.VISIBLE);
+                                            recyclerView.setVisibility(View.GONE);
                                         }
-                                    }
+                                    } else {
 
-                                    @Override
-                                    public void onFailure(Call<List<GetStockInTypeModel>> call2, Throwable t) {
-                                        hideProgress();
-                                        Toast.makeText(getContext(), t.getMessage() + "kkk", Toast.LENGTH_LONG).show();
                                     }
+                                }
 
-                                });
-                            if (mStockArrayList.size()<1 && typeSpinnerArray.size()<1) {
+                                @Override
+                                public void onFailure(Call<List<GetStockInTypeModel>> call2, Throwable t) {
+                                    hideProgress();
+                                    Toast.makeText(getContext(), t.getMessage() + "kkk", Toast.LENGTH_LONG).show();
+                                }
+
+                            });
+                            if (mStockArrayList.size() < 1 && typeSpinnerArray.size() < 1) {
                                 noProducts.setVisibility(View.VISIBLE);
                                 recyclerView.setVisibility(View.GONE);
                             }
@@ -235,7 +241,7 @@ public class StockFragment extends Fragment {
 
     private void viewGroup() {
         showProgress();
-        fragment_name = getArguments().getString("fragment_name",fragment_name);
+        fragment_name = getArguments().getString("fragment_name", fragment_name);
         ArrayList<GetGroupModel> mRequestsArray;
         mGroupArrayList.clear();
         String categoryname = fragment_name;
@@ -246,22 +252,21 @@ public class StockFragment extends Fragment {
             @Override
             public void onResponse(Call<List<GetGroupModel>> call, Response<List<GetGroupModel>> response) {
                 hideProgress();
-                if(response.code()==200){
-                    for(int index= 0;index<response.body().size();index++){
+                if (response.code() == 200) {
+                    for (int index = 0; index < response.body().size(); index++) {
                         groupSpinnerArray.add(response.body().get(index).getName());
                     }
-                    if (mStockArrayList.size()<1 && typeSpinnerArray.size()<1 && groupSpinnerArray.size()<1) {
+                    if (mStockArrayList.size() < 1 && typeSpinnerArray.size() < 1 && groupSpinnerArray.size() < 1) {
                         noProducts.setVisibility(View.VISIBLE);
                         recyclerView.setVisibility(View.GONE);
                     }
                     groupadapter.notifyDataSetChanged();
-                    Log.d("check", ""+sharedPreferencesConfig.readClientsAccessToken());
+                    Log.d("check", "" + sharedPreferencesConfig.readClientsAccessToken());
 
 
-                }
-                else{
-                    Log.d("check", ""+sharedPreferencesConfig.readClientsAccessToken());
-                    Toast.makeText(getActivity(),response.message()+" found "+sharedPreferencesConfig.readClientsAccessToken() ,Toast.LENGTH_LONG).show();
+                } else {
+                    Log.d("check", "" + sharedPreferencesConfig.readClientsAccessToken());
+                    Toast.makeText(getActivity(), response.message() + " found " + sharedPreferencesConfig.readClientsAccessToken(), Toast.LENGTH_LONG).show();
 
                 }
             }
@@ -269,13 +274,14 @@ public class StockFragment extends Fragment {
             @Override
             public void onFailure(Call<List<GetGroupModel>> call, Throwable t) {
                 hideProgress();
-                Toast.makeText(getActivity(),t.getMessage()+"yyy",Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), t.getMessage() + "yyy", Toast.LENGTH_LONG).show();
             }
 
         });
 
     }
-//    private View.OnTouchListener typespinnertt = new View.OnTouchListener() {
+
+    //    private View.OnTouchListener typespinnertt = new View.OnTouchListener() {
 //        public boolean onTouch(View v, MotionEvent event) {
 //            if (event.getAction() == MotionEvent.ACTION_UP) {
 //                done = true;
@@ -283,8 +289,8 @@ public class StockFragment extends Fragment {
 //            return true;
 //        }
 //    };
-    private void functions(String typename){
-        if (done){
+    private void functions(String typename) {
+        if (done) {
             showProgress();
             mStockArrayList.clear();
             String category = fragment_name;
@@ -325,14 +331,15 @@ public class StockFragment extends Fragment {
         progressLyt.setVisibility(View.VISIBLE);
     }
 
-    public static StockFragment newInstance(String fragmentname){
+    public static StockFragment newInstance(String fragmentname) {
         mStockArrayList.clear();
-        StockFragment viewCustomerStockFragment =new StockFragment();
-        Bundle bundle=new Bundle();
-        bundle.putString("fragment_name",fragmentname);
+        StockFragment viewCustomerStockFragment = new StockFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("fragment_name", fragmentname);
         viewCustomerStockFragment.setArguments(bundle);
         return viewCustomerStockFragment;
     }
+
     private void viewAds() {
         mAdsArray.clear();
         Call<List<ViewAdsModel>> call = RetrofitClient.getInstance(getActivity())
@@ -347,7 +354,7 @@ public class StockFragment extends Fragment {
                     viewAdsAdapter.notifyDataSetChanged();
 
                 } else {
-                    Toast.makeText(getActivity(),response.message()+response.code(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), response.message() + response.code(), Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -358,5 +365,12 @@ public class StockFragment extends Fragment {
             }
 
         });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.main, menu);
+
     }
 }

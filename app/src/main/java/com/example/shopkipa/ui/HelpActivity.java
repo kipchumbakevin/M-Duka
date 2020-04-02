@@ -68,7 +68,7 @@ public class HelpActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         if (!isNetworkAvailable()){
-            Toast.makeText(HelpActivity.this,"Check your connection",Toast.LENGTH_SHORT);
+            Toast.makeText(HelpActivity.this,"Check your connection",Toast.LENGTH_SHORT).show();
         }else{
             fetchFaqs();
         }

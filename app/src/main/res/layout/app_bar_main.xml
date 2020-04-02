@@ -17,8 +17,39 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/search_button"
+                    android:tint="@color/colorWhite"
+                    android:layout_marginEnd="10dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_search"/>
+                <EditText
+                    android:visibility="gone"
+                    android:id="@+id/search_name"
+                    android:layout_centerInParent="true"
+                    android:layout_marginEnd="5dp"
+                    android:backgroundTint="@color/colorWhite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="15sp"
+                    android:textColorHint="@color/colorWhite"
+                    android:hint="search by name"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/names_recycler"
+                    android:layout_below="@id/search_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
 
+        </androidx.appcompat.widget.Toolbar>
         <com.google.android.material.tabs.TabLayout
 
             android:layout_width="match_parent"

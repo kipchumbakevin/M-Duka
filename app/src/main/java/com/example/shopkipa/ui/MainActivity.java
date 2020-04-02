@@ -11,8 +11,10 @@ import android.os.Bundle;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.example.shopkipa.adapters.NamesAdapter;
 import com.example.shopkipa.auth.LoginActivity;
 import com.example.shopkipa.R;
+import com.example.shopkipa.models.GetNamesModel;
 import com.example.shopkipa.models.SignUpMessagesModel;
 import com.example.shopkipa.settings.SettingsActivity;
 import com.example.shopkipa.models.AddExpenseModel;
@@ -22,6 +24,8 @@ import com.example.shopkipa.networking.RetrofitClient;
 import com.example.shopkipa.utils.SharedPreferencesConfig;
 
 import android.os.CountDownTimer;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.GestureDetector;
@@ -43,6 +47,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
 import android.widget.EditText;
@@ -66,6 +72,12 @@ public class MainActivity extends AppCompatActivity
     TabLayout tabLayout;
     FrameLayout frameLayout;
     RelativeLayout progressLyt;
+    ImageView imageView;
+    RecyclerView recyclerView;
+    private ArrayList<GetNamesModel> mNamesArrayList;
+    NamesAdapter namesAdapter;
+    String name = "";
+    EditText searchname;
     ImageView top, cancelTop, bottom, cancelBottom;
     //    TextView user;
     private ArrayList<GetExpenseModel> mExpensesArrayList;
@@ -83,7 +95,10 @@ public class MainActivity extends AppCompatActivity
         final FloatingActionButton fab = findViewById(R.id.fab);
         top = findViewById(R.id.imageviewtop);
         cancelTop = findViewById(R.id.cancelimageviewtop);
+        imageView = findViewById(R.id.search_button);
+        searchname = findViewById(R.id.search_name);
         cancelBottom = findViewById(R.id.cancelbottomad);
+        recyclerView = findViewById(R.id.names_recycler);
         bottom = findViewById(R.id.bottomad);
         frameLayout = findViewById(R.id.fragment);
         //  imageView = findViewById(R.id.imageView);
@@ -93,10 +108,21 @@ public class MainActivity extends AppCompatActivity
         trans = getDrawable(R.color.colorPop);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+        namesAdapter = new NamesAdapter(MainActivity.this,mNamesArrayList);
+        recyclerView.setAdapter(namesAdapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this,getResources().
+                getInteger(R.integer.product_grid_span)));
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imageView.setVisibility(View.GONE);
+                searchname.setVisibility(View.VISIBLE);
+            }
+        });
         progressLyt = findViewById(R.id.progressLoad);
         navigationView.setNavigationItemSelectedListener(this);
         if (!isNetworkAvailable()){
@@ -126,54 +152,47 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
-//        new CountDownTimer(13000, 1000) { // 10 seconds, in 1 second intervals
-//            public void onTick(long millisUntilFinished) {
-//            }
-//
-//            public void onFinish() {
-//                top.setVisibility(View.VISIBLE);
-//                cancelTop.setVisibility(View.VISIBLE);
-//                new CountDownTimer(10000, 1000) { // 10 seconds, in 1 second intervals
-//                    public void onTick(long millisUntilFinished) {
-//                    }
-//
-//                    public void onFinish() {
-//                        cancelBottom.setVisibility(View.VISIBLE);
-//                        bottom.setVisibility(View.VISIBLE);
-//                    }
-//                }.start();
-//            }
-//        }.start();
-//        cancelBottom.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                cancelBottom.setVisibility(View.GONE);
-//                bottom.setVisibility(View.GONE);
-//            }
-//        });
-//        cancelTop.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                cancelTop.setVisibility(View.GONE);
-//                top.setVisibility(View.GONE);
-//            }
-//        });
-//        bottom.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Toast.makeText(MainActivity.this, "Goes to company website", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        top.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Toast.makeText(MainActivity.this, "Goes to company website", Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        searchname.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                name = charSequence.toString();
+                Call<List<GetNamesModel>> call = RetrofitClient.getInstance(MainActivity.this)
+                        .getApiConnector()
+                        .getN(name);
+                call.enqueue(new  Callback<List<GetNamesModel>>() {
+                    @Override
+                    public void onResponse(Call<List<GetNamesModel>> call, Response<List<GetNamesModel>> response) {
+                        if (response.code() == 200) {
+                            mNamesArrayList.addAll(response.body());
+                            namesAdapter.notifyDataSetChanged();
+                        } else {
+                            Toast.makeText(MainActivity.this, "response:" + response.message(), Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<GetNamesModel>> call, Throwable t) {
+                        Toast.makeText(MainActivity.this, "errot:" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+                // Toast.makeText(SearchResultsActivity.this,editable,Toast.LENGTH_SHORT).show();
+        });
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AddStock.class);
+                Intent intent = new Intent(MainActivity.this, SearchResultsActivity.class);
                 startActivity(intent);
             }
         });
